@@ -41,6 +41,7 @@
 | PIE | 正常启动、创建玩家 Pawn，移动测试后正常停止 |
 | 位移验证 | 通过 Pawn.AddMovementInput 产生约 375.95 厘米实际位移；不是鼠标输入端到端测试 |
 | Windows Cook | 当前启动地图 Cook 返回 0，处理 536 个包，摘要为 0 error(s)、310 warning(s) |
+| Git LFS | 2,110 个二进制资产已纳入 LFS，`git lfs fsck` 通过 |
 
 Cook 的 310 条唯一告警来自此前已确认不兼容的原音效包：RPG_Fantasy_SFX 100 个、UltimateUIMenusSFX 210 个。本轮没有导入恢复音频或剔除这些源包，相关工作见 [音效恢复验证](audio-recovery-2026-10-27.md)。
 
