@@ -1,0 +1,3082 @@
+{
+  "sourceEngine": "5.8.0-55116800+++UE5+Release-5.8",
+  "soundWaveCount": 205,
+  "soundCueGraphsRecovered": false,
+  "records": [
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Arrows/9__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Arrows/9__1_.wav",
+      "name": "9__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Arrows",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b0c9e2b94b7dbcf5d43d2dbac5df5a91b1db6d3d250922c90ddccd66bc5a48e1"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Arrows/9__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Arrows/9__2_.wav",
+      "name": "9__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Arrows",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9df6843cf234504dd06f192dd57f21ba477595930fb0e5019aa7fbbed7bd932a"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Arrows/9__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Arrows/9__3_.wav",
+      "name": "9__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Arrows",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d09edbdd7a735b4066bb35dbad0933e46b6a2292e04edf9b69124cbabed494e2"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Arrows/9__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Arrows/9__4_.wav",
+      "name": "9__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Arrows",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "5d32e8195166db293cff36d33b4909051ed517added46d39d848e2f4eaa15102"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Axes/11__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Axes/11__1_.wav",
+      "name": "11__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Axes",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "eb597fbf5b97a367ed3ea23e9e9d6955807dd6090d15b40e02ef6e917cb4b88c"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Axes/11__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Axes/11__2_.wav",
+      "name": "11__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Axes",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e982eed795121eddce5fa30e701d816bbc6a6216425916da64801754f9ee23ac"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Axes/11__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Axes/11__3_.wav",
+      "name": "11__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Axes",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e1fe7307a7cd5a1990ea9f8d6b1a6b23435efa30f00ec59a41c137b417a9179c"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Axes/11__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Axes/11__4_.wav",
+      "name": "11__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Axes",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "abef424ac03c50011025c81f850dadcdf75a981bccbe2698770e63d0dd3e800c"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Beings/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Beings/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Beings",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "647896d357c77c2966c5733bbdbfbbd51aed4f90804ac56532fafcdb94f23be7"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Beings/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Beings/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Beings",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "1838ea73b7c0c24b33f7a31f5f0c691e47b9e4ae0e6daf6fe5ae2185a726fffc"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Beings/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Beings/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Beings",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "760cf18c4ed4316d5fa75f80977723357e5b561d4c510c49b8bc78c739ad2e75"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Beings/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Beings/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Beings",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4f67969c8544482980ce8845ba063157f55410c61fa280e2d1e8a520d0470224"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Books/1",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Books/1.wav",
+      "name": "1",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Books",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3d6c20049cc9431e246ddb0b0503ba88bdc955eec4d9c04cc5d340da3eb6f51f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Books/2",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Books/2.wav",
+      "name": "2",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Books",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "df510b4a38af08e6e3d0beb77d447150789a20b0ee239959f71fc69da3f2a9c5"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Books/3",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Books/3.wav",
+      "name": "3",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Books",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a3a98f54263d04d5a184e3c387440e39cb7d628cfbeae031af72ca8cc17ec182"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Books/4",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Books/4.wav",
+      "name": "4",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Books",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d914edf2c61422b3ae5d357e806c9a66abd201b7d0b750b1173ff2da3c0db787"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Combat/5__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Combat/5__1_.wav",
+      "name": "5__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Combat",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c6401e9c383559214bf4ba1f7947dc0110d684ee35a1f390c73cf9a81f642526"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Combat/5__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Combat/5__2_.wav",
+      "name": "5__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Combat",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "bf5b9adcc8f2b36bdbabdb3c88f62a779de03f971921e7bb9bd8d451d0914dfc"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Combat/5__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Combat/5__3_.wav",
+      "name": "5__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Combat",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "557282d1dfc3c4b36dfe2dccb1c1b19d28ee7cb5ef134bf268e9ac4edd68568d"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Combat/5__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Combat/5__4_.wav",
+      "name": "5__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Combat",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "cc4971ad0d8cddae973886c855208ea9516aa437828ba9e8b4fb74d2daf7e8c0"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Creature/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Creature/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Creature",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "01a499b40400b6c12c799d080f0a11a26824c1e5688e9c4f242150dd830db8d0"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Creature/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Creature/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Creature",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "f3b89907ec6bed905ee91818975507e27c8e4997e3653e196e2d9adf69ed9d04"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Creature/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Creature/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Creature",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0a80622c5d7c3b78c1581e5d570a2d398615cf7724e23785aa26103ae6f72ddd"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Creature/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Creature/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Creature",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0408b01134aee6c38b148fb6a8a9e5f3d3761475977baa29b624010c3eaaeb9e"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Daggers/6__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Daggers/6__1_.wav",
+      "name": "6__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Daggers",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3b0758762314edecbc35d22b2e253f1b7f6ab8c1ec4e198289f622dd9be77460"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Daggers/6__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Daggers/6__2_.wav",
+      "name": "6__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Daggers",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "cd0fd9fb07042e11ff4d89b5948c17d532b7b620278dec4a2524766149b8640f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Daggers/6__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Daggers/6__3_.wav",
+      "name": "6__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Daggers",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b373460b56d1a7c9da9ebc5aa0621ea48b58fa32e40ac561cca647298651ad59"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Daggers/6__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Daggers/6__4_.wav",
+      "name": "6__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Daggers",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "60b350ba73108d58ae8753563d8af1e02f65b0d046c4720b136f12e8496928d3"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dark/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dark/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dark",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "71920057321b148dda488e4e792951e461bd4b78fb7a2e7ee2a618d97531932a"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dark/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dark/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dark",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a66cc5de45d1d286008fb310e67db087a4711316b093cf108ad315a68307887b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dark/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dark/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dark",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4b0186f6a93136e4e7e162a47b9074734d0c1d4dbdf2b17b44185a331bdb5a68"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dark/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dark/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dark",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "76e84f381689906f7b21bdc996540128591209387f69626e3a53c45d75b2c197"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Doors/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Doors/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Doors",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "f7349217110a20e527e60b6a732fee35567bf2cb2bf33141aeb4ee2ab8ea4e1f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Doors/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Doors/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Doors",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a03f2ea6b81eda38555075f52b6a0db059b6e00c8ee3423b96b1ee6f9334189a"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Doors/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Doors/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Doors",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "795cc0bd6508e1b558aa363460cc0a58c167afad30793824053cb7a1717eae5b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Doors/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Doors/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Doors",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b9dc1e997fc37fcea571c425c0fcedfa8fe03d62b27bd1939d29ff3d1ec6cf43"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dragons/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dragons/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dragons",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "86b796a388f18a2910b2db8e432c6d2197b896979172a055c46ccd2b787f9e71"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dragons/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dragons/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dragons",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "90e6d2dce6e9a79091d606064f1df81de452c7bca9da22520bcac6c2d3140b11"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dragons/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dragons/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dragons",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "09c515855e45d66adf83357a0a6e923d0a10177bee8d412a8db75f8c6f90425f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Dragons/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Dragons/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Dragons",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ebea5b5b5104a7c3cf61a62ec0e9ee9e435b6b6636150335834cd142172dba08"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Elemental/2__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Elemental/2__1_.wav",
+      "name": "2__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Elemental",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "f473c66424b752394547c3b809042ae2701db68113bfb9058862e972af8d1f48"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Elemental/2__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Elemental/2__2_.wav",
+      "name": "2__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Elemental",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "6440a1a2ac9d5550923dfdd9a3e97e1a184cf08ab4f9021a24270e9a5e6b9623"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Elemental/2__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Elemental/2__3_.wav",
+      "name": "2__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Elemental",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9277c31dd1ef1f3af72e3ca20d2dc518c764f282d1460b998b5c98d9666ddb17"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Elemental/2__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Elemental/2__4_.wav",
+      "name": "2__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Elemental",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "fdca4530c1936ac199141b91f8f41b73ce3d3dd0c9074abd97793d0b1626730f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Enchantment/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Enchantment/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Enchantment",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "99abe0785d51bb8cc49a1e83c9af6177b6cb46274fe25e6684041b9935fec01c"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Enchantment/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Enchantment/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Enchantment",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a7a3923b22934a26cefb302d0ea8b5f7f13e8b7d329176943bfd6a6b52f40ff8"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Enchantment/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Enchantment/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Enchantment",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a7aaab37c98174ad1753cbc76a7d3a437b210a982eba1f38bcdb442bbfa72a2b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Enchantment/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Enchantment/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Enchantment",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9c79afed890d3f0e6b5d3c2ff4c9470743294acd5631ecdc9063ea39ac4316bb"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Giant/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Giant/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Giant",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ed432138b817db74baa210bf7498b93fe4911fa124c3d779cf69a3cc78e6fdd9"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Giant/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Giant/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Giant",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c5bb585b0bc72cca07a07179d3e1866240e98ca2d063313e5c1f059708cb7b58"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Giant/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Giant/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Giant",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "328672aa8b1aae1b118b92d446898b02c3d9f8cdf5ec891666dad8dffbd77cd5"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Giant/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Giant/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Giant",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "105bddf521362a4920b271921f44f11257d084099a9f6cb8fbba923c0b360efb"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Healing/7__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Healing/7__1_.wav",
+      "name": "7__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Healing",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e7792c5fb66238d5d6dc1a955779ecd1d8cad513775a5bc649e9de1516628eb4"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Healing/7__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Healing/7__2_.wav",
+      "name": "7__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Healing",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ff3eddbf31c30247bded25250e878979d625a063bedaa534d6522a7effc5743f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Healing/7__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Healing/7__3_.wav",
+      "name": "7__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Healing",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "2069525fef3404bc9ec1b87422d5c5edcb26d0898ac83d41f7261dfe4c2ec53f"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Healing/7__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Healing/7__4_.wav",
+      "name": "7__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Healing",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "db5cd396c2065e6f3cb3bc8af0fdd0bd44c0b70af7fc8081e7feba347a3a3c8c"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Inventory/1",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Inventory/1.wav",
+      "name": "1",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Inventory",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "1abc4332211a003daed2fa3e2d8eed91f88ade8296aa90baaa09376c828629ae"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Inventory/2",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Inventory/2.wav",
+      "name": "2",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Inventory",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "6e417b85d72c4fe01a47e6bbc2d6b87f9a3316d949d30ab9bdfc283287cfe2ec"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Inventory/3",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Inventory/3.wav",
+      "name": "3",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Inventory",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3fe300d4a2c9080444d752b4bf298a63de060ca1e532b506202107ef854d8d79"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Inventory/4",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Inventory/4.wav",
+      "name": "4",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Inventory",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7bbace18395355a9baf9453b4df54c6e0809b13fe120810efe8167373ea21da1"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Locks/1",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Locks/1.wav",
+      "name": "1",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Locks",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c1cded9bd9990107e032255fafcd34da9f56f90e712e8d60c20c48f865d5da8a"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Locks/2",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Locks/2.wav",
+      "name": "2",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Locks",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "6e536c01b6237a0fdd8b46e079e1e7ff4d35befbba01179eaa8cd03657ea8b69"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Locks/3",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Locks/3.wav",
+      "name": "3",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Locks",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7624d9fea1817035c3395591d4deacac13a67979da2c839748e75d88f7cae874"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Locks/4",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Locks/4.wav",
+      "name": "4",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Locks",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "dbf6f0fb099bc72ed241150e0eaa4955397c4b23722bb862ec27634497350011"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Magical/3__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Magical/3__1_.wav",
+      "name": "3__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Magical",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "de6b3d12c2e43957dfa2ffbaa1ca1daa0446b226865f2fca6255744e4fbe1fde"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Magical/3__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Magical/3__2_.wav",
+      "name": "3__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Magical",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8a2acb34b94a72bda1244b03b396a8457863e3921d52127cb206565167d40060"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Magical/3__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Magical/3__3_.wav",
+      "name": "3__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Magical",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4bf08ce95a8b8df0f346ae57bcca8dd4289f0570fea2f1ef02e8f5776431b5f1"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Magical/3__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Magical/3__4_.wav",
+      "name": "3__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Magical",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7fc34a5129445e289e563e3c2d8dde1d5aff053ef98de402da13d23a56a1533b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Orcs/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Orcs/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Orcs",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7cb7d7d50d2538f74f3b0c108865267ec7d9a343135a39890f15ac1471e9fa1b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Orcs/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Orcs/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Orcs",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "986282ddbad079598f43af03542f2f6e898e4e327e2c2fbc7b64626b3f5a9bde"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Orcs/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Orcs/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Orcs",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a91bea2a2110dd047fe254b506e679dda3ae6b5c0dc8cf990b2df54daad6b4df"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Orcs/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Orcs/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Orcs",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "44b8e05960a667c21509ac95dab05376bbffe0232c917de84e67711bbcec0d03"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Shields/10__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Shields/10__1_.wav",
+      "name": "10__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Shields",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "25be83d2513d963f0162d6b13c3634c8747df00ee1da8888a89a99b134e23729"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Shields/10__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Shields/10__2_.wav",
+      "name": "10__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Shields",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "cd89b896f4f9ef418c468c8f8ab8b3335450edb94209b5d02403d7f2d8697746"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Shields/10__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Shields/10__3_.wav",
+      "name": "10__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Shields",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "517ee6832348003c1fc2f58f8b5d982e6814a0971b4be072ea225fdc3a2432df"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Shields/10__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Shields/10__4_.wav",
+      "name": "10__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Shields",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ebef0d3ed78f7d964ebe1697e65765556245f5634a3ef819fed9d73f33827644"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Spell/8__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Spell/8__1_.wav",
+      "name": "8__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Spell",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "bbc70ffb89c4beb1a22f83d79e35eebbc2fb1198ecf36fc0fb411271a4cafb77"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Spell/8__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Spell/8__2_.wav",
+      "name": "8__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Spell",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "5e69f25956713ef020a41f3069e97847c044441d28f1972e9171252efa72b4f5"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Spell/8__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Spell/8__3_.wav",
+      "name": "8__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Spell",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "f1edbbe0d0be98726115179129cdb6072040fd8db63d70f890d7303c8cc3b35b"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Spell/8__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Spell/8__4_.wav",
+      "name": "8__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Spell",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8a2ecb5a68cfb21a74e3d3bd01d55ee8cf8d6037dfc9251a3970bdf268201fd3"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Swing/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Swing/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Swing",
+      "properties": {
+        "duration": 2.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "98f6ebcdb6000d053a091d48d9f8f2381d8452ae62b31cf3ed23a7ddc092c5b1"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Swing/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Swing/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Swing",
+      "properties": {
+        "duration": 2.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8f9c3596db6e0c9275ebff3815b09945ff3bb6b7ae6a5714ba8f781b50a0872e"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Swing/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Swing/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Swing",
+      "properties": {
+        "duration": 2.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "64e1614055a8ff967910007b888e61da025e11947de8267bd24e03fb7b732bef"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Swing/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Swing/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Swing",
+      "properties": {
+        "duration": 2.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c409c2fc0b1467700cdab09c6d1cc3fc623c2ab8a9d98d48b16d452071f6f33e"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Sword/12__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Sword/12__1_.wav",
+      "name": "12__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Sword",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "76bebd87d80e2957dc601438c9efb423835f605e5badfaf23df58c85419611d9"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Sword/12__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Sword/12__2_.wav",
+      "name": "12__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Sword",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ab2a35027451568c4ec267d5e6679e8798a656349c8a7d83d3899387ead518b4"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Sword/12__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Sword/12__3_.wav",
+      "name": "12__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Sword",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b1a91bdc35671bd11ce8e10197cb9d9cc4608c79cf065112193b0a9b799bbd31"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Sword/12__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Sword/12__4_.wav",
+      "name": "12__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Sword",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "2c8dcf4882a8ed4cf623579446cb41f3c770aaee8c43dbcf443393735c670efd"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Undead/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Undead/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Undead",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7cd4f48279e32a51446236f2f24be25b3b55b1c50d6ff15dd1f1d76a1d787bcc"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Undead/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Undead/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Undead",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "064827d54492a6e58836381ac87b0ca79c6b7519bfebcbdb7078142e682b8d96"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Undead/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Undead/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Undead",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "220afeb2362089e976de41ee105ea13e9eec674da60a690b5e8f0da763e22b3a"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Undead/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Undead/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Undead",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b73a2c6a5860641a7ec02473880f4351a4a922ec123def0d40c0d6bdf0fd9b59"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Weapon/4__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Weapon/4__1_.wav",
+      "name": "4__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Weapon",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "462ca5dd8291ae786c41c3eed03b1d1c5832b0ba069eb23983724a9fd3cd11b9"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Weapon/4__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Weapon/4__2_.wav",
+      "name": "4__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Weapon",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "eeece9e65f8f072d8698c9bece4db0aaf5569cea39d18509676e6acc0a898656"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Weapon/4__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Weapon/4__3_.wav",
+      "name": "4__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Weapon",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "916ef3ca4630f7f6c0e756116b8bb01e8f61f7f87d69396c059bdf218f79e306"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Weapon/4__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Weapon/4__4_.wav",
+      "name": "4__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Weapon",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e20d3fdf712730cb579c0271974416f9e467be599573ae2902fdc4b3eba7ffdd"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Wolves/1__1_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Wolves/1__1_.wav",
+      "name": "1__1_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Wolves",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3246e4844d43188ccf1b20935e66e9d369fca758705f7135fbc14406f24e9c50"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Wolves/1__2_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Wolves/1__2_.wav",
+      "name": "1__2_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Wolves",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "302022066b997b7d35afe0a1ddb2ef142f7d51d0b28748b11c779eac6b73eff2"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Wolves/1__3_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Wolves/1__3_.wav",
+      "name": "1__3_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Wolves",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "bf94714d6ba6585107e9d64d1025fd7b3c9ecd40e4e43f53760707485b4228fa"
+    },
+    {
+      "source": "/Game/RPG_Fantasy_SFX/Wolves/1__4_",
+      "filePath": "SourceAssets/Audio/Recovered/RPG_Fantasy_SFX/Wolves/1__4_.wav",
+      "name": "1__4_",
+      "packagePath": "/Game/Audio/RPG_Fantasy_SFX/Wolves",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "fde8de40ac7597be47be7f041933227d5c973efe234785cfaee67c90f2dafb23"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_01.wav",
+      "name": "CasualMobile_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "bb3f8077936f18da51172c2addadaf3a830eb0166d47f62f5f05aba7704cb83e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_02.wav",
+      "name": "CasualMobile_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0127b3bc161c53916afa7e713c49252976a0a3e74124e178989c58154448f4c6"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_03.wav",
+      "name": "CasualMobile_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "580a225402930e4c0235090f6dd9f545b153992e7c4d843e919fbf9f34fd66f1"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_04.wav",
+      "name": "CasualMobile_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "818d12c66e34d473c2238fcd166698133605a6d974c769e1d5acfa7ae1ac82a0"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_05.wav",
+      "name": "CasualMobile_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7375b2a33f2be2cab9981efb29a4a1c43bf3142985cccc880bb830533a945304"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_06.wav",
+      "name": "CasualMobile_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "21432e8aa7e8625605c767015f9194fcda78101c6b60e0249fd1c6880b0a3257"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_07.wav",
+      "name": "CasualMobile_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "71c05ffc24ea5245acb9e280497305e1215bc4f3d95fb5342150d2e30faeb3a9"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_08.wav",
+      "name": "CasualMobile_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "371d5a3a4be87aac03251fddf1c533af6ac7d1622e400553480185b087ebad38"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_09.wav",
+      "name": "CasualMobile_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0a27742f8910caebd1bec9e6fb200ea889155c48ea6bf9bfd9ecfba2d82e1b55"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_10.wav",
+      "name": "CasualMobile_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "1c2bb491987abc1f0c9fae8b42c7db6589f676f2f33fd45448593a40c185efb1"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_11.wav",
+      "name": "CasualMobile_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3016f6ec9c01d0990b129589c5b285ddf4d033d1a7fea8c9a4036ab2ca02b213"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_12.wav",
+      "name": "CasualMobile_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e3bda2b02a08143a861f8c25f36225927b38acdc580a37440b9d048c6a7a135c"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_13.wav",
+      "name": "CasualMobile_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9503fc77e7cb77b74010cd392dcd08e4aff37fc296b02754224076cadca45b86"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_14.wav",
+      "name": "CasualMobile_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "173908ee00f5a82400cad2ed90530d5d7a6dbf0812b89a835563d423f7ea7565"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Casual_Mobile/Wav/CasualMobile_15.wav",
+      "name": "CasualMobile_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Casual_Mobile/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b14947698c726e48c43f7446b8f2a2839f6cc3be0b4e5fb68d21bd7a53feb3e5"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_01.wav",
+      "name": "FantasyRPG_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 10.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "df9cc45700b26c4b8913498d0b769ab1001b10848f58274a8b2b8b4b96e94879"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_02.wav",
+      "name": "FantasyRPG_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8393edfabcdafa4e1c4f6a71e4d5ec039740c858e6673f4a50109eb58ca82513"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_03.wav",
+      "name": "FantasyRPG_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9c72bf702555e515125c94a2874bd322d555dd873b262991da4d0252f2517568"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_04.wav",
+      "name": "FantasyRPG_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4edbc952ce148408c39fa52f6785ae3636c33c533ab78320ca441810cada7a07"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_05.wav",
+      "name": "FantasyRPG_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "00992993c662cd3e7638e95333b957d6db26e7c409bc451db6e2a3fe3e5fa575"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_06.wav",
+      "name": "FantasyRPG_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 4.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a67640f9f7325715188c79e64bcad43dc2881bf013cfaa185a6dc2639b03e5df"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_07.wav",
+      "name": "FantasyRPG_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 4.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d4eca8b0c3313606714388365f5bb6512b38128f5ff3afcbdd7a93c7c531291d"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_08.wav",
+      "name": "FantasyRPG_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3c853abc137b9349988796c86b05f3ae93f383dbcf5b38077fe2fd872969abed"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_09.wav",
+      "name": "FantasyRPG_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "53d043261e7db4c210d08832ca201a5814c0c2f0df0993061e8a45fb6aa8d9c9"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_10.wav",
+      "name": "FantasyRPG_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "53503b536e5e2235432bec53e3944dc3594a75732215094c4b2cf8d45b89014e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_11.wav",
+      "name": "FantasyRPG_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "584f7b9a6479f2d1aeedb4a8f8bb7af6317361640c79e8026553d6ffe5419cd6"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_12.wav",
+      "name": "FantasyRPG_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d4a8d7116b1e1a0e050cae90e50c1af3ccbed0dba5f27ce3b92ee3fd0cbf76c0"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_13.wav",
+      "name": "FantasyRPG_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ba8903fc0f31947c4d41617e61cc36ff75b448d676689b4e39b1275e365a1cbe"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_14.wav",
+      "name": "FantasyRPG_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ea7074d84ef25dd90067fea133cff02eb3a101a4374e15c3530979d683611048"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Fantasy_RPG/Wav/FantasyRPG_15.wav",
+      "name": "FantasyRPG_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Fantasy_RPG/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "84baebc775e94d50a7a7f1c7a81d322f1160ba9517fd6c7555a12facb67e535e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_01.wav",
+      "name": "HorrorDark_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "934629bb7e44301212c619a0cfe130cb3e445539ddafc3b818fb5a2166027e94"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_02.wav",
+      "name": "HorrorDark_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "2e5621ea6544e075bfa22770c53101f2b56cc1cf7403876c12e8bd7ee2864885"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_03.wav",
+      "name": "HorrorDark_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8d3bdda486e95112abdf9d14157c97577e04caf0ab779e135b2e1ddba2220929"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_04.wav",
+      "name": "HorrorDark_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 7.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e7bf963c50db05574ef7c7f3c2173bbd16e853285c1345bdecaa187b6402d9c1"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_05.wav",
+      "name": "HorrorDark_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b2a7afca8596dd98a164d8fcc971e719f702c20ee70c04ceb53936a3a2a4be9b"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_06.wav",
+      "name": "HorrorDark_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 7.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "5843168f7a8956c91f37fb64646750e65e0f6815060f3fa98307e307fd6b8b8e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_07.wav",
+      "name": "HorrorDark_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8c9374935324bb128ace67b5993531ccc5f9114e2f95fd4f40a77198a3b3d33c"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_08.wav",
+      "name": "HorrorDark_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3b51985b218db5c834c3f26756c2b525b24821b811fab387218c4cdeebbd1e62"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_09.wav",
+      "name": "HorrorDark_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e66f2082a0fc6ae4a54a3a1f5323303f1b39135e476d678b097d8cd8ce3ca8c8"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_10.wav",
+      "name": "HorrorDark_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "972accfa8e78955bbfbc50a527746cb2d7253a8005f8b383b58bdc7a202ac246"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_11.wav",
+      "name": "HorrorDark_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8f443c0fc072026e0b136afc5fdbf8834a67bb12f86f5634fd5ade3ba9213142"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_12.wav",
+      "name": "HorrorDark_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 7.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "a1d72b504f4587078eca410c9ac2c7a84e1e9f7c8761e62e5d1c3d1ab6fe57ea"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_13.wav",
+      "name": "HorrorDark_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "cd33b43815f54c8e46d915b6ade3c0bb0d99a4337f9053a20c7d2106afc7cdd7"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_14.wav",
+      "name": "HorrorDark_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 7.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "565da033952cc5d48e516ffc6d35a72ebf441ff794a1054e7bf35609b36deba0"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Horror_Dark/Wav/HorrorDark_15.wav",
+      "name": "HorrorDark_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Horror_Dark/Wav",
+      "properties": {
+        "duration": 7.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "df94b90a17479947f892d2a35b968cfc33332a8b95820a84d5fd3b455f5ee948"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_01.wav",
+      "name": "MinimalModern_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c2fc1d43f196ffeb22118bc06a02afa434969524916633f95708914944b80d10"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_02.wav",
+      "name": "MinimalModern_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "02ce9a3f4b70f0fe95aceb9acc0c2c193b06480b7d15194a560c474949647e3d"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_03.wav",
+      "name": "MinimalModern_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b390be8a9d1a1254bccb17f85f94b473bc449bbd792e241c21a0cd5beb2c5211"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_04.wav",
+      "name": "MinimalModern_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "43498a3f206d65a63a169c9d9f9bd6ed4bf9fb750475308e472b6c13ffe4d8ca"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_05.wav",
+      "name": "MinimalModern_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "7c9e339f42922c950257bd1e1e92bf184cde587588e4874b421f11c8fe793c6a"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_06.wav",
+      "name": "MinimalModern_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "12253ba8ad0582e40615c1b12d818e54273f6ac3407036c5be59cd751250614b"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_07.wav",
+      "name": "MinimalModern_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "18a788f563883d202afc18c06737d43a4f66f8a0e999eeb874b9484d00ac61ee"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_08.wav",
+      "name": "MinimalModern_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b2e599a8514428e178feff10dc796200fbdedae897219bf8cc3c6188c5906fa9"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_09.wav",
+      "name": "MinimalModern_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "272726066ee775b6d7e94b9a0ac61ce48e6e8f92efea3017b965cb8ad7565d21"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_10.wav",
+      "name": "MinimalModern_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b47e0959b8f5998e554be9f9ab4511f39ac56536cfcb87e84be1737d9a5bc8b7"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_11.wav",
+      "name": "MinimalModern_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3fc329ba8a3023eaacf685b3138df5249f44468f9ad9c40a6c3f9e9bfb867c68"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_12.wav",
+      "name": "MinimalModern_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "fef07f8caed2a6173ca5a4f87fe12192c25e99dfc014958f598a15af85d0d7ed"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_13.wav",
+      "name": "MinimalModern_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "baa3895226baa52771ac0ed03b2947430e69f308808a8df3eabbfef1e9f1e1cc"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_14.wav",
+      "name": "MinimalModern_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4c96c4ad551b9a935c264c2ac8d53b87b06fa63955b381d1c0c0674d100335cf"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Minimal_Modern/Wav/MinimalModern_15.wav",
+      "name": "MinimalModern_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Minimal_Modern/Wav",
+      "properties": {
+        "duration": 1.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "194799ce212b0f5017a954449da78049f2866533c4a2b984baec71a826294413"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_01.wav",
+      "name": "RetroArcade_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0eba20a0136d038a937f9fa74f4282c5b8f8f20f5f2a91c5eceedcc693bb2dd5"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_02.wav",
+      "name": "RetroArcade_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "871e4ffcd0bd7f3f83e1f229ca0a1e150250759d965cf4b8687bfda5bb888209"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_03.wav",
+      "name": "RetroArcade_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3f769eefb193d3f471c73294e1a78dc3c01cad6592a2e3be3a65bdcc23c844e9"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_04.wav",
+      "name": "RetroArcade_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4e085b471d76fc98b2d44151fb9e7c3b213cc001e911f4be4eeea501005b8e26"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_05.wav",
+      "name": "RetroArcade_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "e00803b0b25bae058ad619820b2630728081acbc09f1ef787594b799c9de4f04"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_06.wav",
+      "name": "RetroArcade_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "37e901a7bee9acb6e4021fb213fc5d1e20a3401be8990c3afb7e8ded563bc2fd"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_07.wav",
+      "name": "RetroArcade_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "595aab1b83f24b6197e045e95cb7784658130ab5c2b59bc1d76fe555aff8f586"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_08.wav",
+      "name": "RetroArcade_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "43f3a967e921534860f375e2661aab9458349f764b1eff8e0c0943ce42e52017"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_09.wav",
+      "name": "RetroArcade_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "871b327b63f61fa2e9c0ef566a138be91be1742262566037fbaaa1e60f99cf44"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_10.wav",
+      "name": "RetroArcade_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "88a89eba5003ec6e040d6664336d4a72d5828683818afe4d5504fa62f8355b98"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_11.wav",
+      "name": "RetroArcade_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "1a0c2ec2abc4f1ae80280a5216784e0443bcd7789ce0e724bbaac6c1381a2e44"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_12.wav",
+      "name": "RetroArcade_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9870407ea305dd60e432b16b1a3c9e4ddd42f732fe86ec37d679938377bcb53f"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_13.wav",
+      "name": "RetroArcade_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0be333dd5e14e9e83d3a67c658400d9d8168a3c0ea77e4d055dd63d3b399f396"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_14.wav",
+      "name": "RetroArcade_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "790225653127e055f24eada2304fdadf9b57b207323995e5351e20bb3afe25ba"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Retro_Arcade/Wav/RetroArcade_15.wav",
+      "name": "RetroArcade_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Retro_Arcade/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "103c9cc0e7257ba05f058f6b576fc053c2148ff1aaffb8b51e05f0d2356110dd"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_01.wav",
+      "name": "SciFiCyberpunk_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8717e093c1c2032dd2bad6efae8e5082753c9b670531bc16a04960c767dd55d6"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_02.wav",
+      "name": "SciFiCyberpunk_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "231bf4020e48d3bf124a5d4c381b0c47ab8b19111f99699d88e0009def04391d"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_03.wav",
+      "name": "SciFiCyberpunk_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b1d76f6f401cf02d56d6ce9f91f97aeba4ef3dc7958952dac1e632fcb691555e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_04.wav",
+      "name": "SciFiCyberpunk_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 4.88029146194458,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "bd9b0d58b1e222e60c78fa971d07bbec79dcbe7b7c173be72ac3d8adb973147d"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_05.wav",
+      "name": "SciFiCyberpunk_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0a63f41ddde15a7cd07d558534f6ecc7c19b9b945d140b85f9d735d721215f44"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_06.wav",
+      "name": "SciFiCyberpunk_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9a720e7972c236bf48b66a7989dd965bf27e177541795b4f778f5e189a9290f4"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_07.wav",
+      "name": "SciFiCyberpunk_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "37fa727347581d63d1cb4e25d2c02faa6ce4734b425eedd05d374d540494cac9"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_08.wav",
+      "name": "SciFiCyberpunk_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "79efc652719ff66a2c6fb064ef31af3b4e4a6ede13b2904ed8cdf0d259e8971c"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_09.wav",
+      "name": "SciFiCyberpunk_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "de2c0c2af318441f821e42b79e75ba830dac5c723aab6869da8bbb86381233a0"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_10.wav",
+      "name": "SciFiCyberpunk_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "f81862c5d89d313689782c9a6b691256b6f2b8027b7be2393b813d58945224c3"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_11.wav",
+      "name": "SciFiCyberpunk_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c1b912be6748d8ee4afd72cb118e4fb581317df30282e578e612e4457f4d86a2"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_12.wav",
+      "name": "SciFiCyberpunk_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 3.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0e72dc3240c91f541a070239a09ee58ba6db8f0a3325e7df7f5beb3b3a276bbb"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_13.wav",
+      "name": "SciFiCyberpunk_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c67e69d9a58e80ad2a37e8819ccfec5f70db0065dd09d6e01391a0fe2dae4808"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_14.wav",
+      "name": "SciFiCyberpunk_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 4.918791770935059,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "8cd817e3f7681eeba98a87967bee5271bdff79135cc3714c90ef8d010af9c587"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav/SciFiCyberpunk_15.wav",
+      "name": "SciFiCyberpunk_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/SciFi_Cyberpunk/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d9cf3aea81dc77947b86d6629ad3014d7a6c0133b7e07de4d81289a4878ce636"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_01",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_01.wav",
+      "name": "TacticalMilitary_01",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "93665aa7973dffe7a9e965058a49a9cfe68bc3d648da6a115c8a033155e97a15"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_02",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_02.wav",
+      "name": "TacticalMilitary_02",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 5.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4ec6818d66dc3ec759d3ebd801296918665478ac5e428b9de49adb5c2e5cfda1"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_03",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_03.wav",
+      "name": "TacticalMilitary_03",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "0ca9ef83eced214b361f90be0d57241f131eff7755be3ad9200b6729dac53370"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_04",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_04.wav",
+      "name": "TacticalMilitary_04",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "ea5f084efea478040bfd534ff1e31ab55f266d2ea964587d5e6076c1f39b921f"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_05",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_05.wav",
+      "name": "TacticalMilitary_05",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "3522085abf8125793b96e2957551bb313065adaa002b7e5b5751eaeacf67c1ce"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_06",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_06.wav",
+      "name": "TacticalMilitary_06",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 5.7627081871032715,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "9962cd37ab3019b98d660b902bd15ac22d895e61364b190986fef606d75fa32b"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_07",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_07.wav",
+      "name": "TacticalMilitary_07",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "5cd77bf59649fa283a1187ec44a2526016a71c0a88e273a24f89a64315258329"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_08",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_08.wav",
+      "name": "TacticalMilitary_08",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "4fb582885c4cc847430b5083a682946c008f3f83c88dc1a60a0d232902c9f7fd"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_09",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_09.wav",
+      "name": "TacticalMilitary_09",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "24146ea104e7731d5753befddac8969a8dac1d6c07ec607b3354df95e5bdcf59"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_10",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_10.wav",
+      "name": "TacticalMilitary_10",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "badcd7b406ae7088e6425139dc7acb1d54e30527ded9f814cf79aaa5f4717423"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_11",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_11.wav",
+      "name": "TacticalMilitary_11",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 3.0843958854675293,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d2915bf9eb801c7b11464869c3e4c4cd31b62f7a9bf141132191ede80c38b6bb"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_12",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_12.wav",
+      "name": "TacticalMilitary_12",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "b1fc6360e947d47317610e365c98295a3d78830a74fd8327d4d51e946dba1deb"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_13",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_13.wav",
+      "name": "TacticalMilitary_13",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "c69a6cfa8da6b4def30f1d1991412adfae74cdb42208061a037136fbcb59589e"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_14",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_14.wav",
+      "name": "TacticalMilitary_14",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 6.0,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "d04f65b40a4deda014a6f3b91f3f885dee0ed249d6b97a15903d6ad8a63a8ce3"
+    },
+    {
+      "source": "/Game/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_15",
+      "filePath": "SourceAssets/Audio/Recovered/UltimateUIMenusSFX/Tactical_Military/Wav/TacticalMilitary_15.wav",
+      "name": "TacticalMilitary_15",
+      "packagePath": "/Game/Audio/UltimateUIMenusSFX/Tactical_Military/Wav",
+      "properties": {
+        "duration": 3.501666784286499,
+        "num_channels": 2,
+        "sample_rate": 48000,
+        "volume": 1.0,
+        "pitch": 1.0,
+        "looping": false
+      },
+      "wavSha256": "1559ca7452e6a629398442c67f9872ea598bbc58cff4bbb4993dcd2804f61517"
+    }
+  ]
+}
