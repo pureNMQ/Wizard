@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-27",
+  "status": "completed-and-verified",
+  "scope": "vendor-showcase-content-only",
+  "baselineCommit": "64f571c",
+  "backupDirectory": "D:\\Game project(unreal)\\Wizard_AssetBackups\\20261027_showcase_2968e5e1",
+  "backup": {
+    "contentFiles": 2523,
+    "contentBytes": 3396087160,
+    "zipIntegrityVerified": true
+  },
+  "deleted": {
+    "packages": 412,
+    "worldMaps": 15,
+    "bytes": 825766019,
+    "emptyDirectories": 210
+  },
+  "retained": {
+    "files": 2111,
+    "bytes": 2570321141,
+    "registryAssets": 1783,
+    "changedFiles": 0,
+    "unexpectedRemoved": 0
+  },
+  "dependencyCheck": {
+    "packages": 1783,
+    "referencesToDeletedPackages": []
+  },
+  "assetLoads": {
+    "animations": {
+      "success": true,
+      "candidates": 33,
+      "loaded": 33,
+      "matched": 33,
+      "countOnly": true,
+      "scanTruncated": false,
+      "unloadableAssets": [],
+      "dirtiedPackages": false
+    },
+    "meshes": {
+      "success": true,
+      "candidates": 3,
+      "loaded": 3,
+      "matched": 3,
+      "countOnly": true,
+      "scanTruncated": false,
+      "unloadableAssets": [],
+      "dirtiedPackages": false
+    },
+    "staffs": {
+      "success": true,
+      "candidates": 3,
+      "loaded": 3,
+      "matched": 3,
+      "countOnly": true,
+      "scanTruncated": false,
+      "unloadableAssets": [],
+      "dirtiedPackages": false
+    },
+    "effects": {
+      "success": true,
+      "candidates": 7,
+      "loaded": 7,
+      "matched": 7,
+      "countOnly": true,
+      "scanTruncated": false,
+      "unloadableAssets": [],
+      "dirtiedPackages": false
+    }
+  },
+  "pie": {
+    "map": "/Game/TopDown/Maps/TopDownMap",
+    "movement": {
+      "before": {
+        "x": 1000,
+        "y": 1810,
+        "z": 98.33749985876464
+      },
+      "after": {
+        "x": 1375.9547467282932,
+        "y": 1810,
+        "z": 98.33749985876464
+      },
+      "distanceCm": 375.95474672829323,
+      "input": "Pawn.AddMovementInput; not end-to-end mouse input"
+    },
+    "stoppedAfterTest": true
+  },
+  "cook": {
+    "targetPlatform": "Windows",
+    "map": "/Game/TopDown/Maps/TopDownMap",
+    "exitCode": 0,
+    "errors": 0,
+    "uniqueWarnings": 310,
+    "knownWarningSource": "incompatible original audio packages; unchanged this task"
+  },
+  "incident": {
+    "bridgeCrashObserved": true,
+    "operation": "EditorAssetSubsystem.DeleteLoadedAssets through reflection",
+    "callstack": "MCPFunctionCall::WriteOutputs, HandlerFunctionCall.h:210",
+    "deletionRepeated": false,
+    "editorRecovered": true,
+    "pluginSourceModified": false
+  },
+  "limits": [
+    "Cook covers the current startup map; this is not final Demo packaging.",
+    "Pawn movement was invoked directly; end-to-end mouse input was not tested.",
+    "Audio recovery import and further core-content pruning were outside this cleanup scope."
+  ]
+}
