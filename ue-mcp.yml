@@ -1,0 +1,10 @@
+ue-mcp:
+  version: 1
+  disable:
+    - feedback
+  nativeTools:
+    enabled: false
+  contentRoots:
+    - /Game/
+tasks: {}
+flows: {}

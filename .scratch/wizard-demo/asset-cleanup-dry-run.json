@@ -1,0 +1,2651 @@
+{
+  "engine": "5.4.4-35576357+++UE5+Release-5.4",
+  "mode": "read-only-dry-run-with-showcase-companions",
+  "registryAssets": 2195,
+  "initialCandidates": 313,
+  "initialUnreferencedCandidates": 89,
+  "groupedCandidates": 412,
+  "groupedRemovalCandidates": 412,
+  "groupedCandidateBytes": 825766019,
+  "protectedAfterGrouping": [],
+  "groups": {
+    "ArrowTrail": {
+      "packages": 8,
+      "bytes": 9885353
+    },
+    "BattleWizardPBR": {
+      "packages": 4,
+      "bytes": 1636248
+    },
+    "Free_Magic": {
+      "packages": 182,
+      "bytes": 404363289
+    },
+    "Free_Spells": {
+      "packages": 195,
+      "bytes": 404402447
+    },
+    "MonsterForSurvivalGame": {
+      "packages": 23,
+      "bytes": 5478682
+    }
+  },
+  "explicitSourceConfigRoots": {
+    "/Game/TopDown/Blueprints/BP_TopDownCharacter": [
+      {
+        "file": "Source\\Wizard\\WizardGameMode.cpp",
+        "line": 14
+      }
+    ],
+    "/Game/TopDown/Blueprints/BP_TopDownPlayerController": [
+      {
+        "file": "Source\\Wizard\\WizardGameMode.cpp",
+        "line": 21
+      }
+    ],
+    "/Game/TopDown/Maps/TopDownExampleMap": [
+      {
+        "file": "Config\\DefaultEditor.ini",
+        "line": 2
+      }
+    ],
+    "/Game/TopDown": [
+      {
+        "file": "Config\\DefaultEditorPerProjectUserSettings.ini",
+        "line": 2
+      }
+    ],
+    "/Game/TopDown/Maps/TopDownMap": [
+      {
+        "file": "Config\\DefaultEngine.ini",
+        "line": 2
+      },
+      {
+        "file": "Config\\DefaultEngine.ini",
+        "line": 3
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "path": "/Game/ArrowTrail/Demo/BP_Demo",
+      "class": "Blueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 124364
+    },
+    {
+      "path": "/Game/ArrowTrail/Demo/Material/MF_ProcGrid",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 51150
+    },
+    {
+      "path": "/Game/ArrowTrail/Demo/Material/MI_PrototypeGrid",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 11142
+    },
+    {
+      "path": "/Game/ArrowTrail/Demo/Material/M_PrototypeGrid",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 45787
+    },
+    {
+      "path": "/Game/ArrowTrail/Demo/Texture/TC_StudioReflection-01-Cool",
+      "class": "TextureCube",
+      "reason": "vendor-demo-support",
+      "bytes": 9398418
+    },
+    {
+      "path": "/Game/ArrowTrail/Demo/Texture/T_GridChecker_A",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 9858
+    },
+    {
+      "path": "/Game/ArrowTrail/Map/Overview",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 82586
+    },
+    {
+      "path": "/Game/ArrowTrail/Map/Overview_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 162048
+    },
+    {
+      "path": "/Game/BattleWizardPBR/Maps/Demo01MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 37792
+    },
+    {
+      "path": "/Game/BattleWizardPBR/Maps/Demo01MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 771337
+    },
+    {
+      "path": "/Game/BattleWizardPBR/Maps/Demo02MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 65526
+    },
+    {
+      "path": "/Game/BattleWizardPBR/Maps/Demo02MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 761593
+    },
+    {
+      "path": "/Game/Free_Magic/Blueprints/BP_Free_Magic_Replay",
+      "class": "Blueprint",
+      "reason": "vendor-replay-blueprint",
+      "bytes": 40418
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/ABP_Manny",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 368631
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/ABP_Quinn",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 39463
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/BS_MM_WalkRun",
+      "class": "BlendSpace1D",
+      "reason": "vendor-demo-support",
+      "bytes": 9089
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Fall_Loop",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 698257
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Idle",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 897682
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Jump",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 291010
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Land",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 300383
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Run_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 293285
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Walk_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 382831
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Manny/MM_Walk_InPlace",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 609286
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Quinn/BS_MF_Unarmed_WalkRun",
+      "class": "BlendSpace1D",
+      "reason": "vendor-demo-support",
+      "bytes": 9121
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Quinn/MF_Idle",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 919374
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Quinn/MF_Run_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 431136
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Animations/Quinn/MF_Walk_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 450002
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Functions/CA_Mannequin",
+      "class": "CurveLinearColorAtlas",
+      "reason": "vendor-demo-support",
+      "bytes": 4844
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Functions/ChromaticCurve",
+      "class": "CurveLinearColor",
+      "reason": "vendor-demo-support",
+      "bytes": 6322
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Functions/MF_Diffraction",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 32231
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Functions/MF_logo3layers",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 56635
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Functions/ML_BaseColorFallOff",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 13453
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 21862
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 25157
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_01",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 19939
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 25534
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Materials/M_Mannequin",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 83511
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/Mannequin_LODSettings",
+      "class": "SkeletalMeshLODSettings",
+      "reason": "vendor-demo-support",
+      "bytes": 19012
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/SKM_Manny",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 34534975
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/SKM_Manny_Simple",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 18527434
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/SKM_Quinn",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 36495785
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/SKM_Quinn_Simple",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 19371540
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Meshes/SK_Mannequin",
+      "class": "Skeleton",
+      "reason": "vendor-demo-support",
+      "bytes": 161000
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/ABP_Manny_PostProcess",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 463883
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/ABP_Quinn_PostProcess",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 463681
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/CR_Mannequin_BasicFootIK",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 546177
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/CR_Mannequin_Body",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 11309821
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/CR_Mannequin_Procedural",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 2166160
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/IK_Mannequin",
+      "class": "IKRigDefinition",
+      "reason": "vendor-demo-support",
+      "bytes": 143733
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/PA_Mannequin",
+      "class": "PhysicsAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 64261
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141500
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 207494
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141510
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 207494
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141532
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 205796
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141534
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206398
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 129508
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132240
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 129510
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132240
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 135508
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169270
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 135510
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169270
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 165967
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 361708
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 165534
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 361708
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 195516
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 558036
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 195518
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 558036
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 207534
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 641697
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 207536
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 630259
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 190078
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 245300
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 228195
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 245381
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 222159
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206048
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 183782
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206092
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 171756
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132235
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 171758
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132235
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 177756
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169265
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 158656
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169265
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 194679
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 399641
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 194681
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 399641
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 218662
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 557730
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 218664
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 557730
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 206680
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 485552
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 206682
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 488562
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Rigs/RTG_Mannequin",
+      "class": "IKRetargeter",
+      "reason": "vendor-demo-support",
+      "bytes": 14261
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_ASAOPMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 3612621
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 18514184
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 10271988
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5740392
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 11038200
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 7198267
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1357786
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_ASAOPMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 8341397
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 21139543
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13144059
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 9033560
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13677626
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 7269351
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 2153806
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 16108615
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 4711172
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 11656157
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5217692
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1104643
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01_ASAOMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5834850
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 12399942
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 19706899
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 6732540
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13169787
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5217763
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1757036
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02_ASAOMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 6901989
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13427874
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/Characters/Mannequins/Textures/Shared/T_UE_Logo_M",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 69976
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/MF_ProcGrid",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 48773
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_Gray",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 12833
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_Gray_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 11970
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_TopDark",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 12005
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/MI_Solid_Blue",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 8717
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/M_PrototypeGrid",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 40360
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Materials/M_Solid",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 9625
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Meshes/SM_ChamferCube",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 22920
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Meshes/SM_Cube",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 17054
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Meshes/SM_Cylinder",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 20380
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Meshes/SM_QuarterCylinder",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 18162
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Meshes/SM_Ramp",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 17201
+    },
+    {
+      "path": "/Game/Free_Magic/Demo/LevelPrototyping/Textures/T_GridChecker_A",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 9616
+    },
+    {
+      "path": "/Game/Free_Magic/Maps/Free_Magic_Map",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 19515
+    },
+    {
+      "path": "/Game/Free_Magic/Maps/Free_Magic_Map_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 3168839
+    },
+    {
+      "path": "/Game/Free_Spells/Blueprints/BP_Free_Spells_Replay",
+      "class": "Blueprint",
+      "reason": "vendor-replay-blueprint",
+      "bytes": 38162
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/ABP_Manny",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 368646
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/ABP_Quinn",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 39477
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/BS_MM_WalkRun",
+      "class": "BlendSpace1D",
+      "reason": "vendor-demo-support",
+      "bytes": 9095
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Fall_Loop",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 698260
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Idle",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 897685
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Jump",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 291013
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Land",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 300386
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Run_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 293288
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Walk_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 382834
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Manny/MM_Walk_InPlace",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 609289
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Quinn/BS_MF_Unarmed_WalkRun",
+      "class": "BlendSpace1D",
+      "reason": "vendor-demo-support",
+      "bytes": 9127
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Quinn/MF_Idle",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 919380
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Quinn/MF_Run_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 431142
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Animations/Quinn/MF_Walk_Fwd",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 450008
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Functions/CA_Mannequin",
+      "class": "CurveLinearColorAtlas",
+      "reason": "vendor-demo-support",
+      "bytes": 4846
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Functions/ChromaticCurve",
+      "class": "CurveLinearColor",
+      "reason": "vendor-demo-support",
+      "bytes": 6323
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Functions/MF_Diffraction",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 32234
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Functions/MF_logo3layers",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 56637
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Functions/ML_BaseColorFallOff",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 13454
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 21879
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 25176
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_01",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 19956
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/Instances/Quinn/MI_Quinn_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 25553
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Materials/M_Mannequin",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 83538
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/Mannequin_LODSettings",
+      "class": "SkeletalMeshLODSettings",
+      "reason": "vendor-demo-support",
+      "bytes": 19013
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/SKM_Manny",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 34534985
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/SKM_Manny_Simple",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 18527443
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/SKM_Quinn",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 36495782
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/SKM_Quinn_Simple",
+      "class": "SkeletalMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 19371523
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Meshes/SK_Mannequin",
+      "class": "Skeleton",
+      "reason": "vendor-demo-support",
+      "bytes": 161008
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/ABP_Manny_PostProcess",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 463907
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/ABP_Quinn_PostProcess",
+      "class": "AnimBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 463705
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/CR_Mannequin_BasicFootIK",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 546191
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/CR_Mannequin_Body",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 11310163
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/CR_Mannequin_Procedural",
+      "class": "ControlRigBlueprint",
+      "reason": "vendor-demo-support",
+      "bytes": 2166170
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/IK_Mannequin",
+      "class": "IKRigDefinition",
+      "reason": "vendor-demo-support",
+      "bytes": 143736
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/PA_Mannequin",
+      "class": "PhysicsAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 64265
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141503
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 207498
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141513
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_calf_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 207498
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141535
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 205800
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 141537
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_clavicle_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206402
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 129511
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132244
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 129513
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_foot_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132244
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 135511
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169274
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 135513
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_hand_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169274
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 165974
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 361712
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 165537
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_lowerarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 361712
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 195519
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 558040
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 195521
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_thigh_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 558040
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 207537
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 641701
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 207539
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Manny/Manny_upperarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 630263
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 190081
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 245307
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 228201
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_calf_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 245388
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 222165
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206055
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 183785
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_clavicle_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 206099
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 171759
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132242
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 171761
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_foot_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 132242
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 177759
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169272
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 158659
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_hand_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 169272
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 194682
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 399648
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 194684
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_lowerarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 399648
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 218665
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 557737
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 218667
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_thigh_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 557737
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_l_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 206683
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_l_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 485559
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_r_anim",
+      "class": "AnimSequence",
+      "reason": "vendor-demo-support",
+      "bytes": 206685
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/Poses/Quinn/Quinn_upperarm_r_pose",
+      "class": "PoseAsset",
+      "reason": "vendor-demo-support",
+      "bytes": 488569
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Rigs/RTG_Mannequin",
+      "class": "IKRetargeter",
+      "reason": "vendor-demo-support",
+      "bytes": 14263
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_ASAOPMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 3612622
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 18514185
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 10271989
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5740393
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 11038201
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 7198268
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_01_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1357787
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_ASAOPMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 8341398
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 21139544
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13144060
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 9033561
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13677627
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 7269352
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Manny/T_Manny_02_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 2153807
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 16108616
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 4711173
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 11656158
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5217693
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01ID_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1104644
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01_ASAOMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5834851
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_01_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 12399943
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_BN",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 19706900
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_D",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 6732541
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_MSR_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13169788
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_N",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 5217693
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02ID_Tan",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 1758511
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02_ASAOMASK_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 6901990
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Quinn/T_Quinn_02_CCRCCPlastic_MSK",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 13427875
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/Characters/Mannequins/Textures/Shared/T_UE_Logo_M",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 69977
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/MF_ProcGrid",
+      "class": "MaterialFunction",
+      "reason": "vendor-demo-support",
+      "bytes": 48775
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_Gray",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 12836
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_Gray_02",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 11973
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/MI_PrototypeGrid_TopDark",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 12008
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/MI_Solid_Blue",
+      "class": "MaterialInstanceConstant",
+      "reason": "vendor-demo-support",
+      "bytes": 8720
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/M_PrototypeGrid",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 40362
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Materials/M_Solid",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 9626
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Meshes/SM_ChamferCube",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 22927
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Meshes/SM_Cube",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 17053
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Meshes/SM_Cylinder",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 20382
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Meshes/SM_QuarterCylinder",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 17564
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Meshes/SM_Ramp",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 17185
+    },
+    {
+      "path": "/Game/Free_Spells/Demo/LevelPrototyping/Textures/T_GridChecker_A",
+      "class": "Texture2D",
+      "reason": "vendor-demo-support",
+      "bytes": 9617
+    },
+    {
+      "path": "/Game/Free_Spells/Map/Free_Spells",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 19471
+    },
+    {
+      "path": "/Game/Free_Spells/Map/Free_Spells_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 3168827
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Demo/Stage01_MAT",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 118731
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Demo/Stage02_MAT",
+      "class": "Material",
+      "reason": "vendor-demo-support",
+      "bytes": 116877
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Demo/Stage_SM",
+      "class": "StaticMesh",
+      "reason": "vendor-demo-support",
+      "bytes": 99163
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/BeholderAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 58929
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/BeholderAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459142
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/CactusAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 58797
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/CactusAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459127
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/ChestMonsterAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 58307
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/ChestMonsterAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459148
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/DefaultPBR_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 51277
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/DefaultPBR_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459111
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/DefaultPolyart_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 51103
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/DefaultPolyart_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 458577
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/MushroomAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 59469
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/MushroomAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459134
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/SlimeAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 56865
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/SlimeAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459115
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/Swarm08AnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 49630
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/Swarm08AnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459129
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/Swarm09AnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 49630
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/Swarm09AnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459125
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/TurtleShellAnimShowcase_MP",
+      "class": "World",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 59145
+    },
+    {
+      "path": "/Game/MonsterForSurvivalGame/Map/TurtleShellAnimShowcase_MP_BuiltData",
+      "class": "MapBuildDataRegistry",
+      "reason": "vendor-showcase-map-or-builddata",
+      "bytes": 459151
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/FE/5ZVDYC52SSGT0QFS87KANJ",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 10644,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/LH/HO8Q2OQFQ7V6ENIX6NTE9U",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4838,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/OL/MP3F6FXWY9GTNK29Y47I4G",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3598,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/OP/CS1ECZ2TNG7XIQSER4WE4G",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4836,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/PG/LMG9G7L46TYVHMF6IH2F8G",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3361,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/0/UW/T3QXQUFFE08XD8DJA3UUBW",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4838,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/1/06/0S1JBJIK2RIGTWJIHW6Q89",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3297,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/3/5C/FMF426JH79E91POFG3S83G",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4011,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/3/CG/1OCI33WIM1J1LKK4YZE58N",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4834,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/3/UC/70KN7LHT5US5UN250D45VU",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4836,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/3/WY/ML2CS4R9367LK2IGO3KRIV",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4830,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/4/V2/4XQRB9ODD5SXZK59CQ1APM",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4107,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/5/UB/GIP5UX1UVPVQIENXFUJDQ2",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4836,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/6/LZ/7RIU765WFTSY1ZX6PFREBI",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4844,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/7/DE/EPPPSHBVYV4AQBH7II6UKO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2728,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/7/MZ/647NVQHN5XNMHB5WVY8MFT",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2676,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/7/OT/K6UMBUBFNG1ZH8COATB7J2",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4223,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/8/JV/KC6US9CO7HZ3QHUXQPXVZP",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4036,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/8/Q4/6SDXQ1RHKZPJ4ML72YTSLE",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3743,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/8/ZN/AZCALZ1G8PQ3HCDDRC1H3W",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4830,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/9/2P/AZMFBYQGXDZ7YPGS6VSOLG",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4844,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/9/PP/A1L7IF83MOF8WR6031Z0CA",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 11179,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/9/R5/CWSXM8YHWERXGUOGAPZ1CC",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4604,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/9/YA/9B08UEM3WXKBUZBPP24BQW",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4223,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/A/NY/Y3EN1G196L367B9PG1Q8IO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4036,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/B/TF/S1O6L950QNS7QTUWPCLH56",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4828,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/C/8T/ZQEH16QA2ME44G3HMAMKKW",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4834,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/C/FO/VZQ1V5WJLX50GKGLMQV0G2",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4830,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/C/U1/ZX9NHY8LUYX3PSKS3AW1F6",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3375,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/C/YC/XCG70DHQ5VYQTJ17JGRC12",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4844,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/D/AK/WLLUKGOD5P230MCCYAIJOM",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4030,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/D/C2/UWY309ZMOWKMT3HECFC9LQ",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4109,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/D/FX/3IL1EDKCJSJYQA6AKSEVZB",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4917,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/D/GL/50TDA0UW8D155VEKKG9TB5",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4834,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/F/04/SNC5VW0U4P8VNMQOX83PZH",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 11552,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Magic/Maps/Free_Magic_Map/F/1B/EKMS42PSZ6YWOG3AS9Z5A0",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4036,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/0/08/UJ8YQBKDMXVKW7XUK6TKWO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2713,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/0/QA/OA62AEOLTUI8NO6YM68IV8",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/DX/911C09O8BLWI5EB26KZQXD",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3346,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/F1/M8PUDDM1OS7Y1GHVLIKP1Y",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4852,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/HE/7OAHDDECMU65JW0BP6R4G2",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4832,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/HO/2RE8YHJJPFT7PGXITTMZ3U",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/QY/K7ECO20P43XHVNHMVNMJFA",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3998,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/S9/Y593O5OKA8L09DV7M0UF4N",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3718,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/1/T0/S1XMAO6D574MNA0G2EN7F5",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3282,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/42/YYXTEVX238S3JIHAYN0HN9",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3583,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/87/0C3HRD9HDGG1NXE1L8KOYU",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4838,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/DF/UGRY3G68JT1KJUQAVSD0SW",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4842,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/F3/WB1F2CZLO9WRNGK6ISA4NO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4842,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/IV/30KS1RV25H660PQJMQXBB9",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/K7/GCC0HBTYR7IN4U45N9L7ED",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4210,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/RV/DZOJFIHQLJBCEPD89KGME4",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/2/XF/S7HAOKF91183MYNAH50MJR",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2661,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/3/4I/5THL1HXP3I0NQ4890T7XUQ",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/3/KE/R9MFQEMO2PI6SYC47UG6SV",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4096,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/5/5P/4IFB4KH4DUC2XMX4VN4SQM",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4842,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/5/68/82R539NRH3LIRD6ZMXZNOQ",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 3360,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/5/9S/Z5J7VG4XPNF3I3DX39MAMH",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/5/YV/CA9XF0C12IM52FYW6HYBVP",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4848,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/6/M7/NWRYM36YF0ON0750XVZ6HP",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4902,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/7/Q9/PP3KBHWRSVYNRHY0PWL1WN",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/7/WM/7B6BMZYAG75V0O14PXQJKT",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/8/QR/PBZBHY8DXNFLYJRM8MWPVX",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/8/RK/EAQANZFOENMT8FH7IZNM7O",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 10629,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/8/TP/WPXO2THGWDNO31D1ISDLJ0",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4840,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/9/88/CEICQN9I6RLI3Y16X70MNL",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4836,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/A/2D/VL2AZSH4SQHSMD6VALZ93A",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4840,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/A/LG/3S9NM5AUK1YGZI2L2LTCH0",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/A/PK/Z0JVM5QJ374K2NFXABZCVF",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4842,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/B/HE/94DWAOVJGKSNI9YS10XU1K",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/B/QK/1C9QACNGCYE87D7T02A0X7",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4210,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/B/TQ/JW62AYKRVMDYP1JKMOQAKE",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/B/U1/ZKVCRUIPIB39M9BQZGDE5P",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/C/DQ/GJ8J0Q8RVXJ6NV83LPTA3V",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4844,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/C/ZW/RI30LLPPEFDKK7VIA7R4ML",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4838,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/D/9F/A08BMQ9CVY2OCP9CO4TKS4",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4840,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/D/I0/UUPH2WEB4VBW1Y9K9BJ90F",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4846,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/D/IY/LOK1BPOIBVP9NYCZXU1F0H",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4589,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/D/R2/9BJEVLRDMTX3BA5SYT0RD4",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4021,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/E/5X/5VHX6H8VGO1SV50S886SRM",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4842,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/E/FU/P9ODIM396P5FWOIUEZRR4R",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4850,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/E/KD/MP5H4R4WRFEPV3RLNLIGDO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4094,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/E/PX/SGM5WO2H1BDCUGH1GO27Y4",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4025,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/E/ZF/6WJ8AXRQ32ZD9450B15GE5",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4023,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalActors__/Free_Spells/Map/Free_Spells/F/3P/U55OX3I91RUBAZXGI9FI40",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 4840,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/3/ZO/0U9DF3ZM742OF6LBPEU73H",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2194,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/7/0Z/WLZLQBASXMBIFNZM0RXXSC",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2134,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/7/4Q/Q4B7T2HITJ9GT47QZHVAEF",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2130,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/8/C7/M1FERAL2RL846WSEN6WPFP",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2194,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/8/FP/BSYDT3J0ZHDHTYUWMMREBJ",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2196,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/E/AH/RUDXVV1XSU84E0AZKH7AE4",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2194,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Magic/Maps/Free_Magic_Map/E/G5/BF0SJWZ4LK8DZLNJB01UUP",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2134,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/0/7M/NVNUVLT46MVEN6WRBGDBEO",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2173,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/2/3B/5PZE70E5XC299TMNMIO5ZK",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2173,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/3/CI/HBVM2M4IODNYKAWVMCYN5G",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2109,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/7/CU/DORLD7JZSK0H01XW336RBE",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2175,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/9/G5/93O1M52DAXGHB2DSOTU8UA",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2113,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/B/4F/PB78W2AOCBNZUF75F3U315",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2173,
+      "packageRole": "world-partition-companion"
+    },
+    {
+      "path": "/Game/__ExternalObjects__/Free_Spells/Map/Free_Spells/D/OX/22M67H6ZWZ0Y12FPQMTUZD",
+      "class": null,
+      "reason": "showcase-world-partition-companion",
+      "bytes": 2115,
+      "packageRole": "world-partition-companion"
+    }
+  ],
+  "limitations": [
+    "仅检查扫描时已保存的硬、软包引用及 Source/Config 中可识别的 /Game 路径。",
+    "运行时拼接路径、未保存引用、管理引用和未索引包仍需执行前复核。",
+    "已按所属展示地图归组注册表可见的 World Partition 配套包；未索引配套文件另行检查。",
+    "候选清单不是删除完成记录；执行前需备份、刷新扫描并验证项目运行及 Cook。"
+  ],
+  "status": "proposal-only-no-assets-deleted",
+  "date": "2026-10-27",
+  "project": "Wizard"
+}
