@@ -58,6 +58,8 @@ Epic C++ 规范是基线；中文注释和文档是用户明确指定的例外�
 
 - 配置 UCommonGameViewportClient 或其正确派生类；背包、技能与商店使用可激活界面及清晰的层级管理。
 - CommonUI 处理返回、焦点和输入路由；游戏操作通过 Enhanced Input 的 Action/Mapping Context 配置。
+- 增强输入是基础验收要求：C++ 使用 UEnhancedInputComponent 绑定资产，并由 UEnhancedInputLocalPlayerSubsystem 管理上下文；物理键位通过 Mapping Context 配置。
+- 四槽输入解析当前技能搭配并请求 GAS 激活；输入层保持对具体技能类的解耦。检查 Started、Triggered、Completed、Canceled 及角色重建时的绑定生命周期。
 - 游戏输入与 UI 输入的连接方式先在 UE5.4 做最小验证；不直接把新版示例当作该版本已验证方案。
 - 暂停状态集中管理，嵌套界面关闭一个后仍保持需要的暂停；最后一个界面关闭时恢复此前状态。
 - 暂停时 UI 的点击、拖拽、返回和交易可用；世界输入不会穿透；界面关闭后移动与连射正确恢复。
