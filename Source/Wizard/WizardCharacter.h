@@ -1,34 +1,25 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
+// 保留模板来源，战斗扩展由 Wizard 项目实现。
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "WizardCharacter.generated.h"
 
 UCLASS(Blueprintable)
-class AWizardCharacter : public ACharacter
+class AWizardCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
-
 public:
 	AWizardCharacter();
-
-	// Called every frame.
-	virtual void Tick(float DeltaSeconds) override;
-
-	/** Returns TopDownCameraComponent subobject **/
-	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
+	class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
+	class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 private:
-	/** Top down camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* TopDownCameraComponent;
-
-	/** Camera boom positioning the camera above the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
+	TObjectPtr<class UCameraComponent> TopDownCameraComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
+	TObjectPtr<class USpringArmComponent> CameraBoom;
 };
-

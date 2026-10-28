@@ -30,13 +30,13 @@ bool FMCPPCGDisconnectNotifiesTest::RunTest(const FString& Parameters)
 	UPCGGraph* Graph = NewObject<UPCGGraph>(Package, TEXT("PG_DisconnectProbe"), RF_Public | RF_Standalone | RF_Transactional);
 	if (!TestNotNull(TEXT("PCG graph fixture created"), Graph)) return false;
 
-	// This settings class is reflected but not DLL-exported in UE 5.4.
-	UClass* AddTagClass = LoadObject<UClass>(nullptr, TEXT("/Script/PCG.PCGAddTagSettings"));
-	if (!TestNotNull(TEXT("Add Tag settings class found"), AddTagClass)) return false;
+	// UE5.4 的 AddTagSettings 未导出 C++ 类符号，反射类仍由 PCG 模块正常注册。
+	UClass* AddTagSettingsClass = LoadClass<UPCGSettings>(nullptr, TEXT("/Script/PCG.PCGAddTagSettings"));
+	if (!TestNotNull(TEXT("真实 PCG AddTagSettings 反射类可加载"), AddTagSettingsClass)) return false;
 	UPCGSettings* FromSettings = nullptr;
 	UPCGSettings* ToSettings = nullptr;
-	UPCGNode* From = Graph->AddNodeOfType(AddTagClass, FromSettings);
-	UPCGNode* To = Graph->AddNodeOfType(AddTagClass, ToSettings);
+	UPCGNode* From = Graph->AddNodeOfType(AddTagSettingsClass, FromSettings);
+	UPCGNode* To = Graph->AddNodeOfType(AddTagSettingsClass, ToSettings);
 	if (!TestTrue(TEXT("two nodes added"), From && To)) return false;
 	if (!TestNotNull(TEXT("edge added"), Graph->AddEdge(From, PCGPinConstants::DefaultOutputLabel, To, PCGPinConstants::DefaultInputLabel))) return false;
 

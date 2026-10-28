@@ -11,6 +11,7 @@
 #if __has_include("StructUtils/PropertyBag.h")
 #include "StructUtils/PropertyBag.h"
 #else
+// UE5.4 的 StructUtils 插件将此头文件直接导出在 Public 根目录。
 #include "PropertyBag.h"
 #endif
 
@@ -111,6 +112,11 @@ namespace
 
 TSharedPtr<FJsonValue> FPCGHandlers::SetGraphParameters(const TSharedPtr<FJsonObject>& Params)
 {
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 5
+	// UE5.4 缺少安全的批量参数更新入口；Unsafe 可写接口不能替代实例迁移及变更回调。
+	// 在任何加载、事务和资产修改前明确拒绝，其他 PCG handler 继续可用。
+	return MCPError(TEXT("unsupported: set_pcg_graph_parameters is unavailable on UE5.4 because UPCGGraph lacks the safe bulk parameter update API. Nothing was changed."));
+#else
 	FString AssetPath;
 	if (auto Err = RequireString(Params, TEXT("assetPath"), AssetPath)) return Err;
 	const TArray<TSharedPtr<FJsonValue>>* ParamsArr = nullptr;
@@ -183,15 +189,7 @@ TSharedPtr<FJsonValue> FPCGHandlers::SetGraphParameters(const TSharedPtr<FJsonOb
 			const UPropertyBag* BagStruct = Bag.GetPropertyBagStruct();
 			const FPropertyBagPropertyDesc* Desc = BagStruct ? BagStruct->FindPropertyDescByName(Entry.Name) : nullptr;
 			const bool bRetype = Entry.bHasType && (!Desc || Desc->ValueType != Entry.Type.Type || Desc->ValueTypeObject != Entry.Type.TypeObject);
-			if (bRetype)
-			{
-#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION == 4
-				// UE 5.4 overwrites matching descriptors and preserves their IDs by default.
-				Bag.AddProperty(Entry.Name, Entry.Type.Type, const_cast<UObject*>(Entry.Type.TypeObject));
-#else
-				Bag.AddProperty(Entry.Name, Entry.Type.Type, Entry.Type.TypeObject, /*bOverwrite*/ true);
-#endif
-			}
+			if (bRetype) Bag.AddProperty(Entry.Name, Entry.Type.Type, Entry.Type.TypeObject, /*bOverwrite*/ true);
 			if (!Entry.Default.IsValid()) continue;
 			BagStruct = Bag.GetPropertyBagStruct();
 			Desc = BagStruct ? BagStruct->FindPropertyDescByName(Entry.Name) : nullptr;
@@ -221,13 +219,7 @@ TSharedPtr<FJsonValue> FPCGHandlers::SetGraphParameters(const TSharedPtr<FJsonOb
 	FScopedTransaction Transaction(NSLOCTEXT("UEMCPBridge", "SetPCGGraphParameters", "Set PCG Graph Parameters"));
 	Graph->Modify();
 	TArray<FString> Unused;
-#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION == 4
-	// Match UpdateUserParametersStruct's callback and refresh on the older PCG API.
-	Apply(*Graph->GetMutableUserParametersStruct_Unsafe(), Unused);
-	Graph->OnGraphParametersChanged(EPCGGraphParameterEvent::GraphPostLoad, NAME_None);
-#else
 	Graph->UpdateUserParametersStruct([&Apply, &Unused](FInstancedPropertyBag& Bag) { Apply(Bag, Unused); });
-#endif
 	Graph->PostEditChange();
 	Graph->MarkPackageDirty();
 	FString SaveError;
@@ -266,6 +258,7 @@ TSharedPtr<FJsonValue> FPCGHandlers::SetGraphParameters(const TSharedPtr<FJsonOb
 	}
 	MCPNoteSaveOutcome(Result, AssetPath, bSaved, SaveError);
 	return MCPResult(Result);
+#endif
 }
 
 TSharedPtr<FJsonValue> FPCGHandlers::CreateGraphInstance(const TSharedPtr<FJsonObject>& Params)

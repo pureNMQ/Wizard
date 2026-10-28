@@ -29,6 +29,7 @@
 #if __has_include("Misc/StringOutputDevice.h")
 #include "Misc/StringOutputDevice.h"
 #else
+// UE5.4 的 FStringOutputDevice 仍声明在 UnrealString 中。
 #include "Containers/UnrealString.h"
 #endif
 #include "Kismet/BlueprintFunctionLibrary.h"

@@ -16,6 +16,7 @@
 #if __has_include("StructUtils/PropertyBag.h")
 #include "StructUtils/PropertyBag.h"
 #else
+// UE5.4 的 StructUtils 插件将此头文件直接导出在 Public 根目录。
 #include "PropertyBag.h"
 #endif
 

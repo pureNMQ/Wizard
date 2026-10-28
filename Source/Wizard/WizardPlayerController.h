@@ -1,68 +1,44 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
-
 #include "CoreMinimal.h"
-#include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
 #include "WizardPlayerController.generated.h"
-
-/** Forward declaration to improve compiling times */
-class UNiagaraSystem;
-class UInputMappingContext;
 class UInputAction;
-
-DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
-
+class UInputMappingContext;
+struct FInputActionValue;
+class UWizardHealthWidget;
+class UWizardPauseMenu;
 UCLASS()
 class AWizardPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-
 public:
 	AWizardPlayerController();
-
-	/** Time Threshold to know if it was a short press */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	float ShortPressThreshold;
-
-	/** FX Class that we will spawn when clicking */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UNiagaraSystem* FXCursor;
-
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputMappingContext* DefaultMappingContext;
-	
-	/** Jump Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* SetDestinationClickAction;
-
-	/** Jump Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* SetDestinationTouchAction;
-
+	virtual void PlayerTick(float DeltaSeconds) override;
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
+	// CommonUI 激活/返回统一调用，恢复时必须重新按下攻击。
+	void SetMenuOpen(bool bOpen);
+	UFUNCTION(BlueprintPure) bool IsMenuOpen() const { return bMenuOpen; }
 protected:
-	/** True if the controlled character should navigate to the mouse cursor. */
-	uint32 bMoveToMouseCursor : 1;
-
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	virtual void SetupInputComponent() override;
-	
-	// To add mapping context
-	virtual void BeginPlay();
-
-	/** Input handlers for SetDestination action. */
-	void OnInputStarted();
-	void OnSetDestinationTriggered();
-	void OnSetDestinationReleased();
-	void OnTouchTriggered();
-	void OnTouchReleased();
-
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputMappingContext> CombatMappingContext;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> MoveAction;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> AttackAction;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> MenuAction;
+	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardHealthWidget> HealthWidgetClass;
+	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardPauseMenu> PauseMenuClass;
 private:
-	FVector CachedDestination;
-
-	bool bIsTouch; // Is it a touch device
-	float FollowTime; // For how long it has been pressed
+	void Move(const FInputActionValue& Value);
+	void StartAttack();
+	void ReleaseAttack();
+	void StopAttack();
+	void OpenMenu();
+	void UpdateAim();
+	bool CanUseWorldInput() const;
+	bool bMenuOpen = false;
+	bool bWasPaused = false;
+	UPROPERTY(Transient) TObjectPtr<UWizardHealthWidget> HealthWidget;
+	UPROPERTY(Transient) TObjectPtr<UWizardPauseMenu> PauseMenu;
 };
-
-

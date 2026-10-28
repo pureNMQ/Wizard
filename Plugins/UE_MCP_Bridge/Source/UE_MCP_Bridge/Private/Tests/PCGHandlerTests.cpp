@@ -263,11 +263,12 @@ bool FMCPPCGImportWarningsTest::RunTest(const FString& Parameters)
 	FString SaveError;
 	if (!TestTrue(TEXT("child graph saves"), SaveAssetPackageChecked(Child, SaveError))) return false;
 	UPCGSubgraphSettings* FromSettings = nullptr;
-	UClass* AddTagClass = LoadObject<UClass>(nullptr, TEXT("/Script/PCG.PCGAddTagSettings"));
-	if (!TestNotNull(TEXT("Add Tag settings class found"), AddTagClass)) return false;
+	// UE5.4 的 AddTagSettings 未导出 C++ 类符号，使用模块注册的真实反射类。
+	UClass* AddTagSettingsClass = LoadClass<UPCGSettings>(nullptr, TEXT("/Script/PCG.PCGAddTagSettings"));
+	if (!TestNotNull(TEXT("真实 PCG AddTagSettings 反射类可加载"), AddTagSettingsClass)) return false;
 	UPCGSettings* ToSettings = nullptr;
 	UPCGNode* From = Graph->AddNodeOfType(FromSettings);
-	UPCGNode* To = Graph->AddNodeOfType(AddTagClass, ToSettings);
+	UPCGNode* To = Graph->AddNodeOfType(AddTagSettingsClass, ToSettings);
 	if (!TestTrue(TEXT("two nodes added"), From && To)) return false;
 	FromSettings->SetSubgraph(Child);
 	From->UpdateAfterSettingsChangeDuringCreation();

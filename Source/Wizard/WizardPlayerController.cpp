@@ -1,125 +1,192 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "WizardPlayerController.h"
-#include "GameFramework/Pawn.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
-#include "NiagaraFunctionLibrary.h"
-#include "WizardCharacter.h"
-#include "Engine/World.h"
+#include "WizardPlayerState.h"
+#include "UI/WizardHealthWidget.h"
+#include "UI/WizardPauseMenu.h"
 #include "EnhancedInputComponent.h"
-#include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
 #include "Engine/LocalPlayer.h"
-
-DEFINE_LOG_CATEGORY(LogTemplateCharacter);
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
+#include "GAS/WizardAttributeSet.h"
+#include "UObject/ConstructorHelpers.h"
 
 AWizardPlayerController::AWizardPlayerController()
 {
 	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Default;
-	CachedDestination = FVector::ZeroVector;
-	FollowTime = 0.f;
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> Context(TEXT("/Game/Wizard/Input/IMC_Combat"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> MoveInput(TEXT("/Game/Wizard/Input/IA_Move"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> AttackInput(TEXT("/Game/Wizard/Input/IA_Attack"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> MenuInput(TEXT("/Game/Wizard/Input/IA_Menu"));
+	CombatMappingContext = Context.Object;
+	MoveAction = MoveInput.Object;
+	AttackAction = AttackInput.Object;
+	MenuAction = MenuInput.Object;
+	static ConstructorHelpers::FClassFinder<UWizardHealthWidget> HUDClass(TEXT("/Game/Wizard/UI/WBP_CombatHUD"));
+	static ConstructorHelpers::FClassFinder<UWizardPauseMenu> MenuClass(TEXT("/Game/Wizard/UI/WBP_PauseMenu"));
+	HealthWidgetClass = HUDClass.Class;
+	PauseMenuClass = MenuClass.Class;
 }
 
 void AWizardPlayerController::BeginPlay()
 {
-	// Call the base class  
 	Super::BeginPlay();
+	if (!IsLocalController()) return;
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		if (CombatMappingContext) Subsystem->AddMappingContext(CombatMappingContext, 0);
+	}
+	FInputModeGameAndUI Mode;
+	Mode.SetHideCursorDuringCapture(false);
+	Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	SetInputMode(Mode);
+	if (HealthWidgetClass)
+	{
+		HealthWidget = CreateWidget<UWizardHealthWidget>(this, HealthWidgetClass);
+		HealthWidget->AddToViewport();
+		HealthWidget->BindPlayer(GetPlayerState<AWizardPlayerState>());
+	}
 }
 
 void AWizardPlayerController::SetupInputComponent()
 {
-	// set up gameplay key bindings
 	Super::SetupInputComponent();
+	if (UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		if (MoveAction) Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+		if (AttackAction)
+		{
+			Input->BindAction(AttackAction, ETriggerEvent::Started, this, &ThisClass::StartAttack);
+			Input->BindAction(AttackAction, ETriggerEvent::Completed, this, &ThisClass::ReleaseAttack);
+			Input->BindAction(AttackAction, ETriggerEvent::Canceled, this, &ThisClass::StopAttack);
+		}
+		if (MenuAction) Input->BindAction(MenuAction, ETriggerEvent::Started, this, &ThisClass::OpenMenu);
+	}
+}
 
-	// Add Input Mapping Context
+bool AWizardPlayerController::CanUseWorldInput() const
+{
+	const AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>();
+	return !bMenuOpen && !IsPaused() && GetPawn() && State && State->GetAttributes()->GetHealth() > 0.f;
+}
+
+void AWizardPlayerController::Move(const FInputActionValue& Value)
+{
+	if (!CanUseWorldInput()) return;
+	const FVector2D Axis = Value.Get<FVector2D>();
+	// 相机固定在世界 X 方向；W 为屏幕向上，D 为屏幕向右。
+	GetPawn()->AddMovementInput(FVector::ForwardVector, Axis.Y);
+	GetPawn()->AddMovementInput(FVector::RightVector, Axis.X);
+}
+
+void AWizardPlayerController::StartAttack()
+{
+	if (CanUseWorldInput())
+	{
+		UpdateAim();
+		GetPlayerState<AWizardPlayerState>()->StartBasicAttack();
+	}
+}
+void AWizardPlayerController::ReleaseAttack()
+{
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->ReleaseBasicAttack();
+}
+void AWizardPlayerController::StopAttack()
+{
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->StopBasicAttack();
+}
+void AWizardPlayerController::PlayerTick(float DeltaSeconds)
+{
+	Super::PlayerTick(DeltaSeconds);
+	if (CanUseWorldInput()) UpdateAim();
+	else StopAttack();
+}
+void AWizardPlayerController::UpdateAim()
+{
+	if (!GetPawn()) return;
+	// 以角色高度的平面反投射，避免光标落在高物体时产生竖直射击。
+	FVector Origin, Direction;
+	if (DeprojectMousePositionToWorld(Origin, Direction) && !FMath::IsNearlyZero(Direction.Z))
+	{
+		const float Distance = (GetPawn()->GetActorLocation().Z - Origin.Z) / Direction.Z;
+		if (Distance > 0.f)
+		{
+			const FVector Aim = Origin + Direction * Distance;
+			const FVector Facing = Aim - GetPawn()->GetActorLocation();
+			if (!Facing.IsNearlyZero()) GetPawn()->SetActorRotation(FRotator(0, Facing.Rotation().Yaw, 0));
+			GetPlayerState<AWizardPlayerState>()->SetAimPoint(Aim);
+		}
+	}
+	FHitResult Hit;
+	if (HealthWidget && GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+	{
+		if (IAbilitySystemInterface* Target = Cast<IAbilitySystemInterface>(Hit.GetActor()))
+		{
+			if (Hit.GetActor() != GetPawn()) HealthWidget->BindTarget(Target->GetAbilitySystemComponent());
+		}
+	}
+}
+void AWizardPlayerController::OpenMenu()
+{
+	if (bMenuOpen || !PauseMenuClass) return;
+	if (!PauseMenu)
+	{
+		PauseMenu = CreateWidget<UWizardPauseMenu>(this, PauseMenuClass);
+		PauseMenu->AddToViewport(20);
+	}
+	PauseMenu->ActivateWidget();
+}
+void AWizardPlayerController::SetMenuOpen(bool bOpen)
+{
+	if (bMenuOpen == bOpen) return;
+	StopAttack();
+	bMenuOpen = bOpen;
+	FlushPressedKeys();
+	if (ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn())) ControlledCharacter->GetCharacterMovement()->StopMovementImmediately();
+	if (bOpen)
+	{
+		bWasPaused = IsPaused();
+		SetPause(true);
+	}
+	else
+	{
+		SetPause(bWasPaused);
+		FInputModeGameAndUI Mode;
+		Mode.SetHideCursorDuringCapture(false);
+		Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		SetInputMode(Mode);
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+		{
+			// 等按键松开后才重新处理，防止菜单关闭的点击恢复连射。
+			FModifyContextOptions Options;
+			Options.bIgnoreAllPressedKeysUntilRelease = true;
+			Subsystem->RequestRebuildControlMappings(Options);
+		}
+	}
+}
+void AWizardPlayerController::OnPossess(APawn* InPawn)
+{
+	StopAttack();
+	Super::OnPossess(InPawn);
+	if (HealthWidget) HealthWidget->BindPlayer(GetPlayerState<AWizardPlayerState>());
+}
+void AWizardPlayerController::OnUnPossess()
+{
+	StopAttack();
+	Super::OnUnPossess();
+}
+void AWizardPlayerController::EndPlay(const EEndPlayReason::Type Reason)
+{
+	StopAttack();
+	if (PauseMenu) { PauseMenu->DeactivateWidget(); PauseMenu->RemoveFromParent(); }
+	if (HealthWidget) HealthWidget->RemoveFromParent();
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
-		Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		if (CombatMappingContext) Subsystem->RemoveMappingContext(CombatMappingContext);
 	}
-
-	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
-	{
-		// Setup mouse input events
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AWizardPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AWizardPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &AWizardPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &AWizardPlayerController::OnSetDestinationReleased);
-
-		// Setup touch input events
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AWizardPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AWizardPlayerController::OnTouchTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AWizardPlayerController::OnTouchReleased);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AWizardPlayerController::OnTouchReleased);
-	}
-	else
-	{
-		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
-}
-
-void AWizardPlayerController::OnInputStarted()
-{
-	StopMovement();
-}
-
-// Triggered every frame when the input is held down
-void AWizardPlayerController::OnSetDestinationTriggered()
-{
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-	
-	// We look for the location in the world where the player has pressed the input
-	FHitResult Hit;
-	bool bHitSuccessful = false;
-	if (bIsTouch)
-	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
-	// If we hit a surface, cache the location
-	if (bHitSuccessful)
-	{
-		CachedDestination = Hit.Location;
-	}
-	
-	// Move towards mouse pointer or touch
-	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
-	{
-		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
-	}
-}
-
-void AWizardPlayerController::OnSetDestinationReleased()
-{
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
-	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	}
-
-	FollowTime = 0.f;
-}
-
-// Triggered every frame when the input is held down
-void AWizardPlayerController::OnTouchTriggered()
-{
-	bIsTouch = true;
-	OnSetDestinationTriggered();
-}
-
-void AWizardPlayerController::OnTouchReleased()
-{
-	bIsTouch = false;
-	OnSetDestinationReleased();
+	Super::EndPlay(Reason);
 }

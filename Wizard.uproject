@@ -34,7 +34,10 @@
 		},
 		{
 			"Name": "UE_MCP_Bridge",
-			"Enabled": true
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
 		},
 		{
 			"Name": "Niagara",
