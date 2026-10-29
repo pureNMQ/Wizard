@@ -5,6 +5,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Skills/WizardSkillLoadoutComponent.h"
+#include "Interaction/WizardInteractionComponent.h"
 
 AWizardCharacter::AWizardCharacter()
 {
@@ -49,6 +51,9 @@ void AWizardCharacter::UnPossessed()
 	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>())
 	{
 		State->StopBasicAttack();
+		State->GetSkills()->CancelCasting();
+		State->GetSkills()->ClearAvatarEffects();
+		State->GetInteraction()->BindAvatar(nullptr);
 	}
 	Super::UnPossessed();
 }
@@ -58,6 +63,9 @@ void AWizardCharacter::EndPlay(const EEndPlayReason::Type Reason)
 	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>())
 	{
 		State->StopBasicAttack();
+		State->GetSkills()->CancelCasting();
+		State->GetSkills()->ClearAvatarEffects();
+		State->GetInteraction()->BindAvatar(nullptr);
 	}
 	Super::EndPlay(Reason);
 }

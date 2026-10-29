@@ -33,6 +33,10 @@ public:
 	WIZARD_ATTRIBUTE_ACCESSORS(AttackPower)
 	UPROPERTY(BlueprintReadOnly, Category="Attributes") FGameplayAttributeData Defense;
 	WIZARD_ATTRIBUTE_ACCESSORS(Defense)
+	UPROPERTY(BlueprintReadOnly, Category="Attributes") FGameplayAttributeData MoveSpeed;
+	WIZARD_ATTRIBUTE_ACCESSORS(MoveSpeed)
+	UPROPERTY(BlueprintReadOnly, Category="Attributes") FGameplayAttributeData Shield;
+	WIZARD_ATTRIBUTE_ACCESSORS(Shield)
 	// 伤害执行输出的瞬时元属性，不作为另一个生命状态。
 	UPROPERTY() FGameplayAttributeData IncomingDamage;
 	WIZARD_ATTRIBUTE_ACCESSORS(IncomingDamage)

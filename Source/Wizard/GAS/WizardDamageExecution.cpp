@@ -1,6 +1,7 @@
 #include "GAS/WizardDamageExecution.h"
 #include "GAS/WizardAttributeSet.h"
 #include "GameplayEffect.h"
+#include "Skills/WizardSkillEffects.h"
 
 namespace
 {
@@ -45,5 +46,6 @@ void UWizardDamageExecution::Execute_Implementation(const FGameplayEffectCustomE
 	float Defense = 0.0f;
 	Parameters.AttemptCalculateCapturedAttributeMagnitude(Captures().AttackPowerDef, Evaluation, Attack);
 	Parameters.AttemptCalculateCapturedAttributeMagnitude(Captures().DefenseDef, Evaluation, Defense);
-	Output.AddOutputModifier(FGameplayModifierEvaluatedData(UWizardAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, WizardCombat::CalculateDamage(Attack, Defense)));
+	const float Scale = Parameters.GetOwningSpec().GetSetByCallerMagnitude(WizardSkills::DamageScaleTag(), false, 1.f);
+	Output.AddOutputModifier(FGameplayModifierEvaluatedData(UWizardAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, WizardCombat::CalculateDamage(Attack * FMath::Max(0.f, Scale), Defense)));
 }

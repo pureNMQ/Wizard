@@ -27,6 +27,9 @@ pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action Smoke -PackageRoot
 # 对当前版本的独立包检查真实弹丸、GE、HUD、连射停止、暂停和角色重建。
 pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action Smoke -CombatSmoke -PackageRoot './Saved/Packages/<本轮目录>'
 
+# 对当前独立包检查六技能、取消路径与Alchemy搭配。
+pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action Smoke -SkillSmoke -PackageRoot './Saved/Packages/<本轮目录>'
+
 # 顺序执行上述四步；任一步失败即停止。
 pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action All
 ```
@@ -40,7 +43,7 @@ pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action All
 - 每次检查在 `Saved/T01/<时间-动作-编号>/` 写控制台日志、引擎日志、自动化报告和 `result.json`；失败时保留已完成步骤和错误。
 - 每次 Package 使用新的 `Saved/Packages/<本轮目录>/`，避免旧文件掩盖打包缺失。脚本不会清理以前的包。
 - 正常试玩双击归档中的 Windows 启动程序。也可运行实际的 `Windows/Wizard/Binaries/Win64/Wizard.exe`；目录层级以本轮打印结果为准。
-- Smoke 会短暂打开 1280×720 游戏窗口，检查启动地图、GameMode、已占有的玩家、导航移动与落地，然后正常退出。可用 `-SmokeSeconds 20` 延长观察时间。
+- Smoke 隐藏启动 1280×720 游戏窗口，避免抢占用户输入；检查启动地图、GameMode、已占有的玩家、导航移动与落地，然后正常退出。实际按键验收另开可见成品。可用 `-SmokeSeconds 20` 延长观察时间。
 - Smoke 同时请求引擎原生 HighResShot 截图，保存位置由成品日志中的 `High resolution screenshot saved as` 行给出；必要时复制到本轮证据目录。截图用于补充视觉检查，脚本的通过条件仍以启动/移动结果为准。
 - 只有显式执行开发命令 `Wizard.SmokeTest` 才会触发该检查和退出；普通启动不自动运行。Shipping/Test 构建不注册该命令。
 - `Smoke -CombatSmoke` 改为调用 `Wizard.CombatSmokeTest`，在当前真实世界生成临时高血量目标，检查单发命中、GE 扣血、法力不变、HUD 属性事件、连射/松开、菜单暂停/关闭后无遗留连射，以及角色替换和幂等能力授予。弹丸类和拖尾系统的预期值从当前GA配置及弹丸类默认组件读取，检查实际生成类、Niagara激活与停止；异步出手的观察方式见下述蒙太奇检查。测试会替换玩家 Pawn，结束清理目标并正常退出独立游戏；PIE 手动调用命令时保留编辑器。该检查通过公开业务接口发起攻击，不能替代物理输入、鼠标瞄准、CommonUI 实际 Esc/焦点和视觉验收。命中失败也可能说明测试目标前存在场景遮挡，需查日志定位。
@@ -57,5 +60,9 @@ pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action All
 编辑器目标与 Game 目标分别构建。EngineSettings 仅作为编辑器测试依赖；UE_MCP_Bridge 的项目引用限定 Editor。成品边界通过包内文件与启动日志一并核对，不能只依据描述文件下结论。
 
 CommonUI viewport 路由的既有告警由 T02 接入处理，本票据不以关闭告警代替修复。素材来源与许可待办见 [素材清单](ASSET_SOURCES.md)，最终 R30/R31/R32 交付由 T10 完成。
+
+`Smoke -SkillSmoke` 使用`Wizard.SkillsSmokeTest`，日志名为`packaged-skills-smoke.log`；与`-CombatSmoke`互斥。真实Notify推进火球/冰箭命中、冰减速、雷击范围、闪现、护盾、治疗和扣蓝/冷却，再验证显式取消、UI、死亡、换Avatar的出手前取消，最后检查Alchemy范围、交换、重复限制及菜单暂停。开发命令临时修改运行时数值/搭配并生成目标，退出前清理，不改保存地图或配置；它不替代物理1234/E/Esc与拖拽验收。
+
+`-SmokeNullRHI` 可用于排除同时试玩时的GPU资源竞争，仅验证业务、动画通知及碰撞；`result.json`的`renderingEnabled=false`明确标记此边界。该模式不能证明粒子像素、实际声音、截图或渲染性能通过；资源表现仍需正常渲染的成品/PIE及实际试玩证据。
 
 本机执行结果与具体证据路径记录在 [T01](../.scratch/wizard-demo/issues/01-environment-and-quality.md)，以实际结果为准；此文档不把未来玩法描述为已实现。

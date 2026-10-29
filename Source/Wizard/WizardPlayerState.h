@@ -10,6 +10,8 @@
 
 class UWizardAttributeSet;
 class UWizardCombatConfig;
+class UWizardSkillLoadoutComponent;
+class UWizardInteractionComponent;
 struct FOnAttributeChangeData;
 struct FAbilityEndedData;
 
@@ -32,6 +34,8 @@ public:
 	FVector GetAimPoint() const { return AimPoint; }
 	const UWizardCombatConfig* GetCombatConfig() const;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Combat") TObjectPtr<UWizardCombatConfig> CombatConfig;
+	UFUNCTION(BlueprintPure, Category="Skills") UWizardSkillLoadoutComponent* GetSkills() const { return Skills; }
+	UFUNCTION(BlueprintPure, Category="Interaction") UWizardInteractionComponent* GetInteraction() const { return Interaction; }
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
@@ -42,6 +46,8 @@ private:
 	void OnCooldownChanged(const FGameplayTag Tag, int32 Count);
 	UPROPERTY(VisibleAnywhere, Category="Combat") TObjectPtr<UAbilitySystemComponent> AbilitySystem;
 	UPROPERTY() TObjectPtr<UWizardAttributeSet> Attributes;
+	UPROPERTY(VisibleAnywhere, Category="Skills") TObjectPtr<UWizardSkillLoadoutComponent> Skills;
+	UPROPERTY(VisibleAnywhere, Category="Interaction") TObjectPtr<UWizardInteractionComponent> Interaction;
 	FGameplayAbilitySpecHandle BasicAttackHandle;
 	FDelegateHandle HealthDelegate;
 	FDelegateHandle CooldownDelegate;

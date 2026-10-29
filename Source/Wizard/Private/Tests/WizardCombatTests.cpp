@@ -78,7 +78,10 @@ bool FWizardDamageEffectTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("缺少伤害与冷却 GE 的能力被拒绝"), MissingAbility->IsConfigurationValid());
 	InvalidState->CombatConfig = MissingAbility;
 	InvalidState->InitializeAvatar(Source);
-	TestEqual(TEXT("缺配置时不授予不完整能力"), InvalidState->GetAbilitySystemComponent()->GetActivatableAbilities().Num(), 0);
+	TestFalse(TEXT("缺配置时不授予不完整普攻能力"), InvalidState->GetAbilitySystemComponent()->GetActivatableAbilities().ContainsByPredicate([](const FGameplayAbilitySpec& Ability)
+	{
+		return Ability.Ability && Ability.Ability->IsA<UWizardBasicAttackAbility>();
+	}));
 	return true;
 }
 

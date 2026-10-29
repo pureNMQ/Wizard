@@ -1,9 +1,18 @@
 # T02 普攻战斗链路
 
-- Status: in-progress
+- Status: done
 - Blocked by: [T01](./01-environment-and-quality.md)
 - Spec: R01、R02、R03、R04、R07、R08，正文见 [规格](../spec.md)
 - Updated: 2026-10-29
+
+## T03 开工前置复验（2026-10-29）
+
+- 当前版本 Package：`Saved/T01/20261029-140325-Package-12a8e9/result.json`，退出0，实际编译Editor/Game目标并完成Cook/Stage/Package/Archive。成品为`Saved/Packages/20261029-140325-Package-12a8e9/Windows/`，包含最新三层UI与玩家生命/法力模块。
+- 统一Test：`Saved/T01/20261029-140533-Test-291e8a/AutomationReport/index.json`，4 succeeded/0 failed/0 notRun，退出0。
+- PIE初始观察到相机似乎在世界原点；实际组件读回为正确俯视位置，GetTimeSeconds一直0。临时关闭后台CPU与Slate节流后时间推进、截图恢复正常俯视；没有修改相机/地图资产。停止PIE后两个临时设置均恢复原值。不能将未推进模拟的初始帧当作相机资产缺陷。
+- PIE实际Escape结束预览，受编辑器停止快捷键影响，不作为CommonUI游戏路由失败证据。已打开本轮独立包进行物理输入复验。
+- CUA检测到用户正操作成品窗口，停止自动按键；等待用户报告WASD、单击/长按/松开、Esc开关与暂停输入隔离。日志`Saved/T02/t02-physical-input-20261029-visible.log`。此前隐藏启动的测试进程已停止，以可见实例验收为准。
+- Standards：当前目标编译、4项自动化与成品打包通过；Spec：独立包HUD与俯视画面可见，真实按键完整矩阵及当前版本CombatSmoke仍待验证，整票保持in-progress。
 
 ## 目标与范围
 
@@ -22,13 +31,21 @@
 
 ## 验收条件
 
-- [ ] Input Action/Mapping Context 资产通过增强输入子系统和 C++ 绑定真实生效，WASD 移动、鼠标瞄准。
-- [ ] 左键单击一次、长按连射、松开或取消停止，攻击间隔可配置。
+- [x] Input Action/Mapping Context 资产通过增强输入子系统和 C++ 绑定真实生效，WASD 移动、鼠标瞄准。
+- [x] 左键单击一次、长按连射、松开或取消停止，攻击间隔可配置。
 - [x] 普攻经 GAS 授予、激活、提交和结束/取消，命中通过 GE 修改目标属性，伤害规则明确且可测试。
 - [x] 最小敌人可受伤，生命 HUD 通过状态事件正确刷新。
-- [ ] 配置正确的 CommonUI viewport 与最小路由，验证菜单开关/暂停/返回及连射清理，解决既有路由配置告警。
-- [ ] 角色比例、法杖挂接、动作与出手位置在实际镜头中验证；不覆盖场景手工布局。
-- [ ] 构建、受影响自动化、实际输入与失败路径、独立包内的最小战斗链路均有证据。
+- [x] 配置正确的 CommonUI viewport 与最小路由，验证菜单开关/暂停/返回及连射清理，解决既有路由配置告警。
+- [x] 角色比例、法杖挂接、动作与出手位置在实际镜头中验证；不覆盖场景手工布局。
+- [x] 构建、受影响自动化、实际输入与失败路径、独立包内的最小战斗链路均有证据。
+
+### T02 收尾结论（2026-10-29）
+
+- 用户在本轮成品实际试玩后回复“全部正常”，确认WASD、瞄准、单击/长按/松开、Esc开关暂停及暂停时点击/移动隔离。物理输入证据来自用户试玩，区别于业务接口测试。
+- 当前成品CombatSmoke：`pwsh -NoProfile -File Tools/Build/Invoke-Wizard.ps1 -Action Smoke -CombatSmoke -PackageRoot Saved/Packages/20261029-140325-Package-12a8e9`，退出0，证据`Saved/T01/20261029-140813-Smoke-b92bf5/result.json`及`packaged-combat-smoke.log`，WIZARD_COMBAT_SMOKE_PASS，bridgeLoaded=false。覆盖真实Notify、GE/GC、连射、UI栈、死亡/中断/Avatar与任务清理。
+- 本轮Package为实际Editor/Game编译、Cook 0 errors/0 warnings、Stage/Archive成功；统一Test 4/0/0。此前UIRoot整轮Smoke未通过记录已由此当前成品回归覆盖，不删除历史失败证据。
+- Standards：通过，依据本机UE5.4契约、项目C++/Blueprint边界、GAS生命周期与MCP资产流程；Spec：T02范围R01/R02/R03/R04/R07/R08通过。角色与法杖沿用用户调整后的表现，已在成品镜头可检查；未覆盖T03技能或后续完整挑战/存档。
+- T02转done，解除T03前置依赖。保留性能历史问题的适用边界：后台节流与未推进模拟不计玩法缺陷，未宣称长期性能或驱动根因已解决。学习资料沿用票据内路径，用户掌握程度未测试；本轮未提交/推送。
 
 ## 验证记录
 

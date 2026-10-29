@@ -5,6 +5,9 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "NiagaraComponent.h"
+#include "Skills/WizardSkillDefinition.h"
+#include "Skills/WizardSkillEffects.h"
+#include "Skills/WizardSkillCue.h"
 
 AWizardProjectile::AWizardProjectile()
 {
@@ -45,6 +48,18 @@ void AWizardProjectile::BeginPlay()
 	}
 }
 
+void AWizardProjectile::InitializeSkillProjectile(UAbilitySystemComponent* Source, const FGameplayEffectSpecHandle& Spec, const UWizardSkillDefinition* Definition)
+{
+	SourceASC = Source;
+	DamageSpec = Spec;
+	Skill = Definition;
+	Movement->InitialSpeed = Definition->ProjectileSpeed;
+	Movement->MaxSpeed = Movement->InitialSpeed;
+	InitialLifeSpan = Definition->Range / Definition->ProjectileSpeed;
+	Trail->SetAsset(Definition->ProjectileFX);
+	Trail->SetRelativeScale3D(Definition->EffectScale);
+}
+
 void AWizardProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// 碰撞、寿命到期和显式销毁共用清理；不分离拖尾，避免循环系统遗留在世界中。
@@ -65,6 +80,21 @@ void AWizardProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other, 
 	{
 		DamageSpec.Data->GetContext().AddHitResult(Hit, true);
 		SourceASC->ApplyGameplayEffectSpecToTarget(*DamageSpec.Data.Get(), Enemy->GetAbilitySystemComponent());
+		if (Skill && Skill->SpeedMultiplier < 1.f && !Enemy->IsDead())
+		{
+			FGameplayEffectSpecHandle Slow = SourceASC->MakeOutgoingSpec(UWizardSkillSlowEffect::StaticClass(), 1.f, DamageSpec.Data->GetContext());
+			Slow.Data->SetDuration(Skill->Duration, true);
+			Slow.Data->SetSetByCallerMagnitude(WizardSkills::ValueTag(), Skill->SpeedMultiplier);
+			SourceASC->ApplyGameplayEffectSpecToTarget(*Slow.Data.Get(), Enemy->GetAbilitySystemComponent());
+		}
+	}
+	if (Skill && SourceASC.IsValid())
+	{
+		FGameplayCueParameters Cue;
+		Cue.SourceObject = Skill;
+		Cue.Location = Hit.ImpactPoint;
+		Cue.Normal = Hit.ImpactNormal;
+		SourceASC->ExecuteGameplayCue(WizardSkills::ImpactCueTag(), Cue);
 	}
 	Destroy();
 }

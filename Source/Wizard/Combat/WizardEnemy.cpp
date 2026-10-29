@@ -35,6 +35,7 @@ void AWizardEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	AbilitySystem->InitAbilityActorInfo(this, this);
+	GetCharacterMovement()->MaxWalkSpeed = Attributes->GetMoveSpeed();
 	HealthDelegate = AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).AddUObject(this, &AWizardEnemy::OnHealthChanged);
 }
 

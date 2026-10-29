@@ -15,6 +15,9 @@
 
 #include "GAS/WizardAttributeSet.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Skills/WizardSkillLoadoutComponent.h"
+#include "UI/WizardSkillWidgets.h"
+#include "Interaction/WizardInteractionComponent.h"
 
 AWizardPlayerController::AWizardPlayerController()
 {
@@ -33,6 +36,16 @@ AWizardPlayerController::AWizardPlayerController()
 	RootClass = RootWidgetClass.Class;
 	HealthWidgetClass = HUDClass.Class;
 	PauseMenuClass = MenuClass.Class;
+	static ConstructorHelpers::FClassFinder<UWizardSkillMenu> SkillsMenu(TEXT("/Game/Wizard/UI/WBP_SkillMenu"));
+	SkillMenuClass = SkillsMenu.Class;
+	static ConstructorHelpers::FObjectFinder<UInputAction> InteractInput(TEXT("/Game/Wizard/Input/IA_Interact"));
+	InteractAction = InteractInput.Object;
+	const TCHAR* SkillPaths[] = { TEXT("/Game/Wizard/Input/IA_Skill1"), TEXT("/Game/Wizard/Input/IA_Skill2"), TEXT("/Game/Wizard/Input/IA_Skill3"), TEXT("/Game/Wizard/Input/IA_Skill4") };
+	for (const TCHAR* Path : SkillPaths)
+	{
+		ConstructorHelpers::FObjectFinder<UInputAction> SkillInput(Path);
+		SkillActions.Add(SkillInput.Object);
+	}
 }
 
 void AWizardPlayerController::BeginPlay()
@@ -72,6 +85,13 @@ void AWizardPlayerController::SetupInputComponent()
 			Input->BindAction(AttackAction, ETriggerEvent::Canceled, this, &ThisClass::StopAttack);
 		}
 		if (MenuAction) Input->BindAction(MenuAction, ETriggerEvent::Started, this, &ThisClass::OpenMenu);
+		for (int32 Slot = 0; Slot < SkillActions.Num(); ++Slot)
+		{
+			if (!SkillActions[Slot]) continue;
+			Input->BindAction(SkillActions[Slot], ETriggerEvent::Started, this, &ThisClass::UseSkill, Slot);
+			Input->BindAction(SkillActions[Slot], ETriggerEvent::Canceled, this, &ThisClass::CancelSkillInput);
+		}
+		if (InteractAction) Input->BindAction(InteractAction, ETriggerEvent::Started, this, &ThisClass::Interact);
 	}
 }
 
@@ -105,6 +125,25 @@ void AWizardPlayerController::ReleaseAttack()
 void AWizardPlayerController::StopAttack()
 {
 	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->StopBasicAttack();
+	CancelSkillInput();
+}
+void AWizardPlayerController::CancelSkillInput()
+{
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->GetSkills()->CancelCasting();
+}
+void AWizardPlayerController::UseSkill(int32 Slot)
+{
+	if (!CanUseWorldInput()) return;
+	UpdateAim();
+	OnSkillFeedback.Broadcast(GetPlayerState<AWizardPlayerState>()->GetSkills()->ActivateSlot(Slot));
+}
+void AWizardPlayerController::Interact()
+{
+	if (CanUseWorldInput()) GetPlayerState<AWizardPlayerState>()->GetInteraction()->TryInteract();
+}
+bool AWizardPlayerController::OpenSkillMenu()
+{
+	return CanUseWorldInput() && UIRoot && SkillMenuClass && UIRoot->PushMenu(SkillMenuClass);
 }
 void AWizardPlayerController::PlayerTick(float DeltaSeconds)
 {
@@ -150,6 +189,7 @@ void AWizardPlayerController::RefreshMenuState()
 	if (bMenuOpen == bOpen) return;
 	StopAttack();
 	bMenuOpen = bOpen;
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->GetInteraction()->SetSuppressed(bOpen);
 	FlushPressedKeys();
 	if (ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn())) ControlledCharacter->GetCharacterMovement()->StopMovementImmediately();
 	if (bOpen)
@@ -181,6 +221,7 @@ void AWizardPlayerController::OnPossess(APawn* InPawn)
 void AWizardPlayerController::OnUnPossess()
 {
 	StopAttack();
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->GetInteraction()->BindAvatar(nullptr);
 	Super::OnUnPossess();
 }
 void AWizardPlayerController::EndPlay(const EEndPlayReason::Type Reason)

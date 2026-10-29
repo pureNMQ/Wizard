@@ -8,11 +8,16 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Skills/WizardSkillLoadoutComponent.h"
+#include "Skills/WizardSkillEffects.h"
+#include "Interaction/WizardInteractionComponent.h"
 
 AWizardPlayerState::AWizardPlayerState()
 {
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 	Attributes = CreateDefaultSubobject<UWizardAttributeSet>(TEXT("Attributes"));
+	Skills = CreateDefaultSubobject<UWizardSkillLoadoutComponent>(TEXT("Skills"));
+	Interaction = CreateDefaultSubobject<UWizardInteractionComponent>(TEXT("Interaction"));
 	static ConstructorHelpers::FObjectFinder<UWizardCombatConfig> DefaultConfig(TEXT("/Game/Wizard/Data/DA_BasicCombat.DA_BasicCombat"));
 	if (DefaultConfig.Succeeded())
 	{
@@ -36,8 +41,11 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 	{
 		StopBasicAttack();
 		AbilitySystem->CancelAllAbilities();
+		Skills->ClearAvatarEffects();
 	}
 	AbilitySystem->InitAbilityActorInfo(this, Avatar);
+	Interaction->BindAvatar(Avatar);
+	Skills->InitializeAvatar();
 	if (HasAuthority() && !BasicAttackHandle.IsValid() && GetCombatConfig()->IsConfigurationValid())
 	{
 		BasicAttackHandle = AbilitySystem->GiveAbility(FGameplayAbilitySpec(GetCombatConfig()->BasicAttackAbilityClass, 1));
@@ -58,7 +66,8 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 
 void AWizardPlayerState::StartBasicAttack()
 {
-	if (!HasAuthority() || bAttackHeld || Attributes->GetHealth() <= 0.0f || !IsValid(AbilitySystem->GetAvatarActor()))
+	if (!HasAuthority() || bAttackHeld || Attributes->GetHealth() <= 0.0f || !IsValid(AbilitySystem->GetAvatarActor())
+		|| AbilitySystem->HasMatchingGameplayTag(WizardSkills::CastingTag()))
 	{
 		return;
 	}
@@ -138,15 +147,18 @@ void AWizardPlayerState::OnBasicAttackEnded(const FAbilityEndedData& Data)
 
 void AWizardPlayerState::OnHealthChanged(const FOnAttributeChangeData& Data)
 {
+	Interaction->Refresh();
 	if (Data.NewValue <= 0.0f)
 	{
 		StopBasicAttack();
 		AbilitySystem->CancelAllAbilities();
+		Skills->ClearAvatarEffects();
 	}
 }
 
 void AWizardPlayerState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Interaction->BindAvatar(nullptr);
 	StopBasicAttack();
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).Remove(HealthDelegate);
 	AbilitySystem->RegisterGameplayTagEvent(WizardCombat::BasicAttackCooldownTag(), EGameplayTagEventType::NewOrRemoved).Remove(CooldownDelegate);

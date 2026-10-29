@@ -9,7 +9,7 @@
 | MonsterForSurvivalGame | 敌人模型与动画候选 | 资产检查中的 Slime/Beholder 等记录 | 核对许可，区分实际使用与备用资源 |
 | ArrowTrail | 普攻弹丸早期候选，用户因尺寸偏小改用Free_Magic | `/Game/ArrowTrail/FX/NS_ArrowTrail_Magic`保留；早期接入证据见T02 | 补原获取页面、权利人、许可与署名 |
 | Free_Magic | 普攻弹丸蓝紫色副本 | 用户复制的`/Game/Free_Magic/VFX_Niagara/NS_Free_Magic_BasicProjectile1_Base`，本步仅调整三个User颜色参数；用户确认替换效果，见T02 | 补原获取页面、权利人、许可与署名 |
-| Free_Spells、FXVarietyPack | 技能特效候选 | 资产检查中的代表资源路径 | 逐包补来源与许可，实际映射在 T03 落定 |
+| Free_Spells、FXVarietyPack | T03 闪现/护盾/治疗及雷击表现 | Shockwave、Aura_Mana、Buff_Healing；Cascade P_ky_lightning3，实际配置见 Wizard/Data/Skills | 逐包补来源与许可 |
 | Free_RPG_Icons_Pack | 技能图标候选 | 资产检查中的纹理类型记录 | 补来源、许可与实际使用清单 |
 | Audio/RPG_Fantasy_SFX、Audio/UltimateUIMenusSFX | 从原音效包恢复的 SoundWave | [恢复记录](planning/audio-recovery-2026-10-27.md)；源/目标与摘要在 `SourceAssets/Audio/Recovered/manifest.json` | WAV 转换不改变原素材授权，核对原包许可；SoundCue 图未恢复的边界保留 |
 | TopDown、Characters、Cursor、LevelPrototyping、StarterContent | UE 模板、基础场景与临时资源 | 现有项目模板及资产路径 | 标注模板/引擎内容来源和实际交付范围，保留原信息 |

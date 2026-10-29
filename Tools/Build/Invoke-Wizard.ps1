@@ -8,6 +8,8 @@ param(
 	[ValidatePattern('^Wizard(?:\.[A-Za-z0-9_]+)*\.?$')]
 	[string] $TestFilter = 'Wizard.',
 	[switch] $CombatSmoke,
+	[switch] $SkillSmoke,
+	[switch] $SmokeNullRHI,
 	[ValidateRange(2, 60)]
 	[int] $SmokeSeconds = 10
 )
@@ -131,19 +133,22 @@ function Package-Project {
 }
 
 function Test-PackagedGame {
+	if ($CombatSmoke -and $SkillSmoke) { throw 'Choose one of -CombatSmoke and -SkillSmoke.' }
 	if (-not $script:PackageRoot) { throw 'Smoke requires -PackageRoot from a successful Package run.' }
 	$ResolvedPackage = (Resolve-Path -LiteralPath $script:PackageRoot).Path
 	$GameExecutables = @(Get-ChildItem -LiteralPath $ResolvedPackage -Recurse -File -Filter 'Wizard.exe' |
 		Where-Object { $_.FullName -match '[\\/]Wizard[\\/]Binaries[\\/]Win64[\\/]' })
 	if ($GameExecutables.Count -ne 1) { throw 'Expected one real Wizard/Binaries/Win64/Wizard.exe in the package.' }
 	$GameFile = $GameExecutables[0].FullName
-	$SmokeLog = Join-Path $RunDirectory $(if ($CombatSmoke) { 'packaged-combat-smoke.log' } else { 'packaged-smoke.log' })
-	$SmokeCommand = if ($CombatSmoke) { 'Wizard.CombatSmokeTest' } else { 'Wizard.SmokeTest' }
-	$PassMarker = if ($CombatSmoke) { 'WIZARD_COMBAT_SMOKE_PASS:' } else { 'WIZARD_SMOKE_PASS:' }
-	# 自有成品验证会短暂显示游戏窗口；检查命令完成后请求正常退出。
+	$SmokeName = if ($SkillSmoke) { 'packaged-skills-smoke' } elseif ($CombatSmoke) { 'packaged-combat-smoke' } else { 'packaged-smoke' }
+	$SmokeLog = Join-Path $RunDirectory "$SmokeName.log"
+	$SmokeCommand = if ($SkillSmoke) { 'Wizard.SkillsSmokeTest' } elseif ($CombatSmoke) { 'Wizard.CombatSmokeTest' } else { 'Wizard.SmokeTest' }
+	$PassMarker = if ($SkillSmoke) { 'WIZARD_SKILLS_SMOKE_PASS:' } elseif ($CombatSmoke) { 'WIZARD_COMBAT_SMOKE_PASS:' } else { 'WIZARD_SMOKE_PASS:' }
+	# 自动检查隐藏启动以免抢占用户输入；检查完成后由游戏正常退出。
 	$SmokeArguments = @('-windowed', '-ResX=1280', '-ResY=720', '-nosplash', '-unattended', '-UTF8Output',
 		('-ExecCmds="{0},HighResShot 1280x720"' -f $SmokeCommand), "-WizardSmokeSeconds=$SmokeSeconds", ('-abslog="{0}"' -f $SmokeLog))
-	$SmokeProcess = Start-Process -FilePath $GameFile -WorkingDirectory (Split-Path $GameFile) -ArgumentList $SmokeArguments -PassThru
+	if ($SmokeNullRHI) { $SmokeArguments += '-nullrhi' }
+	$SmokeProcess = Start-Process -FilePath $GameFile -WorkingDirectory (Split-Path $GameFile) -ArgumentList $SmokeArguments -WindowStyle Hidden -PassThru
 	$Finished = $SmokeProcess.WaitForExit(180000)
 	if (-not $Finished) {
 		# 只结束由本次验证启动且持有句柄的进程，不按名称结束用户的其他游戏。
@@ -155,7 +160,7 @@ function Test-PackagedGame {
 	$SmokeText = if (Test-Path -LiteralPath $SmokeLog) { Get-Content -LiteralPath $SmokeLog -Raw } else { '' }
 	if ($SmokeExit -ne 0 -or $SmokeText -notmatch $PassMarker) { throw "Packaged startup/movement failed (exit $SmokeExit). See $SmokeLog" }
 	if ($SmokeText -match 'Mounting project plugin UE_MCP_Bridge|LogMCPBridge:') { throw 'Editor bridge unexpectedly loaded in the packaged game.' }
-	$Evidence.checks += [ordered]@{ name = $(if ($CombatSmoke) { 'packaged-combat-smoke' } else { 'packaged-smoke' }); exitCode = $SmokeExit; executable = $GameFile; log = $SmokeLog; bridgeLoaded = $false }
+	$Evidence.checks += [ordered]@{ name = $SmokeName; exitCode = $SmokeExit; executable = $GameFile; log = $SmokeLog; bridgeLoaded = $false; renderingEnabled = (-not $SmokeNullRHI) }
 	Save-Evidence
 }
 

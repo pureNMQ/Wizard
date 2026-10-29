@@ -10,6 +10,7 @@ class UWizardCombatConfig;
 class USphereComponent;
 class UProjectileMovementComponent;
 class UNiagaraComponent;
+class UWizardSkillDefinition;
 
 UCLASS(Blueprintable)
 class WIZARD_API AWizardProjectile : public AActor
@@ -18,6 +19,7 @@ class WIZARD_API AWizardProjectile : public AActor
 public:
 	AWizardProjectile();
 	void InitializeProjectile(UAbilitySystemComponent* Source, const FGameplayEffectSpecHandle& Spec, const UWizardCombatConfig* Config);
+	void InitializeSkillProjectile(UAbilitySystemComponent* Source, const FGameplayEffectSpecHandle& Spec, const UWizardSkillDefinition* Definition);
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -30,5 +32,6 @@ private:
 	TObjectPtr<UNiagaraComponent> Trail;
 	UPROPERTY() TWeakObjectPtr<UAbilitySystemComponent> SourceASC;
 	UPROPERTY() FGameplayEffectSpecHandle DamageSpec;
+	UPROPERTY() TObjectPtr<const UWizardSkillDefinition> Skill;
 	bool bResolved = false;
 };

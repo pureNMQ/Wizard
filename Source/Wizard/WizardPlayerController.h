@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Skills/WizardSkillDefinition.h"
 #include "WizardPlayerController.generated.h"
 class UInputAction;
 class UInputMappingContext;
@@ -8,6 +9,8 @@ struct FInputActionValue;
 class UUserWidget;
 class UWizardPauseMenu;
 class UWizardUIRoot;
+class UWizardSkillMenu;
+DECLARE_MULTICAST_DELEGATE_OneParam(FWizardSkillFeedback, EWizardSkillResult);
 UCLASS()
 class AWizardPlayerController : public APlayerController
 {
@@ -22,6 +25,8 @@ public:
 	void SetRootScreensOpen(bool bOpen);
 	UWizardUIRoot* GetUIRoot() const { return UIRoot; }
 	UFUNCTION(BlueprintPure) bool IsMenuOpen() const { return bMenuOpen; }
+	FWizardSkillFeedback OnSkillFeedback;
+	bool OpenSkillMenu();
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
@@ -30,6 +35,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> MoveAction;
 	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> AttackAction;
 	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> MenuAction;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TArray<TObjectPtr<UInputAction>> SkillActions;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> InteractAction;
+	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardSkillMenu> SkillMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardUIRoot> RootClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UUserWidget> HealthWidgetClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardPauseMenu> PauseMenuClass;
@@ -39,6 +47,9 @@ private:
 	void ReleaseAttack();
 	void StopAttack();
 	void OpenMenu();
+	void UseSkill(int32 Slot);
+	void Interact();
+	void CancelSkillInput();
 	void UpdateAim();
 	bool CanUseWorldInput() const;
 	void RefreshMenuState();
