@@ -238,3 +238,49 @@ Standards 当前结果：受影响源码/UHT/UBT、三项自动化、独立包�
 - Standards：C++能力负责任务/事件/生成与取消，原生Notify仅桥接时机，动画蓝图与资源配置保持Blueprint；Task/委托/续发Timer有生命周期清理，事件校验及重复消费防重入，Ability ScopeLock契约保留。源码与本轮工程说明diff-check通过（既有CRLF提示除外），UHT/UBT、MCP资产编译保存、3项自动化、Cook与独立包通过。MCP批量保存PIE事故与安全后续流程已如实记录，没有伪称工具链完全无问题。
 - Spec：R02/R07/R08本步AbilityTask+真实出手Notify、普通松开/强取消、两种冷却先后次序通过；R03/R04业务暂停取消通过。用户已认可的普通松开语义同步到规格。完整物理输入、CommonUI返回焦点和整票其他待办未由反射Smoke替代；CUA尝试受用户同时操作干扰，不计独立输入验收。T02仍in-progress，未提交/推送。
 - 学习资料：`.local-learning/lessons/2026-10-28-ability-montage.md`说明调用链、Task激活、出手事件、释放/取消与双门控续发。用户掌握度未测试，Execution捕获待补讲状态保留。
+
+### UIRoot 实施（2026-10-29）
+
+- 用户确认固定三层：HUD 常驻展示、Menu 常规菜单、Modal 模态界面；后续界面复用这三层，不新增层。
+- 本次将 Controller 分别 AddToViewport 的方式改为唯一 UIRoot 入口，保留 GAS 属性事件绑定；Menu、Modal 使用 CommonUI 容器，暂停按两层的总体占用状态协调。
+- 验收范围：根层和现有 HUD/暂停菜单接入、嵌套关闭恢复、世界输入隔离与销毁清理。验证结果待实现后填写，不提前判定 R03/R04 完成。
+
+#### UIRoot 验证结果（2026-10-29）
+
+- 实现：`UWizardUIRoot` 绑定 WBP_UIRoot 的 HUDLayer、MenuLayer、ModalLayer；Controller 仅把根加入 viewport，生命 HUD 加入 HUDLayer，暂停菜单压入 ModalLayer。Menu/Modal 使用 CommonActivatableWidgetStack；Modal 打开时禁止 PushMenu 并禁用 Menu 子树。两层总体状态驱动暂停，最后关闭恢复此前状态；原有业务测试入口与真实根层状态合并，避免直接业务调用提前解除根层暂停。
+- 资产：通过 UE-MCP widget.create/build_tree 创建 `/Game/Wizard/UI/WBP_UIRoot`，三层全屏叠放，蓝图编译 upToDate，保存成功；未修改地图。
+- UHT/UBT：`pwsh -NoProfile -File Tools/Build/Invoke-Wizard.ps1 -Action BuildEditor` 退出 0，实际编译与链接，证据 `Saved/T01/20261029-125954-BuildEditor-a93502/`；非干净重编译。
+- 自动化：同入口 `-Action Test` 退出 0，3 passed、0 failed、0 notRun，证据 `Saved/T01/20261029-130012-Test-1eca2f/`。
+- PIE：通过 MCP 启动现有开发地图，再通过 KismetSystemLibrary.ExecuteConsoleCommand 在 PIE world 执行 `Wizard.CombatSmokeTest`。日志 `Saved/UIRoot/20261029-pie.log` 出现 `WIZARD_UIROOT_STACK_PASS`：真实 Menu/Modal 栈嵌套、阻止模态期间打开 Menu、关闭 Modal 保持暂停、关闭最后 Menu 恢复、打开前已暂停则关闭后仍暂停，全部通过。
+- 运行树读回：WBP_UIRoot_C_0 在 viewport 且可见；WBP_CombatHUD_C_0 可见且不再直接在 viewport。原战斗 Smoke 改为检查所属 Controller、根 viewport 与 HUD 父节点。
+- 完整战斗 Smoke 未通过：phase=2 连射观察窗口 2.334 秒内 3 次命中，最低要求 4 次；不得把本轮称为完整战斗回归通过。UIRoot 检查位于该失败之前，单独通过。
+- Standards：UE5.4 本机容器 API、真实 UHT/UBT、资产 MCP 修改、固定三层与生命周期清理检查通过；物理输入路由尚未验收。
+- Spec：R03 的栈式暂停/关闭恢复通过上述接口运行检查；R04 的物理 Esc、焦点恢复、鼠标点击隔离、按住/松开仍未验收。未运行本次独立包/Cook，不勾选 T02 整体验收。
+- 学习路径：Controller.BeginPlay → UIRoot.SetHUD；OpenMenu → PushModal；栈顶变化 → RefreshScreenState → Controller.RefreshMenuState。蓝图仅配置布局；后续背包/技能/商店复用 Menu，暂停/确认复用 Modal。
+
+### 玩家状态 HUD 重做（2026-10-29）
+
+- 用户明确取代旧 HUD：生命/魔力进度条显示比例，对应右侧文本为“当前值/最大值”；状态模块位于左下角；移除目标生命与按键文案。
+- WBP_CombatHUD 直接继承 CommonUserWidget，仅聚合 WBP_PlayerStatus；不设置属性绑定或业务图表。C++ 状态模块负责 GAS 四属性事件、初始刷新、解绑和重新构建。UIRoot 继续固定 HUD/Menu/Modal 三层。
+- 通过 UE-MCP 创建 WBP_PlayerStatus 并重做 WBP_CombatHUD；蓝图编译 upToDate，左下锚点(0,1)、对齐(0,1)、边距28，生命红条、魔力蓝条，文本位于右侧。最终构建/运行证据待填写。
+
+#### 玩家状态 HUD 验证结果（2026-10-29）
+
+- Standards：通过。C++ 监听 Health/MaxHealth/Mana/MaxMana 事件并在析构解绑；NativeConstruct 从所属玩家取 PlayerState。聚合蓝图直接继承 CommonUserWidget，无业务图表；Root.SetHUD 接受通用 UUserWidget。资产修改全部通过 UE-MCP；地图未修改。移除旧目标选择与 HUD 接口，历史装配入口不再生成旧 HUD。
+- 构建：`pwsh -NoProfile -File Tools/Build/Invoke-Wizard.ps1 -Action BuildEditor`，`Saved/T01/20261029-132313-BuildEditor-02b74a` 退出0，实际 UHT/UBT 编译。截图发现动态 OverlaySlot 默认 Left/Top 导致全屏 Canvas 锚点错误，改为 Fill/Fill；最终 `20261029-132548-BuildEditor-2ce394` 退出0。过程中一次过早启动构建被编辑器存活保护拒绝，一次本地变量 Slot 遮蔽父成员被编译器拒绝；均已修复。
+- 自动化：`-Action Test`，`Saved/T01/20261029-132338-Test-b86b1b` 退出0，4 passed/0 failed。新增 Wizard.UI.PlayerStatusAttributesAndLifecycle 检查四属性事件、实际进度条百分比/文本、切换来源后旧事件无效、销毁解绑、重建、未绑定0/0。该测试运行在最终 OverlaySlot 布局修正前；布局修正通过后续 PIE 截图直接验证。
+- Spec/用户五项要求：本次范围通过。UE-MCP 在既有开发地图启动 PIE，运行实例 PlayerStatus 归属于 WizardPlayerController_0，真实 HealthBar/ManaBar Percent=1，HealthText/ManaText=100/100。两蓝图编译零错误零警告。截图 `Saved/HUD/20261029-player-status-final.png`（1352x1203）确认左下角两条、右侧文本、红蓝颜色、无目标血量与按键提示。初次截图位置及颜色不正确，已修正并读回颜色与重新截图。
+- C++ 保留 UWizardHealthWidget 类名兼容资产，但职责已改为玩家生命/魔力状态模块；资产入口为 `/Game/Wizard/UI/WBP_PlayerStatus`。父聚合容器为 `/Game/Wizard/UI/WBP_CombatHUD`，后续 HUD 模块直接在其 Canvas 中聚合。
+- 未执行本次 Cook/独立包和全战斗 Smoke；本轮未改游戏输入，物理输入/焦点验收继续保留未完成。T02 整体仍 in-progress。原始本地截图/日志由 Saved 忽略，复跑命令及结果摘要在本票据版本控制中。
+
+### 玩家状态类命名（2026-10-29）
+
+- 用户要求：UWizardHealthWidget 重命名为 UWizardPlayerStatusWidget，文件同步为 WizardPlayerStatusWidget.h/.cpp；测试和 Smoke 引用全部更新。
+- 通过 UE-MCP 在 DefaultEngine.ini 添加旧类到新类的 CoreRedirect，保证已有资源加载；重启后 MCP 确认 WBP_PlayerStatus 父类为 /Script/Wizard.WizardPlayerStatusWidget。玩家状态/聚合 HUD 蓝图编译均零错误零警告，并强制保存资源。
+- Standards：实际 UHT/UBT BuildEditor 退出0（Saved/T01/20261029-133545-BuildEditor-0795ad），Wizard.UI 定向自动化通过（Saved/T01/20261029-133602-Test-bd98a4）；Source 内无旧类引用，只有迁移重定向及历史记录保留旧名。
+- Spec：仅命名与序列化引用迁移，不更改 HUD 行为；蓝图父类和加载验证通过，本轮未重复完整玩法/独立包验收。替代上一节为兼容而保留旧类名的临时决定。
+
+### 本轮版本快照范围（2026-10-29）
+
+- CommonUI UI Action 已配置 Enhanced Input：DefaultGame 开启 bEnableEnhancedInputSupport；IA_UIBack 对应 Escape，IA_UIConfirm 对应 Enter/LeftMouseButton；两动作允许暂停触发；BP_UIInputData 引用返回/确认动作，WBP_PauseMenu 配置 IMC_UI、优先级100，由可激活界面生命周期管理映射。仅资产配置完成；此前用户停止电脑操作，实际 Esc/焦点/点击隔离未验收，不能以自动化替代。
+- 用户授权提交并推送当前版本。包含 UIRoot、玩家状态 HUD、UI 增强输入配置、命名迁移及测试/证据摘要；不包含既有未跟踪 Config/DefaultDefaultEngine.ini，不包含 Saved 原始输出。本次版本快照不改变 T02 未完成验收状态。

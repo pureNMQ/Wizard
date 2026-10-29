@@ -1,6 +1,6 @@
 #include "UI/WizardCombatAssetTools.h"
 #if WITH_EDITOR
-#include "UI/WizardHealthWidget.h"
+
 #include "UI/WizardPauseMenu.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
@@ -110,13 +110,7 @@ bool UWizardCombatAssetTools::BuildCombatAssets()
 			Label(TEXT("Title"), TEXT("PAUSED"), 30);
 			Label(TEXT("Instructions"), TEXT("Esc: return to combat\nRelease attack before resuming"), 20);
 		}
-		else
-		{
-			Canvas->SetVisibility(ESlateVisibility::HitTestInvisible);
-			Label(TEXT("PlayerHealth"), TEXT("Player HP"), 22);
-			Label(TEXT("TargetHealth"), TEXT("Target HP: aim at an enemy"), 22);
-			Label(TEXT("Controls"), TEXT("WASD Move  |  LMB Attack  |  Esc Pause"), 14);
-		}
+
 		FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(Blueprint);
 		FKismetEditorUtilities::CompileBlueprint(Blueprint);
 		FAssetRegistryModule::AssetCreated(Blueprint);
@@ -146,8 +140,8 @@ bool UWizardCombatAssetTools::BuildCombatAssets()
 		FAssetRegistryModule::AssetCreated(InputBlueprint);
 		Save(InputBlueprint);
 	}
-	return MakeWidget(TEXT("WBP_CombatHUD"), UWizardHealthWidget::StaticClass(), false)
-		&& MakeWidget(TEXT("WBP_PauseMenu"), UWizardPauseMenu::StaticClass(), true);
+	// 聚合 HUD 与状态模块由 MCP 维护，历史入口仅保留菜单兼容。
+	return MakeWidget(TEXT("WBP_PauseMenu"), UWizardPauseMenu::StaticClass(), true);
 #else
 	return false;
 #endif

@@ -1,7 +1,8 @@
 #include "WizardPlayerController.h"
 #include "WizardPlayerState.h"
-#include "UI/WizardHealthWidget.h"
+#include "Blueprint/UserWidget.h"
 #include "UI/WizardPauseMenu.h"
+#include "UI/WizardUIRoot.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -10,8 +11,8 @@
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "AbilitySystemInterface.h"
-#include "AbilitySystemComponent.h"
+
+
 #include "GAS/WizardAttributeSet.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -26,8 +27,10 @@ AWizardPlayerController::AWizardPlayerController()
 	MoveAction = MoveInput.Object;
 	AttackAction = AttackInput.Object;
 	MenuAction = MenuInput.Object;
-	static ConstructorHelpers::FClassFinder<UWizardHealthWidget> HUDClass(TEXT("/Game/Wizard/UI/WBP_CombatHUD"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> HUDClass(TEXT("/Game/Wizard/UI/WBP_CombatHUD"));
 	static ConstructorHelpers::FClassFinder<UWizardPauseMenu> MenuClass(TEXT("/Game/Wizard/UI/WBP_PauseMenu"));
+	static ConstructorHelpers::FClassFinder<UWizardUIRoot> RootWidgetClass(TEXT("/Game/Wizard/UI/WBP_UIRoot"));
+	RootClass = RootWidgetClass.Class;
 	HealthWidgetClass = HUDClass.Class;
 	PauseMenuClass = MenuClass.Class;
 }
@@ -44,11 +47,15 @@ void AWizardPlayerController::BeginPlay()
 	Mode.SetHideCursorDuringCapture(false);
 	Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	SetInputMode(Mode);
-	if (HealthWidgetClass)
+	if (RootClass)
 	{
-		HealthWidget = CreateWidget<UWizardHealthWidget>(this, HealthWidgetClass);
-		HealthWidget->AddToViewport();
-		HealthWidget->BindPlayer(GetPlayerState<AWizardPlayerState>());
+		UIRoot = CreateWidget<UWizardUIRoot>(this, RootClass);
+		if (UIRoot) UIRoot->AddToViewport();
+	}
+	if (UIRoot && HealthWidgetClass)
+	{
+		HealthWidget = CreateWidget<UUserWidget>(this, HealthWidgetClass);
+		UIRoot->SetHUD(HealthWidget);
 	}
 }
 
@@ -121,27 +128,25 @@ void AWizardPlayerController::UpdateAim()
 			GetPlayerState<AWizardPlayerState>()->SetAimPoint(Aim);
 		}
 	}
-	FHitResult Hit;
-	if (HealthWidget && GetHitResultUnderCursor(ECC_Visibility, false, Hit))
-	{
-		if (IAbilitySystemInterface* Target = Cast<IAbilitySystemInterface>(Hit.GetActor()))
-		{
-			if (Hit.GetActor() != GetPawn()) HealthWidget->BindTarget(Target->GetAbilitySystemComponent());
-		}
-	}
 }
 void AWizardPlayerController::OpenMenu()
 {
-	if (bMenuOpen || !PauseMenuClass) return;
-	if (!PauseMenu)
-	{
-		PauseMenu = CreateWidget<UWizardPauseMenu>(this, PauseMenuClass);
-		PauseMenu->AddToViewport(20);
-	}
-	PauseMenu->ActivateWidget();
+	if (!UIRoot || bMenuOpen || !PauseMenuClass) return;
+	UIRoot->PushModal(PauseMenuClass);
 }
 void AWizardPlayerController::SetMenuOpen(bool bOpen)
 {
+	bLegacyMenuOpen = bOpen;
+	RefreshMenuState();
+}
+void AWizardPlayerController::SetRootScreensOpen(bool bOpen)
+{
+	bRootScreensOpen = bOpen;
+	RefreshMenuState();
+}
+void AWizardPlayerController::RefreshMenuState()
+{
+	const bool bOpen = bLegacyMenuOpen || bRootScreensOpen;
 	if (bMenuOpen == bOpen) return;
 	StopAttack();
 	bMenuOpen = bOpen;
@@ -172,7 +177,6 @@ void AWizardPlayerController::OnPossess(APawn* InPawn)
 {
 	StopAttack();
 	Super::OnPossess(InPawn);
-	if (HealthWidget) HealthWidget->BindPlayer(GetPlayerState<AWizardPlayerState>());
 }
 void AWizardPlayerController::OnUnPossess()
 {
@@ -182,7 +186,10 @@ void AWizardPlayerController::OnUnPossess()
 void AWizardPlayerController::EndPlay(const EEndPlayReason::Type Reason)
 {
 	StopAttack();
-	if (PauseMenu) { PauseMenu->DeactivateWidget(); PauseMenu->RemoveFromParent(); }
+	bLegacyMenuOpen = false;
+	if (UIRoot) UIRoot->RemoveFromParent();
+	SetRootScreensOpen(false);
+	UIRoot = nullptr;
 	if (HealthWidget) HealthWidget->RemoveFromParent();
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{

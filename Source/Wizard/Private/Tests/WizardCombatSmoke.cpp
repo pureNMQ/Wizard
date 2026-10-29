@@ -1,4 +1,4 @@
-﻿// Wizard 项目：通过真实世界、弹丸碰撞和属性事件检查战斗链路。
+// Wizard 项目：通过真实世界、弹丸碰撞和属性事件检查战斗链路。
 // 此开发命令不模拟物理按键，实际 Enhanced Input / CommonUI 返回仍需单独验收。
 #if !UE_BUILD_SHIPPING && !UE_BUILD_TEST
 #include "AbilitySystemComponent.h"
@@ -24,7 +24,9 @@
 #include "HAL/PlatformMisc.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
-#include "UI/WizardHealthWidget.h"
+#include "UI/WizardPlayerStatusWidget.h"
+#include "UI/WizardUIRoot.h"
+#include "UI/WizardPauseMenu.h"
 #include "UObject/UObjectIterator.h"
 #include "UObject/UnrealType.h"
 #include "WizardCharacter.h"
@@ -72,7 +74,7 @@ namespace WizardCombatSmoke
 		TWeakObjectPtr<AWizardPlayerController> Controller;
 		TWeakObjectPtr<AWizardPlayerState> State;
 		TWeakObjectPtr<AWizardEnemy> Target;
-		TWeakObjectPtr<UWizardHealthWidget> HUD;
+		TWeakObjectPtr<UWizardPlayerStatusWidget> HUD;
 		TWeakObjectPtr<UClass> ConfiguredProjectileClass;
 		TWeakObjectPtr<UNiagaraSystem> ConfiguredTrailSystem;
 		TWeakObjectPtr<UAnimMontage> ConfiguredMontage;
@@ -253,7 +255,6 @@ namespace WizardCombatSmoke
 				Controller->SetMenuOpen(false);
 				Controller->SetActorTickEnabled(bOriginalTick);
 			}
-			if (HUD.IsValid()) { HUD->BindTarget(nullptr); }
 			if (Target.IsValid()) { Target->Destroy(); }
 		}
 		bool Finish(bool bSuccess, const TCHAR* Reason)
@@ -314,7 +315,7 @@ namespace WizardCombatSmoke
 			case 0:
 				if (Elapsed < ShotWindow()) { break; }
 				SingleDamage = InitialHealth - Health();
-				if (SingleDamage <= 0.f || !FMath::IsNearlyEqual(HUD->GetDisplayedTargetHealth(), Health())
+				if (SingleDamage <= 0.f
 					|| !FMath::IsNearlyEqual(HUD->GetDisplayedPlayerHealth(), State->GetAttributes()->GetHealth())
 					|| State->GetAttributes()->GetMana() != InitialMana || SpawnCount - SpawnSnapshot != 1
 					|| DuplicateEventCount != 2 || IsAttackActive() || IsMontagePlaying() || !HasNoAttackTasks())
@@ -571,11 +572,35 @@ namespace WizardCombatSmoke
 		Test->State = PS;
 		if (!PC || !PS || !Pawn) { Test->Finish(false, TEXT("Wizard player objects missing")); return; }
 		if (World->IsPaused() || PC->IsMenuOpen()) { Test->Finish(false, TEXT("Start smoke from active gameplay")); return; }
-		for (TObjectIterator<UWizardHealthWidget> It; It; ++It)
+		for (TObjectIterator<UWizardPlayerStatusWidget> It; It; ++It)
 		{
-			if (It->GetWorld() == World && It->IsInViewport()) { Test->HUD = *It; break; }
+			if (It->GetWorld() == World && It->GetOwningPlayer() == PC && It->IsVisible() && It->GetParent() && PC->GetUIRoot() && PC->GetUIRoot()->IsInViewport()) { Test->HUD = *It; break; }
 		}
-		if (!Test->HUD.IsValid()) { Test->Finish(false, TEXT("Player HUD not on viewport")); return; }
+		if (!Test->HUD.IsValid()) { Test->Finish(false, TEXT("Player HUD missing from root")); return; }
+		// 使用真实 CommonUI stack；原有 SetMenuOpen 业务测试仍保留。
+		UWizardUIRoot* Root = PC->GetUIRoot();
+		bool bRootPassed = Root && !Root->HasOpenScreens();
+		if (bRootPassed)
+		{
+			bRootPassed = Root->PushMenu(UWizardPauseMenu::StaticClass()) != nullptr;
+			bRootPassed &= Root->PushModal(UWizardPauseMenu::StaticClass()) != nullptr;
+			bRootPassed &= Root->PushMenu(UWizardPauseMenu::StaticClass()) == nullptr;
+			bRootPassed &= PC->IsMenuOpen() && World->IsPaused();
+			bRootPassed &= Root->CloseTop() && Root->HasOpenScreens() && World->IsPaused();
+			bRootPassed &= Root->CloseTop() && !Root->HasOpenScreens() && !PC->IsMenuOpen() && !World->IsPaused();
+			PC->SetPause(true);
+			bRootPassed &= Root->PushModal(UWizardPauseMenu::StaticClass()) != nullptr;
+			bRootPassed &= Root->CloseTop() && World->IsPaused();
+			PC->SetPause(false);
+		}
+		if (!bRootPassed)
+		{
+			if (Root) { for (int32 CloseIndex = 0; CloseIndex < 4 && Root->CloseTop(); ++CloseIndex) {} }
+			PC->SetPause(false);
+			Test->Finish(false, TEXT("UIRoot nested stacks / modal priority / previous pause failed"));
+			return;
+		}
+		UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_UIROOT_STACK_PASS"));
 		Test->bOriginalTick = PC->IsActorTickEnabled();
 		Test->OriginalPlayerHealth = PS->GetAttributes()->GetHealth();
 		PC->SetActorTickEnabled(false);
@@ -614,7 +639,6 @@ namespace WizardCombatSmoke
 		// 测试夹具采用高血量，连射验收不会提前杀死目标。
 		Target->GetAbilitySystemComponent()->SetNumericAttributeBase(UWizardAttributeSet::GetMaxHealthAttribute(), 10000.f);
 		Target->GetAbilitySystemComponent()->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 10000.f);
-		Test->HUD->BindTarget(Target->GetAbilitySystemComponent());
 		PS->SetAimPoint(Position);
 		const UWizardBasicAttackAbility* Ability = PS->GetCombatConfig()->BasicAttackAbilityClass
 			? Cast<UWizardBasicAttackAbility>(PS->GetCombatConfig()->BasicAttackAbilityClass->GetDefaultObject()) : nullptr;

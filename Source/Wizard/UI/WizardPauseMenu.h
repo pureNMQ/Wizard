@@ -10,7 +10,7 @@ public:
 	UWizardPauseMenu();
 	virtual TOptional<FUIInputConfig> GetDesiredInputConfig() const override;
 protected:
-	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
+
+
 	virtual bool NativeOnHandleBackAction() override;
 };
