@@ -42,7 +42,7 @@ void UWizardSkillLoadoutComponent::InitializeAvatar()
 
 bool UWizardSkillLoadoutComponent::CanEditLoadout() const
 {
-	return GetState() && GetState()->GetInteraction()->FindAvailableTarget(AWizardAlchemyStation::StaticClass()) != nullptr;
+	return GetState() && !GetState()->IsInChallenge() && GetState()->GetInteraction()->FindAvailableTarget(AWizardAlchemyStation::StaticClass()) != nullptr;
 }
 
 EWizardSkillResult UWizardSkillLoadoutComponent::RestoreSnapshot(const FWizardLoadoutSnapshot& Snapshot)

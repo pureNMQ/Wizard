@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | HandPaintedEnvironment | 当前营地与遗迹场景 | [资产检查](planning/asset-audit-2026-10-27.md)、[场景基线](planning/scene-build-2026-10-27.md) | 核对原获取页面、作者、许可与署名 |
 | BattleWizardPBR | 法师、动画与法杖候选 | 资产检查中的网格/骨骼/动画清单 | 核对原包许可与署名，记录实际采用资源 |
-| MonsterForSurvivalGame | 敌人模型与动画候选 | 资产检查中的 Slime/Beholder 等记录 | 核对许可，区分实际使用与备用资源 |
+| MonsterForSurvivalGame | T09：Polyart Slime 近战、Beholder 远程，IdleBattle/Run/Attack01/Die；项目 ABP/BlendSpace/Montage 位于 Wizard/Enemies/Animation | 2026-10-29 UE-MCP 加载、骨架匹配和 PIE 预览，见 T09 | 原包来源与许可由 T10 核对 |
 | ArrowTrail | 普攻弹丸早期候选，用户因尺寸偏小改用Free_Magic | `/Game/ArrowTrail/FX/NS_ArrowTrail_Magic`保留；早期接入证据见T02 | 补原获取页面、权利人、许可与署名 |
 | Free_Magic | 普攻弹丸蓝紫色副本 | 用户复制的`/Game/Free_Magic/VFX_Niagara/NS_Free_Magic_BasicProjectile1_Base`，本步仅调整三个User颜色参数；用户确认替换效果，见T02 | 补原获取页面、权利人、许可与署名 |
 | Free_Spells、FXVarietyPack | T03 闪现/护盾/治疗及雷击表现 | Shockwave、Aura_Mana、Buff_Healing；Cascade P_ky_lightning3，实际配置见 Wizard/Data/Skills | 逐包补来源与许可 |

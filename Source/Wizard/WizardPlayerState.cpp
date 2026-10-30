@@ -156,6 +156,17 @@ void AWizardPlayerState::OnHealthChanged(const FOnAttributeChangeData& Data)
 	}
 }
 
+void AWizardPlayerState::RestoreAtCamp()
+{
+	StopBasicAttack();
+	AbilitySystem->CancelAllAbilities();
+	Skills->ClearAvatarEffects();
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), Attributes->GetMaxHealth());
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetManaAttribute(), Attributes->GetMaxMana());
+	bInChallenge = false;
+	Interaction->Refresh();
+}
+
 void AWizardPlayerState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Interaction->BindAvatar(nullptr);

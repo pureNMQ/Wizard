@@ -5,6 +5,7 @@
 #include "Components/PanelWidget.h"
 #include "Components/OverlaySlot.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
+#include "UI/WizardChallengeBanner.h"
 
 void UWizardUIRoot::NativeConstruct()
 {
@@ -21,6 +22,7 @@ void UWizardUIRoot::NativeConstruct()
 bool UWizardUIRoot::SetHUD(UUserWidget* Widget)
 {
 	if (!HUDLayer || !Widget) return false;
+	if (ChallengeBanner) ChallengeBanner->RemoveFromParent();
 	HUDLayer->ClearChildren();
 	UPanelSlot* HUDSlot = HUDLayer->AddChild(Widget);
 	if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(HUDSlot))
@@ -28,7 +30,40 @@ bool UWizardUIRoot::SetHUD(UUserWidget* Widget)
 		OverlaySlot->SetHorizontalAlignment(HAlign_Fill);
 		OverlaySlot->SetVerticalAlignment(VAlign_Fill);
 	}
+	AttachChallengeBanner();
 	return HUDSlot != nullptr;
+}
+
+void UWizardUIRoot::AttachChallengeBanner()
+{
+	if (!HUDLayer || !ChallengeBanner || ChallengeBanner->GetParent() == HUDLayer) return;
+	if (UOverlaySlot* BannerSlot = Cast<UOverlaySlot>(HUDLayer->AddChild(ChallengeBanner)))
+	{
+		BannerSlot->SetHorizontalAlignment(HAlign_Fill);
+		BannerSlot->SetVerticalAlignment(VAlign_Fill);
+	}
+}
+
+void UWizardUIRoot::ShowChallengeAnnouncement(FText Message, FLinearColor Color, float Duration)
+{
+	ShowChallengeAnnouncementDetail(Message, FText::GetEmpty(), Color, Duration);
+}
+
+void UWizardUIRoot::ShowChallengeAnnouncementDetail(FText Message, FText Detail, FLinearColor Color, float Duration)
+{
+	if (!HUDLayer) return;
+	if (!ChallengeBanner)
+	{
+		UClass* BannerClass = ChallengeBannerClass.Get();
+		if (!BannerClass)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("挑战提示布局未配置：WBP_ChallengeBanner"));
+			return;
+		}
+		ChallengeBanner = CreateWidget<UWizardChallengeBanner>(GetOwningPlayer(), BannerClass);
+	}
+	AttachChallengeBanner();
+	if (ChallengeBanner) ChallengeBanner->ShowAnnouncement(Message, Detail, Color, Duration);
 }
 
 bool UWizardUIRoot::HasOpenScreens() const
@@ -80,6 +115,8 @@ void UWizardUIRoot::RefreshScreenState()
 
 void UWizardUIRoot::NativeDestruct()
 {
+	if (ChallengeBanner) ChallengeBanner->RemoveFromParent();
+	ChallengeBanner = nullptr;
 	if (MenuLayer) MenuLayer->OnDisplayedWidgetChanged().RemoveAll(this);
 	if (ModalLayer) ModalLayer->OnDisplayedWidgetChanged().RemoveAll(this);
 	if (ModalLayer) ModalLayer->ClearWidgets();

@@ -98,7 +98,8 @@ void AWizardPlayerController::SetupInputComponent()
 bool AWizardPlayerController::CanUseWorldInput() const
 {
 	const AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>();
-	return !bMenuOpen && !IsPaused() && GetPawn() && State && State->GetAttributes()->GetHealth() > 0.f;
+	return !bMenuOpen && !IsPaused() && GetPawn() && State
+		&& State->GetAttributes()->GetHealth() > 0.f;
 }
 
 void AWizardPlayerController::Move(const FInputActionValue& Value)
@@ -149,7 +150,7 @@ void AWizardPlayerController::PlayerTick(float DeltaSeconds)
 {
 	Super::PlayerTick(DeltaSeconds);
 	if (CanUseWorldInput()) UpdateAim();
-	else StopAttack();
+	if (!CanUseWorldInput()) StopAttack();
 }
 void AWizardPlayerController::UpdateAim()
 {

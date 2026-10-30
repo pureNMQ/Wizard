@@ -36,6 +36,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Combat") TObjectPtr<UWizardCombatConfig> CombatConfig;
 	UFUNCTION(BlueprintPure, Category="Skills") UWizardSkillLoadoutComponent* GetSkills() const { return Skills; }
 	UFUNCTION(BlueprintPure, Category="Interaction") UWizardInteractionComponent* GetInteraction() const { return Interaction; }
+	UFUNCTION(BlueprintPure, Category="Challenge") bool IsInChallenge() const { return bInChallenge; }
+	void SetInChallenge(bool bActive) { bInChallenge = bActive; }
+	// 挑战完成/死亡共用恢复入口；不改搭配与冷却，不重授予能力。
+	void RestoreAtCamp();
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
@@ -54,5 +58,6 @@ private:
 	FDelegateHandle AbilityEndedDelegate;
 	FTimerHandle RetryAttackTimer;
 	bool bAttackHeld = false;
+	bool bInChallenge = false;
 	FVector AimPoint = FVector::ZeroVector;
 };

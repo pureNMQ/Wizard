@@ -6,6 +6,7 @@ class UPanelWidget;
 class UCommonActivatableWidget;
 class UCommonActivatableWidgetStack;
 class UUserWidget;
+class UWizardChallengeBanner;
 
 // 固定三层；布局由 WBP_UIRoot 提供，不开放层注册。
 UCLASS()
@@ -14,6 +15,9 @@ class WIZARD_API UWizardUIRoot : public UCommonUserWidget
 	GENERATED_BODY()
 public:
 	bool SetHUD(UUserWidget* Widget);
+	UPROPERTY(EditDefaultsOnly, Category="UI") TSubclassOf<UWizardChallengeBanner> ChallengeBannerClass;
+	UFUNCTION(BlueprintCallable, Category="UI") void ShowChallengeAnnouncement(FText Message, FLinearColor Color, float Duration);
+	UFUNCTION(BlueprintCallable, Category="UI") void ShowChallengeAnnouncementDetail(FText Message, FText Detail, FLinearColor Color, float Duration);
 	// Modal 存在时拒绝 Menu，防止较晚激活的 Menu 抢占输入路由。
 	UFUNCTION(BlueprintCallable, Category="UI") UCommonActivatableWidget* PushMenu(TSubclassOf<UCommonActivatableWidget> WidgetClass);
 	UFUNCTION(BlueprintCallable, Category="UI") UCommonActivatableWidget* PushModal(TSubclassOf<UCommonActivatableWidget> WidgetClass);
@@ -28,4 +32,6 @@ protected:
 private:
 	void HandleDisplayedWidgetChanged(UCommonActivatableWidget* Widget);
 	void RefreshScreenState();
+	void AttachChallengeBanner();
+	UPROPERTY(Transient) TObjectPtr<UWizardChallengeBanner> ChallengeBanner;
 };

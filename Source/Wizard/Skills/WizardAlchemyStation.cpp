@@ -33,7 +33,7 @@ bool AWizardAlchemyStation::CanInteract(const AWizardPlayerState* State) const {
 bool AWizardAlchemyStation::IsInCamp(const AWizardPlayerState* State) const
 {
 	const APawn* Avatar = State ? Cast<APawn>(State->GetAbilitySystemComponent()->GetAvatarActor()) : nullptr;
-	if (!IsValid(AlchemyActor) || !Avatar || State->GetAttributes()->GetHealth() <= 0.f) return false;
+	if (!IsValid(AlchemyActor) || !Avatar || State->IsInChallenge() || State->GetAttributes()->GetHealth() <= 0.f) return false;
 	const FVector Local = CampBounds->GetComponentTransform().InverseTransformPosition(Avatar->GetActorLocation());
 	const FVector Extent = CampBounds->GetUnscaledBoxExtent();
 	if (FMath::Abs(Local.X) > Extent.X || FMath::Abs(Local.Y) > Extent.Y || FMath::Abs(Local.Z) > Extent.Z) return false;
