@@ -9,6 +9,7 @@
 #include "WizardPlayerState.generated.h"
 
 class UWizardAttributeSet;
+class UWizardInventoryComponent;
 class UWizardCombatConfig;
 class UWizardSkillLoadoutComponent;
 class UWizardInteractionComponent;
@@ -40,6 +41,7 @@ public:
 	void SetInChallenge(bool bActive) { bInChallenge = bActive; }
 	// 挑战完成/死亡共用恢复入口；不改搭配与冷却，不重授予能力。
 	void RestoreAtCamp();
+	UFUNCTION(BlueprintPure, Category="Inventory") UWizardInventoryComponent* GetInventory() const { return Inventory; }
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
@@ -52,6 +54,7 @@ private:
 	UPROPERTY() TObjectPtr<UWizardAttributeSet> Attributes;
 	UPROPERTY(VisibleAnywhere, Category="Skills") TObjectPtr<UWizardSkillLoadoutComponent> Skills;
 	UPROPERTY(VisibleAnywhere, Category="Interaction") TObjectPtr<UWizardInteractionComponent> Interaction;
+	UPROPERTY(VisibleAnywhere, Category="Inventory") TObjectPtr<UWizardInventoryComponent> Inventory;
 	FGameplayAbilitySpecHandle BasicAttackHandle;
 	FDelegateHandle HealthDelegate;
 	FDelegateHandle CooldownDelegate;

@@ -1,4 +1,5 @@
 #include "WizardPlayerState.h"
+#include "Inventory/WizardInventoryComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardCombatConfig.h"
 #include "GAS/WizardAttributeSet.h"
@@ -14,6 +15,8 @@
 
 AWizardPlayerState::AWizardPlayerState()
 {
+	Inventory = CreateDefaultSubobject<UWizardInventoryComponent>(TEXT("Inventory"));
+	Inventory->Config = LoadObject<UWizardInventoryConfig>(nullptr, TEXT("/Game/Wizard/Data/Items/DA_InventoryConfig.DA_InventoryConfig"), nullptr, LOAD_NoWarn);
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 	Attributes = CreateDefaultSubobject<UWizardAttributeSet>(TEXT("Attributes"));
 	Skills = CreateDefaultSubobject<UWizardSkillLoadoutComponent>(TEXT("Skills"));
@@ -46,6 +49,7 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 	AbilitySystem->InitAbilityActorInfo(this, Avatar);
 	Interaction->BindAvatar(Avatar);
 	Skills->InitializeAvatar();
+	Inventory->InitializeInventory();
 	if (HasAuthority() && !BasicAttackHandle.IsValid() && GetCombatConfig()->IsConfigurationValid())
 	{
 		BasicAttackHandle = AbilitySystem->GiveAbility(FGameplayAbilitySpec(GetCombatConfig()->BasicAttackAbilityClass, 1));

@@ -36,7 +36,6 @@ void UWizardSkillTooltip::Configure(const UWizardSkillDefinition* Definition)
 {
 	if (DescriptionText && Definition) DescriptionText->SetText(FText::FromString(FString::Printf(TEXT("%s\n%s\n法力 %.0f　冷却 %.1f 秒"), *Definition->DisplayName.ToString(), *Definition->Description.ToString(), Definition->ManaCost, Definition->Cooldown)));
 }
-void UWizardSkillDragPreview::Configure(UTexture2D* Texture) { if (Icon) Icon->SetBrushFromTexture(Texture); }
 void UWizardSkillTile::Configure(const UWizardSkillDefinition* InDefinition, int32 InSlot, UWizardSkillMenuController* InController)
 {
 	Definition = InDefinition;
@@ -85,12 +84,7 @@ void UWizardSkillTile::NativeOnDragDetected(const FGeometry& Geometry, const FPo
 	if (!MenuController.IsValid() || !Definition || !MenuController->CanDragSkill(Definition->SkillId, SlotIndex) || !DragPreviewClass) return;
 	UWizardSkillDrag* Drag = NewObject<UWizardSkillDrag>(this);
 	Drag->Request = {Definition->SkillId, SlotIndex, MenuController};
-	Drag->Pivot = EDragPivot::CenterCenter;
-	if (UWizardSkillDragPreview* Visual = CreateWidget<UWizardSkillDragPreview>(GetOwningPlayer(), DragPreviewClass))
-	{
-		Visual->Configure(Definition->Icon);
-		Drag->DefaultDragVisual = Visual;
-	}
+	WizardIconDrag::SetVisual(Drag, GetOwningPlayer(), DragPreviewClass, Definition->Icon);
 	Operation = Drag;
 }
 bool UWizardSkillTile::NativeOnDrop(const FGeometry& Geometry, const FDragDropEvent& Event, UDragDropOperation* Operation)

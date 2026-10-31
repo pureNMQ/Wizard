@@ -10,6 +10,7 @@ class UUserWidget;
 class UWizardPauseMenu;
 class UWizardUIRoot;
 class UWizardSkillMenu;
+class UWizardInventoryMenu;
 DECLARE_MULTICAST_DELEGATE_OneParam(FWizardSkillFeedback, EWizardSkillResult);
 UCLASS()
 class AWizardPlayerController : public APlayerController
@@ -27,6 +28,7 @@ public:
 	UFUNCTION(BlueprintPure) bool IsMenuOpen() const { return bMenuOpen; }
 	FWizardSkillFeedback OnSkillFeedback;
 	bool OpenSkillMenu();
+	UFUNCTION(BlueprintCallable, Category="Inventory") bool OpenInventory();
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
@@ -37,6 +39,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> MenuAction;
 	UPROPERTY(EditDefaultsOnly, Category=Input) TArray<TObjectPtr<UInputAction>> SkillActions;
 	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> InteractAction;
+	UPROPERTY(EditDefaultsOnly, Category=Input) TObjectPtr<UInputAction> InventoryAction;
+	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardInventoryMenu> InventoryMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardSkillMenu> SkillMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardUIRoot> RootClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UUserWidget> HealthWidgetClass;
@@ -47,6 +51,7 @@ private:
 	void ReleaseAttack();
 	void StopAttack();
 	void OpenMenu();
+	void ToggleInventory();
 	void UseSkill(int32 Slot);
 	void Interact();
 	void CancelSkillInput();

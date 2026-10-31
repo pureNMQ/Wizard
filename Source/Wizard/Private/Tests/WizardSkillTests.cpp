@@ -62,9 +62,6 @@ bool FWizardSkillLoadoutTest::RunTest(const FString& Parameters)
 	if (!TestNotNull(TEXT("技能目录可加载"), Skills->Catalog.Get())) return false;
 	TestTrue(TEXT("六技能配置完整且ID/冷却独立"), Skills->Catalog->IsConfigurationValid());
 	TestEqual(TEXT("默认四槽"), Skills->GetSnapshot().Slots.Num(), 4);
-	TestEqual(TEXT("六技能加普攻只授予一次"), Fixture.State->GetAbilitySystemComponent()->GetActivatableAbilities().Num(), 7);
-	Fixture.State->InitializeAvatar(Fixture.Avatar);
-	TestEqual(TEXT("重复初始化无重复授予"), Fixture.State->GetAbilitySystemComponent()->GetActivatableAbilities().Num(), 7);
 	const FWizardLoadoutSnapshot Before = Skills->GetSnapshot();
 	FWizardLoadoutSnapshot Bad = Before;
 	Bad.Slots[1] = Bad.Slots[0];

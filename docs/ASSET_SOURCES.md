@@ -10,7 +10,7 @@
 | ArrowTrail | 普攻弹丸早期候选，用户因尺寸偏小改用Free_Magic | `/Game/ArrowTrail/FX/NS_ArrowTrail_Magic`保留；早期接入证据见T02 | 补原获取页面、权利人、许可与署名 |
 | Free_Magic | 普攻弹丸蓝紫色副本 | 用户复制的`/Game/Free_Magic/VFX_Niagara/NS_Free_Magic_BasicProjectile1_Base`，本步仅调整三个User颜色参数；用户确认替换效果，见T02 | 补原获取页面、权利人、许可与署名 |
 | Free_Spells、FXVarietyPack | T03 闪现/护盾/治疗及雷击表现 | Shockwave、Aura_Mana、Buff_Healing；Cascade P_ky_lightning3，实际配置见 Wizard/Data/Skills | 逐包补来源与许可 |
-| Free_RPG_Icons_Pack | 技能图标候选 | 资产检查中的纹理类型记录 | 补来源、许可与实际使用清单 |
+| Free_RPG_Icons_Pack | 技能图标；T04背包验证占位图标 | T04暂用2D_ASSETS下T_Free_RPG_Icons_Pack_Holy_1（生命）、Water_1（法力）、Earth_1（矿石）、Fire_1（法杖）；未导入外部物品图标 | 补来源/许可；T05/T06内容配置替换物品占位并验视觉 |
 | Audio/RPG_Fantasy_SFX、Audio/UltimateUIMenusSFX | 从原音效包恢复的 SoundWave | [恢复记录](planning/audio-recovery-2026-10-27.md)；源/目标与摘要在 `SourceAssets/Audio/Recovered/manifest.json` | WAV 转换不改变原素材授权，核对原包许可；SoundCue 图未恢复的边界保留 |
 | TopDown、Characters、Cursor、LevelPrototyping、StarterContent | UE 模板、基础场景与临时资源 | 现有项目模板及资产路径 | 标注模板/引擎内容来源和实际交付范围，保留原信息 |
 | Wizard | 项目自建地图与两份环境材质 | 场景基线、`Tools/Scene/build_wizard_clearing.py` | 自建材质引用已有纹理，随引用资源一并核对 |

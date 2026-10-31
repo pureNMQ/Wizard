@@ -5,22 +5,13 @@
 #include "CommonActivatableWidget.h"
 #include "Blueprint/DragDropOperation.h"
 #include "UI/WizardSkillMenuController.h"
+#include "UI/WizardIconDragPreview.h"
 #include "WizardSkillWidgets.generated.h"
 class UImage;
 class UTextBlock;
 class UPanelWidget;
 class UWizardSkillLoadoutComponent;
 class UScrollBox;
-
-UCLASS()
-class WIZARD_API UWizardSkillDragPreview : public UCommonUserWidget
-{
-	GENERATED_BODY()
-public:
-	void Configure(UTexture2D* Texture);
-protected:
-	UPROPERTY(meta=(BindWidget)) TObjectPtr<UImage> Icon;
-};
 
 UCLASS()
 class WIZARD_API UWizardSkillDrag : public UDragDropOperation
@@ -48,7 +39,7 @@ public:
 	void Configure(const UWizardSkillDefinition* InDefinition, int32 InSlot, UWizardSkillMenuController* InController);
 	void SetStatus(const FString& Status, bool bAvailable);
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardSkillTooltip> TooltipClass;
-	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardSkillDragPreview> DragPreviewClass;
+	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardIconDragPreview> DragPreviewClass;
 	// 图标中央优先显示冷却，其次显示法力不足；就绪及菜单卡片隐藏状态层。
 	void SetHUDState(float Remaining, bool bEnoughMana);
 protected:

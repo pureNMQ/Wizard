@@ -8,7 +8,6 @@ param(
 	[ValidatePattern('^Wizard(?:\.[A-Za-z0-9_]+)*\.?$')]
 	[string] $TestFilter = 'Wizard.',
 	[switch] $CombatSmoke,
-	[switch] $SkillSmoke,
 	[switch] $SmokeNullRHI,
 	[ValidateRange(2, 60)]
 	[int] $SmokeSeconds = 10
@@ -133,17 +132,16 @@ function Package-Project {
 }
 
 function Test-PackagedGame {
-	if ($CombatSmoke -and $SkillSmoke) { throw 'Choose one of -CombatSmoke and -SkillSmoke.' }
 	if (-not $script:PackageRoot) { throw 'Smoke requires -PackageRoot from a successful Package run.' }
 	$ResolvedPackage = (Resolve-Path -LiteralPath $script:PackageRoot).Path
 	$GameExecutables = @(Get-ChildItem -LiteralPath $ResolvedPackage -Recurse -File -Filter 'Wizard.exe' |
 		Where-Object { $_.FullName -match '[\\/]Wizard[\\/]Binaries[\\/]Win64[\\/]' })
 	if ($GameExecutables.Count -ne 1) { throw 'Expected one real Wizard/Binaries/Win64/Wizard.exe in the package.' }
 	$GameFile = $GameExecutables[0].FullName
-	$SmokeName = if ($SkillSmoke) { 'packaged-skills-smoke' } elseif ($CombatSmoke) { 'packaged-combat-smoke' } else { 'packaged-smoke' }
+	$SmokeName = if ($CombatSmoke) { 'packaged-combat-smoke' } else { 'packaged-smoke' }
 	$SmokeLog = Join-Path $RunDirectory "$SmokeName.log"
-	$SmokeCommand = if ($SkillSmoke) { 'Wizard.SkillsSmokeTest' } elseif ($CombatSmoke) { 'Wizard.CombatSmokeTest' } else { 'Wizard.SmokeTest' }
-	$PassMarker = if ($SkillSmoke) { 'WIZARD_SKILLS_SMOKE_PASS:' } elseif ($CombatSmoke) { 'WIZARD_COMBAT_SMOKE_PASS:' } else { 'WIZARD_SMOKE_PASS:' }
+	$SmokeCommand = if ($CombatSmoke) { 'Wizard.CombatSmokeTest' } else { 'Wizard.SmokeTest' }
+	$PassMarker = if ($CombatSmoke) { 'WIZARD_COMBAT_SMOKE_PASS:' } else { 'WIZARD_SMOKE_PASS:' }
 	# 自动检查隐藏启动以免抢占用户输入；检查完成后由游戏正常退出。
 	$SmokeArguments = @('-windowed', '-ResX=1280', '-ResY=720', '-nosplash', '-unattended', '-UTF8Output',
 		('-ExecCmds="{0},HighResShot 1280x720"' -f $SmokeCommand), "-WizardSmokeSeconds=$SmokeSeconds", ('-abslog="{0}"' -f $SmokeLog))

@@ -17,6 +17,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Skills/WizardSkillLoadoutComponent.h"
 #include "UI/WizardSkillWidgets.h"
+#include "UI/WizardInventoryWidgets.h"
 #include "Interaction/WizardInteractionComponent.h"
 
 AWizardPlayerController::AWizardPlayerController()
@@ -38,6 +39,8 @@ AWizardPlayerController::AWizardPlayerController()
 	PauseMenuClass = MenuClass.Class;
 	static ConstructorHelpers::FClassFinder<UWizardSkillMenu> SkillsMenu(TEXT("/Game/Wizard/UI/WBP_SkillMenu"));
 	SkillMenuClass = SkillsMenu.Class;
+	InventoryMenuClass = LoadClass<UWizardInventoryMenu>(nullptr, TEXT("/Game/Wizard/UI/WBP_InventoryMenu.WBP_InventoryMenu_C"), nullptr, LOAD_NoWarn);
+	InventoryAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/Wizard/Input/IA_Inventory.IA_Inventory"), nullptr, LOAD_NoWarn);
 	static ConstructorHelpers::FObjectFinder<UInputAction> InteractInput(TEXT("/Game/Wizard/Input/IA_Interact"));
 	InteractAction = InteractInput.Object;
 	const TCHAR* SkillPaths[] = { TEXT("/Game/Wizard/Input/IA_Skill1"), TEXT("/Game/Wizard/Input/IA_Skill2"), TEXT("/Game/Wizard/Input/IA_Skill3"), TEXT("/Game/Wizard/Input/IA_Skill4") };
@@ -91,6 +94,7 @@ void AWizardPlayerController::SetupInputComponent()
 			Input->BindAction(SkillActions[Slot], ETriggerEvent::Started, this, &ThisClass::UseSkill, Slot);
 			Input->BindAction(SkillActions[Slot], ETriggerEvent::Canceled, this, &ThisClass::CancelSkillInput);
 		}
+		if (InventoryAction) Input->BindAction(InventoryAction, ETriggerEvent::Started, this, &ThisClass::ToggleInventory);
 		if (InteractAction) Input->BindAction(InteractAction, ETriggerEvent::Started, this, &ThisClass::Interact);
 	}
 }
@@ -145,6 +149,15 @@ void AWizardPlayerController::Interact()
 bool AWizardPlayerController::OpenSkillMenu()
 {
 	return CanUseWorldInput() && UIRoot && SkillMenuClass && UIRoot->PushMenu(SkillMenuClass);
+}
+bool AWizardPlayerController::OpenInventory()
+{
+	return CanUseWorldInput() && UIRoot && InventoryMenuClass && UIRoot->PushMenu(InventoryMenuClass);
+}
+void AWizardPlayerController::ToggleInventory()
+{
+	// 菜单内同一动作交给CommonUI路由；世界输入只负责打开。
+	if (!bMenuOpen) OpenInventory();
 }
 void AWizardPlayerController::PlayerTick(float DeltaSeconds)
 {

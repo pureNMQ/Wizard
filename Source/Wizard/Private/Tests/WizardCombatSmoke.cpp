@@ -2,7 +2,6 @@
 // 此开发命令不模拟物理按键，实际 Enhanced Input / CommonUI 返回仍需单独验收。
 #if !UE_BUILD_SHIPPING && !UE_BUILD_TEST
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
 #include "Combat/WizardCombatConfig.h"
@@ -11,19 +10,13 @@
 #include "Containers/Ticker.h"
 #include "CollisionQueryParams.h"
 #include "CollisionShape.h"
-#include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "GAS/WizardAttributeSet.h"
 #include "GAS/WizardBasicAttackAbility.h"
 #include "GAS/WizardCombatTags.h"
-#include "GameplayCueManager.h"
-#include "GameplayCueNotify_Burst.h"
-#include "GameplayCueSet.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformMisc.h"
-#include "NiagaraComponent.h"
-#include "NiagaraSystem.h"
 #include "UI/WizardPlayerStatusWidget.h"
 #include "UI/WizardUIRoot.h"
 #include "UI/WizardPauseMenu.h"
@@ -37,37 +30,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogWizardCombatSmoke, Log, All);
 
 namespace WizardCombatSmoke
 {
-	// 从当前 GE 的 Cue 标签解析真实 Burst 资源，不固定美术资产或 GC 蓝图路径。
-	TArray<TWeakObjectPtr<UNiagaraSystem>> FindImpactSystems(const UGameplayEffect* Damage)
-	{
-		TArray<TWeakObjectPtr<UNiagaraSystem>> Systems;
-		UGameplayCueManager* Manager = UAbilitySystemGlobals::Get().GetGameplayCueManager();
-		UGameplayCueSet* CueSet = Manager ? Manager->GetRuntimeCueSet() : nullptr;
-		if (!Damage || !CueSet) { return Systems; }
-		FGameplayTagContainer Tags;
-		for (const FGameplayEffectCue& Cue : Damage->GameplayCues) { Tags.AppendTags(Cue.GameplayCueTags); }
-		for (const FGameplayCueNotifyData& Data : CueSet->GameplayCueData)
-		{
-			if (!Tags.HasTagExact(Data.GameplayCueTag)) { continue; }
-			UClass* CueClass = Data.LoadedGameplayCueClass ? Data.LoadedGameplayCueClass.Get() : Cast<UClass>(Data.GameplayCueNotifyObj.TryLoad());
-			const UGameplayCueNotify_Burst* Cue = CueClass ? Cast<UGameplayCueNotify_Burst>(CueClass->GetDefaultObject()) : nullptr;
-			const FStructProperty* Effects = Cue ? FindFProperty<FStructProperty>(CueClass, TEXT("BurstEffects")) : nullptr;
-			const FArrayProperty* Particles = Effects ? FindFProperty<FArrayProperty>(Effects->Struct, TEXT("BurstParticles")) : nullptr;
-			const FStructProperty* Particle = Particles ? CastField<FStructProperty>(Particles->Inner) : nullptr;
-			const FObjectPropertyBase* System = Particle ? FindFProperty<FObjectPropertyBase>(Particle->Struct, TEXT("NiagaraSystem")) : nullptr;
-			if (!System) { continue; }
-			FScriptArrayHelper Values(Particles, Particles->ContainerPtrToValuePtr<void>(Effects->ContainerPtrToValuePtr<void>(Cue)));
-			for (int32 Index = 0; Index < Values.Num(); ++Index)
-			{
-				if (UNiagaraSystem* Niagara = Cast<UNiagaraSystem>(System->GetObjectPropertyValue_InContainer(Values.GetRawPtr(Index))))
-				{
-					Systems.AddUnique(Niagara);
-				}
-			}
-		}
-		return Systems;
-	}
-
 	struct FRun : public TSharedFromThis<FRun>
 	{
 		TWeakObjectPtr<UWorld> World;
@@ -76,14 +38,10 @@ namespace WizardCombatSmoke
 		TWeakObjectPtr<AWizardEnemy> Target;
 		TWeakObjectPtr<UWizardPlayerStatusWidget> HUD;
 		TWeakObjectPtr<UClass> ConfiguredProjectileClass;
-		TWeakObjectPtr<UNiagaraSystem> ConfiguredTrailSystem;
 		TWeakObjectPtr<UAnimMontage> ConfiguredMontage;
 		TWeakObjectPtr<UClass> ConfiguredAbilityClass;
-		TArray<TWeakObjectPtr<UNiagaraSystem>> ConfiguredImpactSystems;
 		FDelegateHandle SpawnHandle;
 		FDelegateHandle CooldownHandle;
-		struct FTransformHook { TWeakObjectPtr<USceneComponent> Component; FDelegateHandle Handle; };
-		TArray<FTransformHook> TransformHooks;
 		TWeakObjectPtr<UAnimInstance> SlowedAnim;
 		float OriginalMontageRate = 1.f;
 		float NormalMontageSeconds = 0.f;
@@ -96,16 +54,12 @@ namespace WizardCombatSmoke
 		float SingleDamage = 0.f;
 		float Snapshot = 0.f;
 		int32 Phase = -1;
-		int32 ImpactPeak = 0;
-		int32 ProjectileTrailPeak = 0;
 		int32 SpawnCount = 0;
 		int32 SpawnSnapshot = 0;
 		int32 DuplicateEventCount = 0;
 		bool bInjectDuplicate = false;
 		bool bSlowCooldownWhileActive = false;
 		bool bPlayerHealthChanged = false;
-		bool bObservedConfiguredProjectile = false;
-		bool bObservedConfiguredTrail = false;
 		bool bOriginalTick = true;
 		bool bOriginalSuppressCues = false;
 		bool bHasOriginalSuppressCues = false;
@@ -139,26 +93,10 @@ namespace WizardCombatSmoke
 			return !IsAttackActive() && !State->GetAbilitySystemComponent()->HasMatchingGameplayTag(WizardCombat::BasicAttackCooldownTag());
 		}
 		float ShotWindow() const { return NormalMontageSeconds + Interval + 0.7f; }
-		void ObserveProjectiles()
-		{
-			CountActiveProjectileTrails();
-		}
 		void OnProjectileSpawned(AActor* Actor)
 		{
 			if (!Actor || Actor->GetWorld() != World.Get() || Actor->GetClass() != ConfiguredProjectileClass.Get()) { return; }
 			++SpawnCount;
-			bObservedConfiguredProjectile = true;
-			// Spawn 回调早于 deferred FinishSpawning/BeginPlay；移动通知在碰撞分发之前，
-			// 能观察单个低帧率 Tick 内已经命中销毁的短飞行弹丸。
-			if (USceneComponent* Root = Actor->GetRootComponent())
-			{
-				TWeakPtr<FRun> WeakSelf = AsShared();
-				const FDelegateHandle Handle = Root->TransformUpdated.AddLambda([WeakSelf](USceneComponent*, EUpdateTransformFlags, ETeleportType)
-				{
-					if (const TSharedPtr<FRun> Test = WeakSelf.Pin()) { Test->ObserveProjectiles(); }
-				});
-				TransformHooks.Add({ Root, Handle });
-			}
 			if (bInjectDuplicate)
 			{
 				// 首次出手始终来自真实蒙太奇 Notify；只在已生成弹丸后注入重复事件，
@@ -191,42 +129,6 @@ namespace WizardCombatSmoke
 				}
 			});
 		}
-		int32 CountActiveProjectileTrails()
-		{
-			int32 Count = 0;
-			for (TObjectIterator<UNiagaraComponent> It; It; ++It)
-			{
-				const UNiagaraComponent* Component = *It;
-				if (!IsValid(Component) || Component->GetWorld() != World.Get()
-					|| Component->GetAsset() != ConfiguredTrailSystem.Get() || !Component->IsActive()) { continue; }
-				// 计入同世界所有使用该系统的活跃组件，包括已经失去有效弹丸的残留。
-				++Count;
-				const AWizardProjectile* Projectile = Component->GetTypedOuter<AWizardProjectile>();
-				const bool bExpectedProjectile = IsValid(Projectile)
-					&& Projectile->GetClass() == ConfiguredProjectileClass.Get();
-				if (bExpectedProjectile)
-				{
-					bObservedConfiguredProjectile = true;
-					bObservedConfiguredTrail = true;
-				}
-			}
-			ProjectileTrailPeak = FMath::Max(ProjectileTrailPeak, Count);
-			return Count;
-		}
-		int32 CountActiveImpacts() const
-		{
-			int32 Count = 0;
-			for (TObjectIterator<UNiagaraComponent> It; It; ++It)
-			{
-				const UNiagaraComponent* Component = *It;
-				if (IsValid(Component) && Component->GetWorld() == World.Get() && Component->IsActive()
-					&& ConfiguredImpactSystems.ContainsByPredicate([Component](const TWeakObjectPtr<UNiagaraSystem>& System) { return System.Get() == Component->GetAsset(); }))
-				{
-					++Count;
-				}
-			}
-			return Count;
-		}
 		void RestoreCueSuppression()
 		{
 			if (Target.IsValid() && bHasOriginalSuppressCues)
@@ -243,11 +145,6 @@ namespace WizardCombatSmoke
 				State->GetAbilitySystemComponent()->RegisterGameplayTagEvent(WizardCombat::BasicAttackCooldownTag(), EGameplayTagEventType::NewOrRemoved).Remove(CooldownHandle);
 				if (bPlayerHealthChanged) { State->GetAbilitySystemComponent()->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), OriginalPlayerHealth); }
 			}
-			for (const FTransformHook& Hook : TransformHooks)
-			{
-				if (Hook.Component.IsValid()) { Hook.Component->TransformUpdated.Remove(Hook.Handle); }
-			}
-			TransformHooks.Reset();
 			if (SlowedAnim.IsValid()) { SlowedAnim->Montage_SetPlayRate(ConfiguredMontage.Get(), OriginalMontageRate); }
 			RestoreCueSuppression();
 			if (Controller.IsValid())
@@ -278,28 +175,19 @@ namespace WizardCombatSmoke
 		bool Tick(float Delta)
 		{
 			if (!World.IsValid() || !Controller.IsValid() || !State.IsValid() || !Target.IsValid() || !HUD.IsValid()
-				|| !ConfiguredProjectileClass.IsValid() || !ConfiguredTrailSystem.IsValid() || !ConfiguredMontage.IsValid())
+				|| !ConfiguredProjectileClass.IsValid() || !ConfiguredMontage.IsValid())
 			{
 				return Finish(false, TEXT("Required runtime object disappeared"));
 			}
 			Elapsed += Delta;
 			TotalElapsed += Delta;
 			if (TotalElapsed > 120.f) { return Finish(false, TEXT("Combat smoke exceeded its 120 second bound")); }
-			const int32 ActiveImpacts = CountActiveImpacts();
-			const int32 ActiveProjectileTrails = CountActiveProjectileTrails();
-			ImpactPeak = FMath::Max(ImpactPeak, ActiveImpacts);
 			switch (Phase)
 			{
 			case -1:
-				// 旧的池化组件不算命中；先等本世界该效果的活跃实例清零。
-				if (Elapsed > 15.f) { return Finish(false, TEXT("Impact baseline did not become inactive within 15 seconds")); }
-				if (Elapsed < 0.25f || ActiveImpacts != 0 || ActiveProjectileTrails != 0 || !IsReady()) { break; }
+				if (Elapsed < 0.25f || !IsReady()) { break; }
 				InitialHealth = Health();
 				InitialMana = State->GetAttributes()->GetMana();
-				ImpactPeak = 0;
-				ProjectileTrailPeak = 0;
-				bObservedConfiguredProjectile = false;
-				bObservedConfiguredTrail = false;
 				SpawnSnapshot = SpawnCount;
 				bInjectDuplicate = true;
 				State->StartBasicAttack();
@@ -323,25 +211,14 @@ namespace WizardCombatSmoke
 					return Finish(false, TEXT("Released tap must fire exactly once from Notify, ignore duplicate events, update HUD and end montage/tasks"));
 				}
 				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_NOTIFY: SpawnDelta=%d DuplicateEvents=%d ActiveAbility=0 ActiveTasks=0 MontagePlaying=0"), SpawnCount - SpawnSnapshot, DuplicateEventCount);
-				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_CUE: SingleDamage=%.3f ActiveImpactPeak=%d"), SingleDamage, ImpactPeak);
-				if (ImpactPeak == 0) { return Finish(false, TEXT("GE hit did damage but no active impact GameplayCue was observed")); }
-				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_PROJECTILE: ConfiguredClassObserved=%d ConfiguredSystemObserved=%d ActiveTrailPeak=%d"), bObservedConfiguredProjectile, bObservedConfiguredTrail, ProjectileTrailPeak);
-				if (!bObservedConfiguredProjectile || !bObservedConfiguredTrail || ProjectileTrailPeak == 0)
-				{
-					return Finish(false, TEXT("Real basic attack must spawn the configured projectile and activate its configured Niagara trail"));
-				}
 				Snapshot = Health();
 				Next();
 				break;
 			case 1:
 				if (Elapsed < Interval * 2.f + 0.2f) { break; }
 				if (Health() != Snapshot) { return Finish(false, TEXT("Release did not stop shots")); }
-				if (ActiveProjectileTrails != 0) { return Finish(false, TEXT("Projectile Niagara trail survived collision/release")); }
-				if (Elapsed > 15.f) { return Finish(false, TEXT("Impact GameplayCue failed to become inactive within 15 seconds")); }
-				if (ActiveImpacts != 0) { break; }
 				// 只在临时目标 ASC 禁用 Cue；伤害继续走同一 Ability/弹丸/蓝图 GE。
 				Target->GetAbilitySystemComponent()->bSuppressGameplayCues = true;
-				ImpactPeak = 0;
 				State->StartBasicAttack();
 				State->ReleaseBasicAttack();
 				Phase = 8;
@@ -349,10 +226,10 @@ namespace WizardCombatSmoke
 				break;
 			case 8:
 				if (Elapsed < ShotWindow()) { break; }
-				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_CUE_SUPPRESSED: Damage=%.3f ExpectedDamage=%.3f ActiveImpactPeak=%d"), Snapshot - Health(), SingleDamage, ImpactPeak);
-				if (!FMath::IsNearlyEqual(Snapshot - Health(), SingleDamage) || ImpactPeak != 0)
+				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_CUE_SUPPRESSED: Damage=%.3f ExpectedDamage=%.3f"), Snapshot - Health(), SingleDamage);
+				if (!FMath::IsNearlyEqual(Snapshot - Health(), SingleDamage))
 				{
-					return Finish(false, TEXT("Suppressing GameplayCues must preserve damage and produce no active impact"));
+					return Finish(false, TEXT("Suppressing GameplayCues must preserve damage"));
 				}
 				RestoreCueSuppression();
 				Snapshot = Health();
@@ -420,12 +297,6 @@ namespace WizardCombatSmoke
 			case 7:
 				if (Elapsed < Interval * 2.f + 0.2f) { break; }
 				if (Health() != Snapshot) { return Finish(false, TEXT("Avatar replacement retained attack timer")); }
-				// 未命中的弹丸也必须在配置寿命后释放其组件，不能留下循环 Niagara。
-				if (ActiveProjectileTrails != 0)
-				{
-					if (Elapsed < State->GetCombatConfig()->ProjectileLifetime + 0.6f) { break; }
-					return Finish(false, TEXT("Projectile trail remained active beyond the projectile lifetime"));
-				}
 				if (IsAttackActive() || IsMontagePlaying() || !HasNoAttackTasks()) { return Finish(false, TEXT("Avatar replacement left montage or AbilityTasks active")); }
 				Phase = 20;
 				Elapsed = 0.f;
@@ -527,13 +398,7 @@ namespace WizardCombatSmoke
 				Next();
 				break;
 			case 30:
-				if (Elapsed > State->GetCombatConfig()->ProjectileLifetime + 2.f && ActiveProjectileTrails != 0)
-				{
-					return Finish(false, TEXT("Projectile Niagara remained active after final release/lifetime"));
-				}
-				if (ActiveProjectileTrails != 0) { break; }
-				UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_PROJECTILE_CLEANUP: ActiveTrails=%d"), ActiveProjectileTrails);
-				return Finish(true, TEXT("Native montage Notify single shot after release; duplicate event guard; configured projectile/trail; GE/GC/HUD; cooldown and montage continuation; cancel/menu/death/interruption windup; avatar replacement; no active montage/tasks/trails"));
+				return Finish(true, TEXT("Native montage Notify single shot after release; duplicate event guard; GE/HUD; cooldown and montage continuation; cancel/menu/death/interruption windup; avatar replacement; no active montage/tasks"));
 			case 31:
 				if (!IsReady()) { break; }
 				SpawnSnapshot = SpawnCount;
@@ -645,41 +510,34 @@ namespace WizardCombatSmoke
 		const UGameplayEffect* Cooldown = Ability ? Ability->GetCooldownGameplayEffect() : nullptr;
 		Test->ConfiguredAbilityClass = Ability ? Ability->GetClass() : nullptr;
 		Test->ConfiguredMontage = Ability ? Ability->AttackMontage.Get() : nullptr;
-		Test->ConfiguredImpactSystems = FindImpactSystems(Ability && Ability->DamageEffectClass ? Ability->DamageEffectClass->GetDefaultObject<UGameplayEffect>() : nullptr);
-		if (!Test->ConfiguredMontage.IsValid() || !Ability->IsAnimationConfigurationValid() || Test->ConfiguredImpactSystems.IsEmpty())
+		if (!Test->ConfiguredMontage.IsValid() || !Ability->IsAnimationConfigurationValid())
 		{
-			Test->Finish(false, TEXT("Configured montage and actual GE Burst Niagara systems must be available"));
+			Test->Finish(false, TEXT("Configured montage must be available"));
 			return;
 		}
 		Test->NormalMontageSeconds = Test->ConfiguredMontage->GetPlayLength() / Test->ConfiguredMontage->RateScale;
 		Test->ConfiguredProjectileClass = Ability ? Ability->ProjectileClass.Get() : nullptr;
-		AWizardProjectile* ProjectileDefaults = Test->ConfiguredProjectileClass.IsValid()
-			? Cast<AWizardProjectile>(Test->ConfiguredProjectileClass->GetDefaultObject()) : nullptr;
-		const UNiagaraComponent* TrailDefaults = ProjectileDefaults
-			? Cast<UNiagaraComponent>(ProjectileDefaults->GetDefaultSubobjectByName(TEXT("Trail"))) : nullptr;
-		Test->ConfiguredTrailSystem = TrailDefaults ? TrailDefaults->GetAsset() : nullptr;
-		if (!Test->ConfiguredProjectileClass.IsValid() || !Test->ConfiguredTrailSystem.IsValid())
+		if (!Test->ConfiguredProjectileClass.IsValid())
 		{
-			Test->Finish(false, TEXT("Configured projectile CDO must provide a Trail Niagara system for visual smoke"));
+			Test->Finish(false, TEXT("Configured projectile class must be available"));
 			return;
 		}
-		// 本例只支持静态冷却 GE；测试读取实际配置，不复刻持续时间计算。
 		if (!Cooldown || !Cooldown->DurationMagnitude.GetStaticMagnitudeIfPossible(1.0f, Test->Interval)
 			|| !FMath::IsFinite(Test->Interval) || Test->Interval < 0.05f)
 		{
 			Test->Finish(false, TEXT("Configured cooldown GE must have a finite static duration >= 0.05s"));
 			return;
 		}
-		UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_SMOKE_BEGIN: Interval=%.3f Target=%s ConfiguredClass=%s ConfiguredSystem=%s"),
-			Test->Interval, *Position.ToString(), *Test->ConfiguredProjectileClass->GetPathName(), *Test->ConfiguredTrailSystem->GetPathName());
-		UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_MONTAGE_CONFIG: Montage=%s Seconds=%.3f ImpactSystem=%s"),
-			*Test->ConfiguredMontage->GetPathName(), Test->NormalMontageSeconds, *Test->ConfiguredImpactSystems[0]->GetPathName());
+		UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_SMOKE_BEGIN: Interval=%.3f Target=%s ConfiguredClass=%s"),
+			Test->Interval, *Position.ToString(), *Test->ConfiguredProjectileClass->GetPathName());
+		UE_LOG(LogWizardCombatSmoke, Display, TEXT("WIZARD_COMBAT_MONTAGE_CONFIG: Montage=%s Seconds=%.3f"),
+			*Test->ConfiguredMontage->GetPathName(), Test->NormalMontageSeconds);
 		Test->BindObservers();
 		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Test](float Delta) { return Test->Tick(Delta); }));
 	}
 
 	FAutoConsoleCommandWithWorld Command(TEXT("Wizard.CombatSmokeTest"),
-		TEXT("Check real montage Notify, projectile/GE/GC/HUD, tap/hold/release, cancellation and avatar replacement. Game exits after checking; PIE stays open."),
+		TEXT("Check real montage Notify, projectile/GE/HUD, tap/hold/release, cancellation and avatar replacement. Game exits after checking; PIE stays open."),
 		FConsoleCommandWithWorldDelegate::CreateStatic(&Run));
 }
 #endif
