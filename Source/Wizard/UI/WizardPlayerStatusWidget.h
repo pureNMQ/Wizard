@@ -23,11 +23,14 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UProgressBar> ManaBar;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> HealthText;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> ManaText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> GoldText;
 private:
 	friend class FWizardPlayerStatusTest;
 	void UnbindAttributes();
 	void Refresh();
+	TWeakObjectPtr<AWizardPlayerState> PlayerState;
 	TWeakObjectPtr<UAbilitySystemComponent> PlayerASC;
+	FDelegateHandle GoldHandle;
 	FDelegateHandle HealthHandle, MaxHealthHandle, ManaHandle, MaxManaHandle;
 	float DisplayedPlayerHealth = 0.f;
 };

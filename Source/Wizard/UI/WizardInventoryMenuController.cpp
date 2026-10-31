@@ -20,7 +20,6 @@ void UWizardInventoryMenuController::Close()
 	OnFeedback.Clear();
 }
 FWizardInventorySnapshot UWizardInventoryMenuController::GetSnapshot() const { return Model.IsValid() ? Model->GetSnapshot() : FWizardInventorySnapshot(); }
-const UWizardItemDefinition* UWizardInventoryMenuController::FindDefinition(FName Id) const { return Model.IsValid() ? Model->FindDefinition(Id) : nullptr; }
 void UWizardInventoryMenuController::Select(int32 Slot)
 {
 	if (!Model.IsValid()) return;
@@ -101,11 +100,7 @@ void UWizardInventoryMenuController::SubmitQuantity(const FWizardInventoryQuanti
 		Report(Model->Split(Request.Item, Quantity, Empty));
 		return;
 	}
-	FWizardInventoryDropTicket Ticket;
-	const auto Prepared = Model->PrepareDrop(Request.Item, Quantity, Ticket);
-	// T05 尚未提供地面接收者：保留冻结来源，明确报告不可交接。
-	Report(Prepared == EWizardInventoryResult::Success
-		? Model->CommitDrop(Ticket, [](const FWizardInventoryEntry&) { return false; }) : Prepared);
+	Report(Model->Discard(Request.Item, Quantity));
 }
 void UWizardInventoryMenuController::HandleModelChanged()
 {
@@ -139,7 +134,7 @@ FText WizardInventory::ResultText(EWizardInventoryResult Result)
 	case EWizardInventoryResult::FullResource: Text = TEXT("对应生命或法力已满"); break;
 	case EWizardInventoryResult::Dead: Text = TEXT("死亡时不能使用物品"); break;
 	case EWizardInventoryResult::Busy: Text = TEXT("当前正在处理物品操作"); break;
-	case EWizardInventoryResult::DropUnavailable: Text = TEXT("地面丢弃尚未接入，物品已保留"); break;
+	case EWizardInventoryResult::DropUnavailable: Text = TEXT("无法生成地面物品，物品已保留"); break;
 	case EWizardInventoryResult::EffectFailed: Text = TEXT("药水效果未生效，物品已保留"); break;
 	default: Text = TEXT("物品配置或状态无效"); break;
 	}

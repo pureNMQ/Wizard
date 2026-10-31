@@ -21,8 +21,8 @@ void UWizardInventoryTile::Configure(const FWizardInventoryEntry& Entry, int32 I
 {
 	MenuController = Controller;
 	SlotIndex = Index;
-	const UWizardItemDefinition* Definition = Controller ? Controller->FindDefinition(Entry.DefinitionId) : nullptr;
-	IconTexture = Definition ? Definition->Icon.LoadSynchronous() : nullptr;
+	const UWizardItemDefinition* Definition = Entry.Definition.Get();
+	IconTexture = Definition ? Definition->GetIconTexture() : nullptr;
 	if (Icon)
 	{
 		Icon->SetBrushFromTexture(IconTexture);
@@ -222,7 +222,7 @@ void UWizardInventoryMenu::Refresh()
 	if (DetailsPopover && DetailsPopover->IsVisible())
 	{
 		const auto Selected = MenuController->GetSelectedEntry();
-		const UWizardItemDefinition* Definition = MenuController->FindDefinition(Selected.DefinitionId);
+		const UWizardItemDefinition* Definition = Selected.Definition.Get();
 		if (!Definition) HideDetails(); else DetailsPopover->Configure(Definition, Selected.Quantity);
 	}
 }
@@ -231,7 +231,7 @@ void UWizardInventoryMenu::Inspect(int32 Index, UWizardInventoryTile* Source, bo
 	if (!MenuController || !DetailsPopover || UWidgetBlueprintLibrary::IsDragDropping()) return;
 	MenuController->Select(Index);
 	const auto Entry = MenuController->GetSelectedEntry();
-	const UWizardItemDefinition* Definition = MenuController->FindDefinition(Entry.DefinitionId);
+	const UWizardItemDefinition* Definition = Entry.Definition.Get();
 	if (!Definition) { HideDetails(); return; }
 	HoverSource = Source; OutsideTime = 0.f; bKeyboardDetails = bKeyboard;
 	DetailsPopover->Configure(Definition, Entry.Quantity);

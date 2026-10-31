@@ -17,6 +17,7 @@
 #include "UI/WizardUIRoot.h"
 #include "Challenge/WizardBarrierVisualComponent.h"
 #include "Skills/WizardSkillLoadoutComponent.h"
+#include "Loot/WizardWorldPickup.h"
 
 AWizardChallengeArena::AWizardChallengeArena()
 {
@@ -37,6 +38,12 @@ bool AWizardChallengeArena::IsConfigurationValid() const
 		for (const FWizardChallengeSpawn& Spawn : Wave.Spawns)
 		{
 			if (!Spawn.EnemyClass || Spawn.Count < 1 || Spawn.Count > 32) return false;
+			if (Spawn.EnemyClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists)
+				|| !Spawn.EnemyClass->GetDefaultObject<AWizardEnemy>()->IsConfigurationValid())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("波次敌人配置无效：%s；请检查该蓝图的战斗数值与行为树"), *Spawn.EnemyClass->GetPathName());
+				return false;
+			}
 		}
 	}
 	for (const FVector& Offset : SpawnOffsets)
@@ -112,6 +119,13 @@ bool AWizardChallengeArena::TryStartChallenge(AWizardPlayerState* Player)
 	if (!Avatar || FVector::Dist2D(Avatar->GetActorLocation(), GetActorLocation()) > ArenaRadius - EntryInset
 		|| FMath::Abs(Avatar->GetActorLocation().Z - GetActorLocation().Z) > 500.f) return false;
 	ActivePlayer = Player;
+	// 本轮结束保留战利品供结果展示期间拾取，下次挑战才清除上一轮地面余量。
+	TArray<AWizardWorldPickup*> OldDrops;
+	for (TActorIterator<AWizardWorldPickup> It(GetWorld()); It; ++It)
+	{
+		if (It->BelongsToChallenge(this)) OldDrops.Add(*It);
+	}
+	for (AWizardWorldPickup* Pickup : OldDrops) Pickup->Destroy();
 	bRoundWon = false;
 	Player->SetInChallenge(true);
 	HealthHandle = Player->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::HandlePlayerHealth);

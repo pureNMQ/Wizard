@@ -40,6 +40,7 @@ bool FWizardPlayerStatusTest::RunTest(const FString& Parameters)
 	Widget->ManaBar = NewObject<UProgressBar>(Widget);
 	Widget->HealthText = NewObject<UTextBlock>(Widget);
 	Widget->ManaText = NewObject<UTextBlock>(Widget);
+	Widget->GoldText = NewObject<UTextBlock>(Widget);
 	auto Check = [this, Widget](float HealthRatio, float ManaRatio, const TCHAR* Health, const TCHAR* Mana)
 	{
 		TestEqual(TEXT("实际生命条"), Widget->HealthBar->GetPercent(), HealthRatio);
@@ -49,7 +50,12 @@ bool FWizardPlayerStatusTest::RunTest(const FString& Parameters)
 	};
 	Widget->BindPlayer(nullptr);
 	Check(0.f, 0.f, TEXT("0/0"), TEXT("0/0"));
+	TestEqual(TEXT("未绑定金币为零"), Widget->GoldText->GetText().ToString(), FString(TEXT("0")));
+	First->TryAddGold(12);
 	Widget->BindPlayer(First);
+	TestEqual(TEXT("绑定刷新当前金币"), Widget->GoldText->GetText().ToString(), FText::AsNumber(12).ToString());
+	First->TryAddGold(8);
+	TestEqual(TEXT("金币事件刷新"), Widget->GoldText->GetText().ToString(), FText::AsNumber(20).ToString());
 	Check(1.f, 1.f, TEXT("100/100"), TEXT("100/100"));
 	A->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 50.f);
 	Check(.5f, 1.f, TEXT("50/100"), TEXT("100/100"));
@@ -61,6 +67,10 @@ bool FWizardPlayerStatusTest::RunTest(const FString& Parameters)
 	Check(.25f, .5f, TEXT("50/200"), TEXT("25/50"));
 	Widget->BindPlayer(First);
 	Widget->BindPlayer(Second);
+	First->TryAddGold(1);
+	TestEqual(TEXT("切换来源解绑旧金币事件"), Widget->GoldText->GetText().ToString(), FText::AsNumber(0).ToString());
+	Second->TryAddGold(7);
+	TestEqual(TEXT("新来源金币刷新"), Widget->GoldText->GetText().ToString(), FText::AsNumber(7).ToString());
 	A->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 20.f);
 	A->SetNumericAttributeBase(UWizardAttributeSet::GetMaxHealthAttribute(), 80.f);
 	A->SetNumericAttributeBase(UWizardAttributeSet::GetManaAttribute(), 10.f);
@@ -70,6 +80,8 @@ bool FWizardPlayerStatusTest::RunTest(const FString& Parameters)
 	B->SetNumericAttributeBase(UWizardAttributeSet::GetManaAttribute(), 40.f);
 	Check(.3f, .4f, TEXT("30/100"), TEXT("40/100"));
 	Widget->NativeDestruct();
+	Second->TryAddGold(2);
+	TestEqual(TEXT("销毁后金币不再刷新"), Widget->GoldText->GetText().ToString(), FText::AsNumber(7).ToString());
 	B->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 10.f);
 	B->SetNumericAttributeBase(UWizardAttributeSet::GetMaxHealthAttribute(), 50.f);
 	B->SetNumericAttributeBase(UWizardAttributeSet::GetManaAttribute(), 20.f);

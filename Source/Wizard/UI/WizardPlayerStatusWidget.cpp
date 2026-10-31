@@ -16,6 +16,8 @@ void UWizardPlayerStatusWidget::NativeConstruct()
 void UWizardPlayerStatusWidget::BindPlayer(AWizardPlayerState* State)
 {
 	UnbindAttributes();
+	PlayerState = State;
+	if (State) GoldHandle = State->OnGoldChanged.AddUObject(this, &ThisClass::Refresh);
 	UAbilitySystemComponent* Component = State ? State->GetAbilitySystemComponent() : nullptr;
 	PlayerASC = Component;
 	if (Component)
@@ -35,6 +37,9 @@ void UWizardPlayerStatusWidget::BindPlayer(AWizardPlayerState* State)
 
 void UWizardPlayerStatusWidget::UnbindAttributes()
 {
+	if (AWizardPlayerState* State = PlayerState.Get()) State->OnGoldChanged.Remove(GoldHandle);
+	GoldHandle.Reset();
+	PlayerState.Reset();
 	if (UAbilitySystemComponent* Component = PlayerASC.Get())
 	{
 		Component->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).Remove(HealthHandle);
@@ -57,6 +62,7 @@ void UWizardPlayerStatusWidget::Refresh()
 	const float Mana = Component ? Component->GetNumericAttribute(UWizardAttributeSet::GetManaAttribute()) : 0.f;
 	const float MaxMana = Component ? Component->GetNumericAttribute(UWizardAttributeSet::GetMaxManaAttribute()) : 0.f;
 	DisplayedPlayerHealth = Health;
+	if (GoldText) GoldText->SetText(FText::AsNumber(PlayerState.IsValid() ? PlayerState->GetGold() : 0));
 	if (HealthBar) HealthBar->SetPercent(MaxHealth > 0.f ? FMath::Clamp(Health / MaxHealth, 0.f, 1.f) : 0.f);
 	if (ManaBar) ManaBar->SetPercent(MaxMana > 0.f ? FMath::Clamp(Mana / MaxMana, 0.f, 1.f) : 0.f);
 	if (HealthText) HealthText->SetText(FText::FromString(FString::Printf(TEXT("%.0f/%.0f"), Health, MaxHealth)));

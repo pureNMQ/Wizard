@@ -11,6 +11,7 @@
 #include "AbilitySystemComponent.h"
 #include "Components/BoxComponent.h"
 #include "Engine/Engine.h"
+#include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/WorldSettings.h"
@@ -27,6 +28,8 @@ bool FWizardChallengeResultDelayTest::RunTest(const FString& Parameters)
 	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false, NAME_None, nullptr, true, ERHIFeatureLevel::Num, &Init);
 	if (!TestNotNull(TEXT("结果生命周期测试世界"), World)) return false;
 	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
+	// 正式怪物携带屏幕空间血条，WidgetComponent推进需要GameInstance。
+	World->SetGameInstance(NewObject<UGameInstance>(GEngine));
 	ON_SCOPE_EXIT { World->DestroyWorld(false); GEngine->DestroyWorldContext(World); };
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -38,7 +41,7 @@ bool FWizardChallengeResultDelayTest::RunTest(const FString& Parameters)
 	Arena->SpawnOffsets.Add(FVector(500,0,100));
 	FWizardChallengeWave Wave;
 	FWizardChallengeSpawn Spawn;
-	Spawn.EnemyClass = AWizardEnemy::StaticClass();
+	Spawn.EnemyClass = LoadClass<AWizardEnemy>(nullptr, TEXT("/Game/Wizard/Enemies/BP_Slime.BP_Slime_C"));
 	Wave.Spawns.Add(Spawn);
 	Arena->Waves.Add(Wave);
 	World->InitializeActorsForPlay(FURL());
@@ -72,6 +75,8 @@ bool FWizardChallengeResultDelayTest::RunTest(const FString& Parameters)
 		AWizardEnemy* Enemy = nullptr;
 		for (TActorIterator<AWizardEnemy> It(World); It; ++It) if (It->SourceChallenge.Get() == Arena) { Enemy = *It; break; }
 		if (!TestNotNull(TEXT("真实波次敌人"), Enemy)) return false;
+		// 本夹具只验证结果时序；掉落由专门的数量守恒回归覆盖。
+		Enemy->DropConfig = nullptr;
 		if (!bDeath) Player->GetSkills()->ApplyShield(40.f, 10.f);
 		if (bDeath) Player->GetAbilitySystemComponent()->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 0.f);
 		else Enemy->GetAbilitySystemComponent()->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), 0.f);

@@ -1,7 +1,26 @@
 #include "Inventory/WizardItemDefinition.h"
+#include "Engine/AssetManager.h"
+#include "Loot/WizardLootSettings.h"
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
 #endif
+
+FPrimaryAssetId UWizardItemDefinition::GetPrimaryAssetId() const
+{
+	return FPrimaryAssetId(TEXT("WizardItem"), ItemId);
+}
+
+const UWizardItemDefinition* UWizardItemDefinition::Resolve(FName Id)
+{
+	if (Id.IsNone()) return nullptr;
+	const UWizardItemDefinition* Definition = Cast<UWizardItemDefinition>(UAssetManager::Get().GetPrimaryAssetPath(FPrimaryAssetId(TEXT("WizardItem"), Id)).TryLoad());
+	return Definition && Definition->ItemId == Id ? Definition : nullptr;
+}
+
+UTexture2D* UWizardItemDefinition::GetIconTexture() const
+{
+	return UWizardLootSettings::ResolveIcon(Icon);
+}
 
 bool UWizardItemDefinition::IsConfigurationValid() const
 {

@@ -1,91 +1,33 @@
 #include "Inventory/WizardInventoryComponent.h"
+#include "WizardPlayerState.h"
+#include "GameFramework/Pawn.h"
+#include "Loot/WizardWorldPickup.h"
+#include "Loot/WizardPickupComponent.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/WizardAttributeSet.h"
 #include "Skills/WizardSkillEffects.h"
-#if WITH_EDITOR
-#include "Misc/DataValidation.h"
-#endif
-
-#if WITH_EDITOR
-EDataValidationResult UWizardInventoryConfig::IsDataValid(FDataValidationContext& Context) const
-{
-	const EDataValidationResult Parent = Super::IsDataValid(Context);
-	TMap<FName, const UWizardItemDefinition*> ById;
-	bool bValid = Parent != EDataValidationResult::Invalid;
-	for (const UWizardItemDefinition* Definition : Definitions)
-	{
-		if (!Definition || !Definition->IsConfigurationValid() || ById.Contains(Definition->ItemId))
-		{
-			Context.AddError(FText::FromString(TEXT("背包目录包含缺失、非法或重复ID的定义。")));
-			bValid = false;
-			continue;
-		}
-		ById.Add(Definition->ItemId, Definition);
-	}
-	TMap<FName, int64> Totals;
-	for (const FWizardInitialItem& Item : InitialItems)
-	{
-		if (Item.Quantity <= 0 || !ById.Contains(Item.DefinitionId))
-		{
-			Context.AddError(FText::FromString(TEXT("初始库存包含未知定义或非正数数量。")));
-			bValid = false;
-			continue;
-		}
-		Totals.FindOrAdd(Item.DefinitionId) += Item.Quantity;
-	}
-	int64 SlotsRequired = 0;
-	for (const auto& Pair : Totals)
-	{
-		const int64 Limit = ById[Pair.Key]->GetStackLimit();
-		SlotsRequired += (Pair.Value + Limit - 1) / Limit;
-	}
-	if (SlotsRequired > UWizardInventoryComponent::Capacity)
-	{
-		Context.AddError(FText::FromString(TEXT("初始库存超过20格容量。")));
-		bValid = false;
-	}
-	return bValid ? EDataValidationResult::Valid : EDataValidationResult::Invalid;
-}
-#endif
-
 UWizardInventoryComponent::UWizardInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	State.Slots.SetNum(Capacity);
 }
 
-const UWizardItemDefinition* UWizardInventoryComponent::FindDefinition(FName Id) const
+bool UWizardInventoryComponent::ResolveSnapshot(TArray<FWizardInventoryEntry>& Slots) const
 {
-	const auto& Definitions = Config ? Config->Definitions : Catalog;
-	for (const UWizardItemDefinition* Definition : Definitions)
-	{
-		if (Definition && Definition->ItemId == Id) return Definition;
-	}
-	return nullptr;
-}
-
-bool UWizardInventoryComponent::IsCatalogValid() const
-{
-	TSet<FName> Ids;
-	const auto& Definitions = Config ? Config->Definitions : Catalog;
-	for (const UWizardItemDefinition* Definition : Definitions)
-	{
-		if (!Definition || !Definition->IsConfigurationValid() || Ids.Contains(Definition->ItemId)) return false;
-		Ids.Add(Definition->ItemId);
-	}
-	return true;
-}
-
-bool UWizardInventoryComponent::IsSnapshotValid(const FWizardInventorySnapshot& Snapshot) const
-{
-	if (Snapshot.Slots.Num() != Capacity || !IsCatalogValid()) return false;
+	if (Slots.Num() != Capacity) return false;
 	TSet<FGuid> Ids;
-	for (const FWizardInventoryEntry& Entry : Snapshot.Slots)
+	TMap<FName, const UWizardItemDefinition*> Definitions;
+	for (FWizardInventoryEntry& Entry : Slots)
 	{
 		if (Entry.IsEmpty()) continue;
-		const UWizardItemDefinition* Definition = FindDefinition(Entry.DefinitionId);
-		if (!Definition || !Entry.InstanceId.IsValid() || Entry.Quantity <= 0 || Entry.Quantity > Definition->GetStackLimit() || Ids.Contains(Entry.InstanceId)) return false;
+		const UWizardItemDefinition* Definition = Entry.Definition ? Entry.Definition.Get() : UWizardItemDefinition::Resolve(Entry.DefinitionId);
+		if (!Definition || !Definition->IsConfigurationValid() || Definition->ItemId != Entry.DefinitionId
+			|| !Entry.InstanceId.IsValid() || Entry.Quantity <= 0 || Entry.Quantity > Definition->GetStackLimit() || Ids.Contains(Entry.InstanceId)) return false;
+		const UWizardItemDefinition* const* Existing = Definitions.Find(Entry.DefinitionId);
+		if (Existing && *Existing != Definition) return false;
+		Definitions.Add(Entry.DefinitionId, Definition);
+		Entry.Definition = Definition;
 		Ids.Add(Entry.InstanceId);
 	}
 	return true;
@@ -116,35 +58,19 @@ void UWizardInventoryComponent::Commit(TArray<FWizardInventoryEntry>&& Slots)
 	OnChanged.Broadcast();
 }
 
-EWizardInventoryResult UWizardInventoryComponent::InitializeInventory()
-{
-	if (bMutating) return EWizardInventoryResult::Busy;
-	if (bInitialized) return EWizardInventoryResult::Success;
-	if (!IsCatalogValid()) return EWizardInventoryResult::InvalidDefinition;
-	// 在临时组件验证全量初值；失败不会向真实库存泄漏部分发放。
-	UWizardInventoryComponent* Pending = NewObject<UWizardInventoryComponent>(this);
-	Pending->Catalog = Config ? Config->Definitions : Catalog;
-	const auto& Items = Config ? Config->InitialItems : InitialItems;
-	for (const FWizardInitialItem& Item : Items)
-	{
-		int32 Accepted = 0;
-		const EWizardInventoryResult Result = Pending->AddItems(Item.DefinitionId, Item.Quantity, Accepted);
-		if (Result != EWizardInventoryResult::Success) return Result;
-		if (Accepted != Item.Quantity) return EWizardInventoryResult::NoCapacity;
-	}
-	bInitialized = true;
-	Commit(MoveTemp(Pending->State.Slots));
-	return EWizardInventoryResult::Success;
-}
-
-EWizardInventoryResult UWizardInventoryComponent::AddItems(FName Id, int32 Quantity, int32& Accepted)
+EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefinition* Definition, int32 Quantity, int32& Accepted)
 {
 	Accepted = 0;
 	if (bMutating) return EWizardInventoryResult::Busy;
 	if (Quantity <= 0) return EWizardInventoryResult::InvalidQuantity;
-	if (!IsCatalogValid()) return EWizardInventoryResult::InvalidDefinition;
-	const UWizardItemDefinition* Definition = FindDefinition(Id);
 	if (!Definition) return EWizardInventoryResult::UnknownDefinition;
+	if (!Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
+	const FName Id = Definition->ItemId;
+	// 同一稳定ID不能在一个背包中代表不同定义，避免错误合并；无需预先登记目录。
+	for (const FWizardInventoryEntry& Entry : State.Slots)
+	{
+		if (Entry.DefinitionId == Id && Entry.Definition != Definition) return EWizardInventoryResult::InvalidDefinition;
+	}
 	TArray<FWizardInventoryEntry> Slots = State.Slots;
 	int32 Remaining = Quantity;
 	for (FWizardInventoryEntry& Entry : Slots)
@@ -160,6 +86,7 @@ EWizardInventoryResult UWizardInventoryComponent::AddItems(FName Id, int32 Quant
 		if (!Entry.IsEmpty()) continue;
 		Entry.InstanceId = FGuid::NewGuid();
 		Entry.DefinitionId = Id;
+		Entry.Definition = Definition;
 		Entry.Quantity = FMath::Min(Remaining, Definition->GetStackLimit());
 		Remaining -= Entry.Quantity;
 	}
@@ -178,7 +105,7 @@ EWizardInventoryResult UWizardInventoryComponent::Move(FWizardInventoryRequest R
 	TArray<FWizardInventoryEntry> Slots = State.Slots;
 	FWizardInventoryEntry& Source = Slots[Request.Slot];
 	FWizardInventoryEntry& Target = Slots[TargetSlot];
-	const UWizardItemDefinition* Definition = FindDefinition(Source.DefinitionId);
+	const UWizardItemDefinition* Definition = Source.Definition.Get();
 	if (!Definition || !Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
 	if (Target.DefinitionId == Source.DefinitionId && Definition->GetStackLimit() > 1)
 	{
@@ -212,9 +139,8 @@ EWizardInventoryResult UWizardInventoryComponent::Split(FWizardInventoryRequest 
 EWizardInventoryResult UWizardInventoryComponent::RestoreSnapshot(const FWizardInventorySnapshot& Snapshot)
 {
 	if (bMutating) return EWizardInventoryResult::Busy;
-	if (!IsSnapshotValid(Snapshot)) return EWizardInventoryResult::InvalidSnapshot;
-	bInitialized = true;
 	TArray<FWizardInventoryEntry> Slots = Snapshot.Slots;
+	if (!ResolveSnapshot(Slots)) return EWizardInventoryResult::InvalidSnapshot;
 	Commit(MoveTemp(Slots));
 	return EWizardInventoryResult::Success;
 }
@@ -223,7 +149,7 @@ EWizardInventoryResult UWizardInventoryComponent::Use(FWizardInventoryRequest Re
 {
 	const EWizardInventoryResult Result = ValidateRequest(Request);
 	if (Result != EWizardInventoryResult::Success) return Result;
-	const UWizardItemDefinition* Definition = FindDefinition(State.Slots[Request.Slot].DefinitionId);
+	const UWizardItemDefinition* Definition = State.Slots[Request.Slot].Definition.Get();
 	if (!Definition || !Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
 	if (Definition->Type != EWizardItemType::Consumable || Definition->PotionResource == EWizardPotionResource::None) return EWizardInventoryResult::NotConsumable;
 	IAbilitySystemInterface* OwnerInterface = Cast<IAbilitySystemInterface>(GetOwner());
@@ -276,7 +202,7 @@ EWizardInventoryResult UWizardInventoryComponent::CommitDrop(const FWizardInvent
 	Slots[Ticket.Request.Slot].Quantity -= Ticket.Entry.Quantity;
 	if (Slots[Ticket.Request.Slot].Quantity == 0) Slots[Ticket.Request.Slot] = {};
 	FWizardInventoryEntry Dropped = Ticket.Entry;
-	// 拆出地面堆叠需新身份；整堆交接保留原身份。
+	// 交接记录不能与保留的背包栈共用身份；地面对象独占数量，回包时分配或合并到背包栈身份。
 	if (!Slots[Ticket.Request.Slot].IsEmpty()) Dropped.InstanceId = FGuid::NewGuid();
 	{
 		TGuardValue<bool> Guard(bMutating, true);
@@ -286,4 +212,32 @@ EWizardInventoryResult UWizardInventoryComponent::CommitDrop(const FWizardInvent
 	}
 	OnChanged.Broadcast();
 	return EWizardInventoryResult::Success;
+}
+
+EWizardInventoryResult UWizardInventoryComponent::Discard(FWizardInventoryRequest Request, int32 Quantity)
+{
+	FWizardInventoryDropTicket Ticket;
+	const EWizardInventoryResult Prepared = PrepareDrop(Request, Quantity, Ticket);
+	if (Prepared != EWizardInventoryResult::Success) return Prepared;
+	AWizardPlayerState* Player = Cast<AWizardPlayerState>(GetOwner());
+	APawn* Pawn = Player ? Player->GetPawn() : nullptr;
+	if (!IsValid(Pawn))
+	{
+		return EWizardInventoryResult::DropUnavailable;
+	}
+	const UWizardItemDefinition* Definition = Ticket.Entry.Definition.Get();
+	AWizardWorldPickup* Pickup = nullptr;
+	const EWizardInventoryResult Result = CommitDrop(Ticket, [&](const FWizardInventoryEntry& Entry)
+	{
+		// 碰撞与拾取在来源扣量完成后才激活，暂停中的丢弃也不会即时捡回。
+		Pickup = AWizardWorldPickup::SpawnItem(Pawn->GetWorld(), Definition, Entry.Quantity, Pawn->GetActorLocation());
+		return IsValid(Pickup);
+	});
+	if (Result == EWizardInventoryResult::Success && IsValid(Pickup))
+	{
+		Player->GetPickup()->BlockUntilExit(Pickup);
+		Pickup->ActivatePickup();
+	}
+	else if (IsValid(Pickup)) Pickup->Destroy();
+	return Result;
 }

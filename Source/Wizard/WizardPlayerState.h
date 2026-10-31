@@ -13,8 +13,11 @@ class UWizardInventoryComponent;
 class UWizardCombatConfig;
 class UWizardSkillLoadoutComponent;
 class UWizardInteractionComponent;
+class UWizardPickupComponent;
 struct FOnAttributeChangeData;
 struct FAbilityEndedData;
+
+DECLARE_MULTICAST_DELEGATE(FWizardGoldChanged);
 
 UCLASS()
 class WIZARD_API AWizardPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -42,6 +45,11 @@ public:
 	// 挑战完成/死亡共用恢复入口；不改搭配与冷却，不重授予能力。
 	void RestoreAtCamp();
 	UFUNCTION(BlueprintPure, Category="Inventory") UWizardInventoryComponent* GetInventory() const { return Inventory; }
+	UFUNCTION(BlueprintPure, Category="Inventory") UWizardPickupComponent* GetPickup() const { return Pickup; }
+	UFUNCTION(BlueprintPure, Category="Inventory") int32 GetGold() const { return Gold; }
+	// 仅接收正数且必须全量入账；溢出、无权限或通知回调重入时保持余额。
+	UFUNCTION(BlueprintCallable, Category="Inventory") bool TryAddGold(int32 Amount);
+	FWizardGoldChanged OnGoldChanged;
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
@@ -55,11 +63,14 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Skills") TObjectPtr<UWizardSkillLoadoutComponent> Skills;
 	UPROPERTY(VisibleAnywhere, Category="Interaction") TObjectPtr<UWizardInteractionComponent> Interaction;
 	UPROPERTY(VisibleAnywhere, Category="Inventory") TObjectPtr<UWizardInventoryComponent> Inventory;
+	UPROPERTY(VisibleAnywhere, Category="Inventory") TObjectPtr<UWizardPickupComponent> Pickup;
 	FGameplayAbilitySpecHandle BasicAttackHandle;
 	FDelegateHandle HealthDelegate;
 	FDelegateHandle CooldownDelegate;
 	FDelegateHandle AbilityEndedDelegate;
 	FTimerHandle RetryAttackTimer;
+	UPROPERTY(VisibleInstanceOnly, SaveGame, Category="Inventory") int32 Gold = 0;
+	bool bChangingGold = false;
 	bool bAttackHeld = false;
 	bool bInChallenge = false;
 	FVector AimPoint = FVector::ZeroVector;

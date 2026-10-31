@@ -10,9 +10,8 @@ bool FWizardInventoryMenuSessionTest::RunTest(const FString& Parameters)
 	UWizardItemDefinition* Ore = NewObject<UWizardItemDefinition>(Model);
 	Ore->ItemId = TEXT("Ore");
 	Ore->MaxStack = 10;
-	Model->Catalog = {Ore};
 	int32 Accepted = 0;
-	Model->AddItems(Ore->ItemId, 8, Accepted);
+	Model->AddItems(Ore, 8, Accepted);
 	UWizardInventoryMenuController* Menu = NewObject<UWizardInventoryMenuController>();
 	TestTrue(TEXT("建立菜单会话"), Menu->Open(Model));
 	int32 Changed = 0;
@@ -21,7 +20,7 @@ bool FWizardInventoryMenuSessionTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("创建有效拖拽"), Menu->MakeDragRequest(0, OldDrag));
 	Menu->Select(0);
 	TestEqual(TEXT("选择读取真实数量"), Menu->GetSelectedEntry().Quantity, 8);
-	Model->AddItems(Ore->ItemId, 1, Accepted);
+	Model->AddItems(Ore, 1, Accepted);
 	TestTrue(TEXT("过期数量选择不展示为有效物品"), Menu->GetSelectedEntry().IsEmpty());
 	EWizardInventoryResult Feedback = EWizardInventoryResult::Success;
 	Menu->OnFeedback.AddLambda([&Feedback](EWizardInventoryResult Result) { Feedback = Result; });
@@ -33,7 +32,7 @@ bool FWizardInventoryMenuSessionTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("旧拖拽版本反馈"), Feedback, EWizardInventoryResult::StaleRequest);
 	Menu->Close();
 	const int32 ClosedEvents = Changed;
-	Model->AddItems(Ore->ItemId, 1, Accepted);
+	Model->AddItems(Ore, 1, Accepted);
 	TestEqual(TEXT("关闭后解绑模型事件"), Changed, ClosedEvents);
 	TestFalse(TEXT("关闭会话拒绝拖拽"), Menu->HandleDrop(OldDrag, 1));
 	TestTrue(TEXT("同对象可重开"), Menu->Open(Model));
@@ -56,9 +55,8 @@ bool FWizardInventoryQuantityRequestTest::RunTest(const FString& Parameters)
 	UWizardItemDefinition* Ore = NewObject<UWizardItemDefinition>(Model);
 	Ore->ItemId = TEXT("Ore");
 	Ore->MaxStack = 10;
-	Model->Catalog = {Ore};
 	int32 Accepted = 0;
-	Model->AddItems(Ore->ItemId, 16, Accepted);
+	Model->AddItems(Ore, 16, Accepted);
 	UWizardInventoryMenuController* Menu = NewObject<UWizardInventoryMenuController>();
 	Menu->Open(Model);
 	EWizardInventoryResult Feedback = EWizardInventoryResult::Success;
@@ -79,7 +77,7 @@ bool FWizardInventoryQuantityRequestTest::RunTest(const FString& Parameters)
 	Menu->Select(0);
 	FWizardInventoryQuantityRequest Stale;
 	Menu->PrepareQuantity(false, Stale);
-	Model->AddItems(Ore->ItemId, 1, Accepted);
+	Model->AddItems(Ore, 1, Accepted);
 	const auto AfterExternalChange = Model->GetSnapshot();
 	Menu->SubmitQuantity(Stale, 2);
 	TestEqual(TEXT("外部变更后冻结令牌过期"), Feedback, EWizardInventoryResult::StaleRequest);

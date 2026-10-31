@@ -1,7 +1,7 @@
 #if WITH_DEV_AUTOMATION_TESTS && WITH_EDITOR
 #include "Misc/AutomationTest.h"
 #include "Combat/WizardEnemy.h"
-#include "Combat/WizardEnemyConfig.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "Combat/WizardEnemyAttackAbility.h"
 #include "Combat/WizardEnemyAI.h"
 #include "WizardCharacter.h"
@@ -70,8 +70,8 @@ bool FWizardEnemyPursuitRangeTest::RunTest(const FString& Parameters)
 	AWizardPlayerState* Player = World->SpawnActor<AWizardPlayerState>();
 	APlayerController* Controller = World->SpawnActor<APlayerController>();
 	if (!Enemy || !Target || !Player || !Controller) return false;
-	Enemy->EnemyConfig = NewObject<UWizardEnemyConfig>(Enemy);
-	Enemy->EnemyConfig->AttackRange = 160.f;
+	Enemy->BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Game/Wizard/AI/BT_Enemy.BT_Enemy"));
+	Enemy->AttackRange = 160.f;
 	World->InitializeActorsForPlay(FURL());
 	World->BeginPlay();
 	World->GetWorldSettings()->NotifyBeginPlay();

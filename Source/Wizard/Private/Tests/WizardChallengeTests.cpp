@@ -29,10 +29,14 @@ bool FWizardChallengeConfigurationTest::RunTest(const FString& Parameters)
 	Arena->SpawnOffsets.Add(FVector(500,0,100));
 	FWizardChallengeWave Wave;
 	FWizardChallengeSpawn Spawn;
-	Spawn.EnemyClass = AWizardEnemy::StaticClass();
+	Spawn.EnemyClass = LoadClass<AWizardEnemy>(nullptr, TEXT("/Game/Wizard/Enemies/BP_Slime.BP_Slime_C"));
 	Wave.Spawns.Add(Spawn);
 	Arena->Waves.Add(Wave);
 	TestTrue(TEXT("合法简单波次"), Arena->IsConfigurationValid());
+	Arena->Waves[0].Spawns[0].EnemyClass = AWizardEnemy::StaticClass();
+	AddExpectedError(TEXT("波次敌人配置无效"), EAutomationExpectedErrorFlags::Contains, 1);
+	TestFalse(TEXT("无行为树的靶子不能用作挑战敌人"), Arena->IsConfigurationValid());
+	Arena->Waves[0].Spawns[0].EnemyClass = Spawn.EnemyClass;
 	Arena->Waves[0].Spawns[0].Count = 0;
 	TestFalse(TEXT("空生成不能锁住玩家"), Arena->IsConfigurationValid());
 	Arena->Waves[0].Spawns[0].Count = 1;
@@ -73,7 +77,7 @@ bool FWizardChallengeProjectileOwnershipTest::RunTest(const FString& Parameters)
 		Arena->SpawnOffsets.Add(FVector(500,0,100));
 		FWizardChallengeWave Wave;
 		FWizardChallengeSpawn Spawn;
-		Spawn.EnemyClass = AWizardEnemy::StaticClass();
+		Spawn.EnemyClass = LoadClass<AWizardEnemy>(nullptr, TEXT("/Game/Wizard/Enemies/BP_Slime.BP_Slime_C"));
 		Wave.Spawns.Add(Spawn);
 		Arena->Waves.Add(Wave);
 		return Arena;

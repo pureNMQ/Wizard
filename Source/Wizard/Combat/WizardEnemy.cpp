@@ -1,11 +1,8 @@
 #include "Combat/WizardEnemy.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "GAS/WizardAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "UObject/ConstructorHelpers.h"
-#include "Combat/WizardEnemyConfig.h"
 #include "Combat/WizardEnemyAI.h"
 #include "Combat/WizardEnemyAttackAbility.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -14,6 +11,7 @@
 #include "Animation/AnimSequence.h"
 #include "Components/WidgetComponent.h"
 #include "UI/WizardEnemyHealthBar.h"
+#include "Loot/WizardDropConfig.h"
 
 AWizardEnemy::AWizardEnemy()
 {
@@ -30,12 +28,6 @@ AWizardEnemy::AWizardEnemy()
 	EnemyHealthBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 88.0f);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-	UStaticMeshComponent* Visual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TargetVisual"));
-	Visual->SetupAttachment(GetCapsuleComponent());
-	Visual->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Visual->SetRelativeScale3D(FVector(0.7f, 0.7f, 1.5f));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
-	if (Cube.Succeeded()) { Visual->SetStaticMesh(Cube.Object); }
 }
 
 UAbilitySystemComponent* AWizardEnemy::GetAbilitySystemComponent() const
@@ -52,23 +44,18 @@ void AWizardEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	AbilitySystem->InitAbilityActorInfo(this, this);
-	if (EnemyConfig)
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetMaxHealthAttribute(), FMath::Max(1.f, InitialHealth));
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), FMath::Max(1.f, InitialHealth));
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetAttackPowerAttribute(), FMath::Max(0.f, InitialAttackPower));
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetDefenseAttribute(), FMath::Max(0.f, InitialDefense));
+	AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetMoveSpeedAttribute(), FMath::Max(1.f, InitialMoveSpeed));
+	if (IsConfigurationValid())
 	{
-		AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetMaxHealthAttribute(), FMath::Max(1.f, EnemyConfig->Health));
-		AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetHealthAttribute(), FMath::Max(1.f, EnemyConfig->Health));
-		AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetAttackPowerAttribute(), FMath::Max(0.f, EnemyConfig->AttackPower));
-		AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetDefenseAttribute(), FMath::Max(0.f, EnemyConfig->Defense));
-		AbilitySystem->SetNumericAttributeBase(UWizardAttributeSet::GetMoveSpeedAttribute(), FMath::Max(1.f, EnemyConfig->MoveSpeed));
-		if (EnemyConfig->SkeletalMesh)
-		{
-			GetMesh()->SetSkeletalMesh(EnemyConfig->SkeletalMesh);
-			GetMesh()->SetRelativeLocation(EnemyConfig->MeshOffset);
-			GetMesh()->SetRelativeRotation(EnemyConfig->MeshRotation);
-			GetMesh()->SetRelativeScale3D(EnemyConfig->MeshScale);
-			GetMesh()->SetAnimInstanceClass(EnemyConfig->AnimClass);
-			if (UStaticMeshComponent* Visual = FindComponentByClass<UStaticMeshComponent>()) { Visual->SetVisibility(false); }
-		}
 		AttackHandle = AbilitySystem->GiveAbility(FGameplayAbilitySpec(UWizardEnemyAttackAbility::StaticClass(), 1, INDEX_NONE, this));
+	}
+	else if (BehaviorTree)
+	{
+		UE_LOG(LogTemp, Error, TEXT("敌人战斗配置无效，禁止启动攻击：%s"), *GetPathName());
 	}
 	GetCharacterMovement()->MaxWalkSpeed = Attributes->GetMoveSpeed();
 	HealthDelegate = AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).AddUObject(this, &AWizardEnemy::OnHealthChanged);
@@ -82,6 +69,7 @@ void AWizardEnemy::OnHealthChanged(const FOnAttributeChangeData& Data)
 	if (!bDeathHandled && Data.OldValue > 0.0f && Data.NewValue <= 0.0f)
 	{
 		bDeathHandled = true;
+		if (DropConfig) DropConfig->SpawnDrops(GetWorld(), GetActorLocation(), SourceChallenge.Get());
 		AbilitySystem->CancelAllAbilities();
 		if (AAIController* AI = Cast<AAIController>(GetController()))
 		{
@@ -91,7 +79,7 @@ void AWizardEnemy::OnHealthChanged(const FOnAttributeChangeData& Data)
 		GetCharacterMovement()->DisableMovement();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		OnDeath();
-		if (EnemyConfig && EnemyConfig->DeathAnimation) { GetMesh()->PlayAnimation(EnemyConfig->DeathAnimation, false); }
+		if (DeathAnimation) { GetMesh()->PlayAnimation(DeathAnimation, false); }
 		OnEnemyDefeated.Broadcast(this);
 		// 保留短暂死亡反馈，HUD 先接收到零生命事件，再销毁目标。
 		SetLifeSpan(1.5f);
@@ -106,13 +94,26 @@ void AWizardEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
+bool AWizardEnemy::IsConfigurationValid() const
+{
+	return BehaviorTree
+		&& FMath::IsFinite(InitialHealth) && InitialHealth >= 1.f
+		&& FMath::IsFinite(InitialAttackPower) && InitialAttackPower >= 0.f
+		&& FMath::IsFinite(InitialDefense) && InitialDefense >= 0.f
+		&& FMath::IsFinite(InitialMoveSpeed) && InitialMoveSpeed >= 1.f
+		&& FMath::IsFinite(AttackRange) && AttackRange >= 80.f
+		&& FMath::IsFinite(AttackInterval) && AttackInterval >= .1f
+		&& FMath::IsFinite(AttackWindup) && AttackWindup >= .01f
+		&& (!bRanged || (FMath::IsFinite(ProjectileSpeed) && ProjectileSpeed >= 1.f));
+}
+
 bool AWizardEnemy::CanAttackTarget(const AActor* Target) const
 {
 	const AWizardCharacter* Player = Cast<AWizardCharacter>(Target);
 	const UAbilitySystemComponent* TargetASC = Player ? Player->GetAbilitySystemComponent() : nullptr;
-	if (!EnemyConfig || IsDead() || !IsValid(Player) || !TargetASC
+	if (!IsConfigurationValid() || IsDead() || !IsValid(Player) || !TargetASC
 		|| TargetASC->GetNumericAttribute(UWizardAttributeSet::GetHealthAttribute()) <= 0) { return false; }
-	if (FVector::Dist2D(GetActorLocation(), Target->GetActorLocation()) > EnemyConfig->AttackRange) { return false; }
+	if (FVector::Dist2D(GetActorLocation(), Target->GetActorLocation()) > AttackRange) { return false; }
 	const AAIController* AI = Cast<AAIController>(GetController());
 	return AI && AI->LineOfSightTo(Target);
 }

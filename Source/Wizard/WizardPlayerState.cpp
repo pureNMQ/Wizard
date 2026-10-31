@@ -1,5 +1,6 @@
 #include "WizardPlayerState.h"
 #include "Inventory/WizardInventoryComponent.h"
+#include "Loot/WizardPickupComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardCombatConfig.h"
 #include "GAS/WizardAttributeSet.h"
@@ -16,7 +17,7 @@
 AWizardPlayerState::AWizardPlayerState()
 {
 	Inventory = CreateDefaultSubobject<UWizardInventoryComponent>(TEXT("Inventory"));
-	Inventory->Config = LoadObject<UWizardInventoryConfig>(nullptr, TEXT("/Game/Wizard/Data/Items/DA_InventoryConfig.DA_InventoryConfig"), nullptr, LOAD_NoWarn);
+	Pickup = CreateDefaultSubobject<UWizardPickupComponent>(TEXT("Pickup"));
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 	Attributes = CreateDefaultSubobject<UWizardAttributeSet>(TEXT("Attributes"));
 	Skills = CreateDefaultSubobject<UWizardSkillLoadoutComponent>(TEXT("Skills"));
@@ -48,8 +49,8 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 	}
 	AbilitySystem->InitAbilityActorInfo(this, Avatar);
 	Interaction->BindAvatar(Avatar);
+	Pickup->BindAvatar(Avatar);
 	Skills->InitializeAvatar();
-	Inventory->InitializeInventory();
 	if (HasAuthority() && !BasicAttackHandle.IsValid() && GetCombatConfig()->IsConfigurationValid())
 	{
 		BasicAttackHandle = AbilitySystem->GiveAbility(FGameplayAbilitySpec(GetCombatConfig()->BasicAttackAbilityClass, 1));
@@ -174,9 +175,19 @@ void AWizardPlayerState::RestoreAtCamp()
 void AWizardPlayerState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Interaction->BindAvatar(nullptr);
+	Pickup->BindAvatar(nullptr);
 	StopBasicAttack();
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).Remove(HealthDelegate);
 	AbilitySystem->RegisterGameplayTagEvent(WizardCombat::BasicAttackCooldownTag(), EGameplayTagEventType::NewOrRemoved).Remove(CooldownDelegate);
 	AbilitySystem->OnAbilityEnded.Remove(AbilityEndedDelegate);
 	Super::EndPlay(EndPlayReason);
+}
+
+bool AWizardPlayerState::TryAddGold(int32 Amount)
+{
+	if (!HasAuthority() || bChangingGold || Amount <= 0 || Amount > MAX_int32 - Gold) return false;
+	TGuardValue<bool> Guard(bChangingGold, true);
+	Gold += Amount;
+	OnGoldChanged.Broadcast();
+	return true;
 }

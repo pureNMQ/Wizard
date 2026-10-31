@@ -1,6 +1,5 @@
 #include "Combat/WizardEnemyAI.h"
 #include "Combat/WizardEnemy.h"
-#include "Combat/WizardEnemyConfig.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -12,9 +11,9 @@ void AWizardEnemyAIController::OnPossess(APawn* InPawn)
 void AWizardEnemyAIController::StartEnemyBehavior()
 {
 	AWizardEnemy* Enemy = Cast<AWizardEnemy>(GetPawn());
-	if (Enemy && !Enemy->IsDead() && Enemy->EnemyConfig && Enemy->EnemyConfig->BehaviorTree)
+	if (Enemy && !Enemy->IsDead() && Enemy->IsConfigurationValid())
 	{
-		RunBehaviorTree(Enemy->EnemyConfig->BehaviorTree);
+		RunBehaviorTree(Enemy->BehaviorTree);
 	}
 }
 UWizardBTTask_PursueTarget::UWizardBTTask_PursueTarget()
@@ -31,7 +30,7 @@ void UWizardBTTask_PursueTarget::TickTask(UBehaviorTreeComponent& OwnerComp, uin
 	AAIController* AI = OwnerComp.GetAIOwner();
 	AWizardEnemy* Enemy = AI ? Cast<AWizardEnemy>(AI->GetPawn()) : nullptr;
 	APawn* Target = UGameplayStatics::GetPlayerPawn(&OwnerComp, 0);
-	if (!Enemy || Enemy->IsDead() || !Enemy->EnemyConfig || !IsValid(Target))
+	if (!Enemy || Enemy->IsDead() || !Enemy->IsConfigurationValid() || !IsValid(Target))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
@@ -48,7 +47,7 @@ void UWizardBTTask_PursueTarget::TickTask(UBehaviorTreeComponent& OwnerComp, uin
 	if (AI->GetMoveStatus() != EPathFollowingStatus::Moving)
 	{
 		FAIMoveRequest MoveRequest(Target);
-		MoveRequest.SetAcceptanceRadius(FMath::Max(30.f, Enemy->EnemyConfig->AttackRange * .65f));
+		MoveRequest.SetAcceptanceRadius(FMath::Max(30.f, Enemy->AttackRange * .65f));
 		// 攻击按中心距离判定；双方胶囊半径不能扩大到达范围，否则近战会停在射程外。
 		MoveRequest.SetReachTestIncludesAgentRadius(false);
 		MoveRequest.SetReachTestIncludesGoalRadius(false);

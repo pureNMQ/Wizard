@@ -1,6 +1,5 @@
 #include "Combat/WizardEnemyAttackAbility.h"
 #include "Combat/WizardEnemy.h"
-#include "Combat/WizardEnemyConfig.h"
 #include "Combat/WizardEnemyProjectile.h"
 #include "GAS/WizardDamageExecution.h"
 #include "AbilitySystemComponent.h"
@@ -38,9 +37,9 @@ void UWizardEnemyAttackAbility::ApplyCooldown(const FGameplayAbilitySpecHandle H
 {
 	const AWizardEnemy* Enemy = Cast<AWizardEnemy>(ActorInfo->AvatarActor.Get());
 	FGameplayEffectSpecHandle Spec = MakeOutgoingGameplayEffectSpec(UWizardEnemyCooldownEffect::StaticClass(), GetAbilityLevel());
-	if (Spec.IsValid() && Enemy && Enemy->EnemyConfig)
+	if (Spec.IsValid() && Enemy)
 	{
-		Spec.Data->SetDuration(FMath::Max(.1f, Enemy->EnemyConfig->AttackInterval), true);
+		Spec.Data->SetDuration(FMath::Max(.1f, Enemy->AttackInterval), true);
 		Spec.Data->DynamicGrantedTags.AddTag(TAG_EnemyAttackCooldown);
 		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, Spec);
 	}
@@ -55,12 +54,12 @@ void UWizardEnemyAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
-	WindupTask = UAbilityTask_WaitDelay::WaitDelay(this, FMath::Max(.01f, Enemy->EnemyConfig->AttackWindup));
+	WindupTask = UAbilityTask_WaitDelay::WaitDelay(this, FMath::Max(.01f, Enemy->AttackWindup));
 	WindupTask->OnFinish.AddDynamic(this, &ThisClass::OnStrike);
 	WindupTask->ReadyForActivation();
-	if (Enemy->EnemyConfig->AttackMontage)
+	if (Enemy->AttackMontage)
 	{
-		MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, Enemy->EnemyConfig->AttackMontage);
+		MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, Enemy->AttackMontage);
 		MontageTask->OnInterrupted.AddDynamic(this, &ThisClass::OnInterrupted);
 		MontageTask->OnCancelled.AddDynamic(this, &ThisClass::OnInterrupted);
 		MontageTask->OnCompleted.AddDynamic(this, &ThisClass::OnFinished);
@@ -76,10 +75,10 @@ void UWizardEnemyAttackAbility::OnStrike()
 	{
 		UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
 		FGameplayEffectContextHandle Context = ASC->MakeEffectContext();
-		Context.AddSourceObject(Enemy->EnemyConfig);
+		Context.AddSourceObject(Enemy);
 		Context.AddInstigator(Enemy, Enemy);
 		const FGameplayEffectSpecHandle Spec = ASC->MakeOutgoingSpec(UWizardEnemyDamageEffect::StaticClass(), 1.f, Context);
-		if (Enemy->EnemyConfig->bRanged)
+		if (Enemy->bRanged)
 		{
 			FVector Direction = Target->GetActorLocation() - Enemy->GetActorLocation();
 			Direction.Z = 0;
@@ -87,7 +86,7 @@ void UWizardEnemyAttackAbility::OnStrike()
 			AWizardEnemyProjectile* Projectile = Enemy->GetWorld()->SpawnActorDeferred<AWizardEnemyProjectile>(AWizardEnemyProjectile::StaticClass(), Transform, Enemy, Enemy, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 			if (Projectile)
 			{
-				Projectile->Initialize(ASC, Spec, Enemy->EnemyConfig->ProjectileSpeed);
+				Projectile->Initialize(ASC, Spec, Enemy->ProjectileSpeed);
 				Projectile->FinishSpawning(Transform);
 			}
 		}

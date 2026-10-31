@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ClampMin="0")) float PotionMagnitude = 0.f;
 	int32 GetStackLimit() const { return Type == EWizardItemType::Equipment ? 1 : MaxStack; }
 	bool IsConfigurationValid() const;
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
+	static const UWizardItemDefinition* Resolve(FName Id);
+	class UTexture2D* GetIconTexture() const;
 #if WITH_EDITOR
 	virtual EDataValidationResult IsDataValid(class FDataValidationContext& Context) const override;
 #endif

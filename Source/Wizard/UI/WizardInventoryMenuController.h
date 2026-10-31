@@ -30,7 +30,6 @@ public:
 	bool Open(UWizardInventoryComponent* InModel);
 	void Close();
 	FWizardInventorySnapshot GetSnapshot() const;
-	const UWizardItemDefinition* FindDefinition(FName Id) const;
 	void Select(int32 Slot);
 	int32 GetSelectedSlot() const { return Selected.Slot; }
 	FWizardInventoryEntry GetSelectedEntry() const;

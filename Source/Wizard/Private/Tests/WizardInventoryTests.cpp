@@ -9,6 +9,9 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/WorldSettings.h"
+#include "Serialization/MemoryWriter.h"
+#include "Serialization/MemoryReader.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
 namespace WizardInventoryTests
 {
@@ -32,12 +35,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWizardInventoryTransactionsTest, "Wizard.Inven
 bool FWizardInventoryTransactionsTest::RunTest(const FString& Parameters)
 {
 	UWizardInventoryComponent* Inventory = NewObject<UWizardInventoryComponent>();
-	Inventory->Catalog = { WizardInventoryTests::Define(Inventory, TEXT("Ore"), 10), WizardInventoryTests::Define(Inventory, TEXT("Staff"), 1, EWizardItemType::Equipment) };
+	UWizardItemDefinition* Ore = WizardInventoryTests::Define(Inventory, TEXT("Ore"), 10);
+	UWizardItemDefinition* Staff = WizardInventoryTests::Define(Inventory, TEXT("Staff"), 1, EWizardItemType::Equipment);
 	int32 Events = 0;
 	Inventory->OnChanged.AddLambda([&Events]() { ++Events; });
 	int32 Accepted = 0;
 	TestEqual(TEXT("20格固定"), Inventory->GetSnapshot().Slots.Num(), 20);
-	TestEqual(TEXT("加入15素材"), Inventory->AddItems(TEXT("Ore"), 15, Accepted), EWizardInventoryResult::Success);
+	TestEqual(TEXT("加入15素材"), Inventory->AddItems(Ore, 15, Accepted), EWizardInventoryResult::Success);
 	TestEqual(TEXT("完整接收"), Accepted, 15);
 	TestEqual(TEXT("一次广播"), Events, 1);
 	const FWizardInventoryRequest OldRequest = Inventory->MakeRequest(1);
@@ -53,7 +57,7 @@ bool FWizardInventoryTransactionsTest::RunTest(const FString& Parameters)
 	FWizardInventoryRequest WrongId = Inventory->MakeRequest(0);
 	WrongId.InstanceId = FGuid::NewGuid();
 	TestEqual(TEXT("拒绝错误身份"), Inventory->Move(WrongId, 3), EWizardInventoryResult::StaleRequest);
-	TestEqual(TEXT("添加装备"), Inventory->AddItems(TEXT("Staff"), 2, Accepted), EWizardInventoryResult::Success);
+	TestEqual(TEXT("添加装备"), Inventory->AddItems(Staff, 2, Accepted), EWizardInventoryResult::Success);
 	TestEqual(TEXT("装备单件单格"), Inventory->GetSnapshot().Slots[3].Quantity, 1);
 	const FGuid StaffId = Inventory->GetSnapshot().Slots[3].InstanceId;
 	const FGuid OreId = Inventory->GetSnapshot().Slots[0].InstanceId;
@@ -61,8 +65,8 @@ bool FWizardInventoryTransactionsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("交换保留双方身份"), Inventory->GetSnapshot().Slots[0].InstanceId == StaffId && Inventory->GetSnapshot().Slots[3].InstanceId == OreId);
 	const FWizardInventorySnapshot Before = Inventory->GetSnapshot();
 	const int32 BeforeEvents = Events;
-	TestEqual(TEXT("未知定义失败"), Inventory->AddItems(TEXT("Missing"), 2, Accepted), EWizardInventoryResult::UnknownDefinition);
-	TestEqual(TEXT("负数失败"), Inventory->AddItems(TEXT("Ore"), -1, Accepted), EWizardInventoryResult::InvalidQuantity);
+	TestEqual(TEXT("未知定义失败"), Inventory->AddItems(nullptr, 2, Accepted), EWizardInventoryResult::UnknownDefinition);
+	TestEqual(TEXT("负数失败"), Inventory->AddItems(Ore, -1, Accepted), EWizardInventoryResult::InvalidQuantity);
 	FWizardInventorySnapshot Bad = Before;
 	Bad.Slots[1].InstanceId = Bad.Slots[0].InstanceId;
 	TestEqual(TEXT("重复ID拒绝恢复"), Inventory->RestoreSnapshot(Bad), EWizardInventoryResult::InvalidSnapshot);
@@ -86,44 +90,31 @@ bool FWizardInventoryTransactionsTest::RunTest(const FString& Parameters)
 		return true;
 	}), EWizardInventoryResult::Success);
 	TestEqual(TEXT("丢弃不可重放"), Inventory->CommitDrop(Ticket, [](const FWizardInventoryEntry&) { return true; }), EWizardInventoryResult::StaleRequest);
-	Inventory->AddItems(TEXT("Staff"), MAX_int32, Accepted);
+	Inventory->AddItems(Staff, MAX_int32, Accepted);
 	TestEqual(TEXT("只能接收剩余15格"), Accepted, 15);
 	const int64 FullRevision = Inventory->GetSnapshot().Revision;
-	TestEqual(TEXT("满背包失败"), Inventory->AddItems(TEXT("Staff"), 1, Accepted), EWizardInventoryResult::NoCapacity);
+	TestEqual(TEXT("满背包失败"), Inventory->AddItems(Staff, 1, Accepted), EWizardInventoryResult::NoCapacity);
 	TestEqual(TEXT("满背包失败不变更版本"), Inventory->GetSnapshot().Revision, FullRevision);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWizardInventoryConfigurationTest, "Wizard.Inventory.ConfigurationAndAtomicInitialization", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWizardInventoryConfigurationTest, "Wizard.Inventory.ConfigurationValidation", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
 bool FWizardInventoryConfigurationTest::RunTest(const FString& Parameters)
 {
 	UWizardInventoryComponent* Inventory = NewObject<UWizardInventoryComponent>();
 	UWizardItemDefinition* Ore = WizardInventoryTests::Define(Inventory, TEXT("Ore"), 10);
 	UWizardItemDefinition* Staff = WizardInventoryTests::Define(Inventory, TEXT("Staff"), 2, EWizardItemType::Equipment);
 	TestFalse(TEXT("装备配置堆叠上限2无效"), Staff->IsConfigurationValid());
-	Inventory->Catalog = { Ore, Staff };
-	TestEqual(TEXT("错误装备配置拒绝初始化"), Inventory->InitializeInventory(), EWizardInventoryResult::InvalidDefinition);
+	int32 Accepted = 0;
+	TestEqual(TEXT("错误定义拒绝接收"), Inventory->AddItems(Staff, 1, Accepted), EWizardInventoryResult::InvalidDefinition);
+	TestEqual(TEXT("错误配置不接收物品"), Accepted, 0);
+	TestEqual(TEXT("未登记且无图标的有效定义可以接收"), Inventory->AddItems(Ore, 15, Accepted), EWizardInventoryResult::Success);
+	UWizardItemDefinition* ConflictingOre = WizardInventoryTests::Define(Inventory, Ore->ItemId, 10);
+	const auto Before = Inventory->GetSnapshot();
+	TestEqual(TEXT("同ID不同定义不能混入已有堆叠"), Inventory->AddItems(ConflictingOre, 1, Accepted), EWizardInventoryResult::InvalidDefinition);
+	TestTrue(TEXT("冲突定义不改变库存"), Before.Slots == Inventory->GetSnapshot().Slots);
 	Staff->MaxStack = 1;
-	Inventory->Catalog.Add(Ore);
-	TestEqual(TEXT("重复定义拒绝初始化"), Inventory->InitializeInventory(), EWizardInventoryResult::InvalidDefinition);
-	Inventory->Catalog.Pop();
-	FWizardInitialItem Item;
-	Item.DefinitionId = TEXT("Ore");
-	Item.Quantity = 15;
-	Inventory->InitialItems.Add(Item);
-	Item.DefinitionId = TEXT("Missing");
-	Inventory->InitialItems.Add(Item);
-	TestEqual(TEXT("未知初值拒绝整批"), Inventory->InitializeInventory(), EWizardInventoryResult::UnknownDefinition);
-	TestEqual(TEXT("失败整批不发部分库存"), WizardInventoryTests::Total(Inventory->GetSnapshot(), TEXT("Ore")), 0);
-	TestEqual(TEXT("失败初始化不改变版本"), Inventory->GetSnapshot().Revision, int64(0));
-	Inventory->InitialItems.Last().DefinitionId = TEXT("Staff");
-	Inventory->InitialItems.Last().Quantity = 20;
-	TestEqual(TEXT("初值装不下拒绝整批"), Inventory->InitializeInventory(), EWizardInventoryResult::NoCapacity);
-	TestEqual(TEXT("容量不足仍不发部分库存"), WizardInventoryTests::Total(Inventory->GetSnapshot(), TEXT("Ore")), 0);
-	Inventory->InitialItems.Last().Quantity = 2;
-	TestEqual(TEXT("修正初值可再次初始化"), Inventory->InitializeInventory(), EWizardInventoryResult::Success);
-	TestEqual(TEXT("整批配置发放15素材"), WizardInventoryTests::Total(Inventory->GetSnapshot(), TEXT("Ore")), 15);
-	TestEqual(TEXT("整批配置发放2装备"), WizardInventoryTests::Total(Inventory->GetSnapshot(), TEXT("Staff")), 2);
+	TestEqual(TEXT("修正定义后可以正常接收"), Inventory->AddItems(Staff, 1, Accepted), EWizardInventoryResult::Success);
 	return true;
 }
 
@@ -139,6 +130,10 @@ bool FWizardInventoryPotionTest::RunTest(const FString& Parameters)
 	World->BeginPlay();
 	World->GetWorldSettings()->NotifyBeginPlay();
 	Player->InitializeAvatar(Avatar);
+	const FWizardInventorySnapshot EmptyInventory = Player->GetInventory()->GetSnapshot();
+	TestFalse(TEXT("新玩家背包为空"), EmptyInventory.Slots.ContainsByPredicate([](const FWizardInventoryEntry& Entry) { return !Entry.IsEmpty(); }));
+	Player->InitializeAvatar(Avatar);
+	TestTrue(TEXT("重复绑定角色仍为空背包"), Player->GetInventory()->GetSnapshot().Slots == EmptyInventory.Slots);
 	UWizardInventoryComponent* Inventory = NewObject<UWizardInventoryComponent>(Player);
 	UWizardItemDefinition* Health = WizardInventoryTests::Define(Inventory, TEXT("HealthPotion"), 10, EWizardItemType::Consumable);
 	Health->PotionResource = EWizardPotionResource::Health;
@@ -146,16 +141,9 @@ bool FWizardInventoryPotionTest::RunTest(const FString& Parameters)
 	UWizardItemDefinition* Mana = WizardInventoryTests::Define(Inventory, TEXT("ManaPotion"), 10, EWizardItemType::Consumable);
 	Mana->PotionResource = EWizardPotionResource::Mana;
 	Mana->PotionMagnitude = 30.f;
-	Inventory->Catalog = { Health, Mana };
-	FWizardInitialItem Initial;
-	Initial.DefinitionId = Health->ItemId;
-	Initial.Quantity = 3;
-	Inventory->InitialItems.Add(Initial);
-	Inventory->InitializeInventory();
-	Inventory->InitializeInventory();
-	TestEqual(TEXT("初始化只发一次"), WizardInventoryTests::Total(Inventory->GetSnapshot(), Health->ItemId), 3);
 	int32 Accepted = 0;
-	Inventory->AddItems(Mana->ItemId, 2, Accepted);
+	Inventory->AddItems(Health, 3, Accepted);
+	Inventory->AddItems(Mana, 2, Accepted);
 	UAbilitySystemComponent* ASC = Player->GetAbilitySystemComponent();
 	const int64 Before = Inventory->GetSnapshot().Revision;
 	TestEqual(TEXT("满血失败"), Inventory->Use(Inventory->MakeRequest(0)), EWizardInventoryResult::FullResource);
@@ -180,6 +168,38 @@ bool FWizardInventoryPotionTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("死亡不扣药"), Inventory->GetSnapshot().Slots[0].Quantity, 2);
 	World->DestroyWorld(false);
 	GEngine->DestroyWorldContext(World);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWizardInventoryDefinitionRestoreTest, "Wizard.Inventory.DefinitionIdRestore", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+bool FWizardInventoryDefinitionRestoreTest::RunTest(const FString& Parameters)
+{
+	const UWizardItemDefinition* Ore = LoadObject<UWizardItemDefinition>(nullptr, TEXT("/Game/Wizard/Data/Items/DA_ArcaneOre.DA_ArcaneOre"));
+	if (!TestNotNull(TEXT("交付物品定义"), Ore)) return false;
+	UWizardInventoryComponent* Source = NewObject<UWizardInventoryComponent>();
+	int32 Accepted = 0;
+	Source->AddItems(Ore, 1, Accepted);
+	FWizardInventorySnapshot Snapshot = Source->GetSnapshot();
+	TArray<uint8> Bytes;
+	FMemoryWriter Writer(Bytes);
+	FObjectAndNameAsStringProxyArchive Save(Writer, false);
+	Save.ArIsSaveGame = true;
+	FWizardInventorySnapshot::StaticStruct()->SerializeItem(Save, &Snapshot, nullptr);
+	FWizardInventorySnapshot Loaded;
+	FMemoryReader Reader(Bytes);
+	FObjectAndNameAsStringProxyArchive Load(Reader, true);
+	Load.ArIsSaveGame = true;
+	FWizardInventorySnapshot::StaticStruct()->SerializeItem(Load, &Loaded, nullptr);
+	if (!TestEqual(TEXT("保存20格快照"), Loaded.Slots.Num(), UWizardInventoryComponent::Capacity)) return false;
+	TestNull(TEXT("快照不保存运行时定义指针"), Loaded.Slots[0].Definition.Get());
+	TestEqual(TEXT("快照保留稳定物品ID"), Loaded.Slots[0].DefinitionId, Ore->ItemId);
+	UWizardInventoryComponent* Target = NewObject<UWizardInventoryComponent>();
+	TestEqual(TEXT("无需手工目录，通过自动扫描恢复定义"), Target->RestoreSnapshot(Loaded), EWizardInventoryResult::Success);
+	TestTrue(TEXT("恢复为真实定义引用"), Target->GetSnapshot().Slots[0].Definition == Ore);
+	TestEqual(TEXT("恢复数量正确"), WizardInventoryTests::Total(Target->GetSnapshot(), Ore->ItemId), 1);
+	Loaded.Slots[0].DefinitionId = TEXT("MissingDefinition");
+	TestEqual(TEXT("未知ID拒绝恢复且保留已有物品"), Target->RestoreSnapshot(Loaded), EWizardInventoryResult::InvalidSnapshot);
+	TestEqual(TEXT("失败不丢现有库存"), WizardInventoryTests::Total(Target->GetSnapshot(), Ore->ItemId), 1);
 	return true;
 }
 #endif

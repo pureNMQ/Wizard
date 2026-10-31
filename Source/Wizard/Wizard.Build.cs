@@ -11,6 +11,7 @@ public class Wizard : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "Niagara", "EnhancedInput", "GameplayAbilities", "GameplayTags", "GameplayTasks", "UMG", "CommonUI", "CommonInput" });
 
+		PublicDependencyModuleNames.Add("DeveloperSettings");
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
 		// 启动配置检查仅在编辑器测试中使用，不引入成品包的编辑器依赖。
