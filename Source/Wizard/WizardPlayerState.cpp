@@ -1,5 +1,6 @@
 #include "WizardPlayerState.h"
 #include "Inventory/WizardInventoryComponent.h"
+#include "Equipment/WizardEquipmentComponent.h"
 #include "Loot/WizardPickupComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardCombatConfig.h"
@@ -17,6 +18,7 @@
 AWizardPlayerState::AWizardPlayerState()
 {
 	Inventory = CreateDefaultSubobject<UWizardInventoryComponent>(TEXT("Inventory"));
+	Equipment = CreateDefaultSubobject<UWizardEquipmentComponent>(TEXT("Equipment"));
 	Pickup = CreateDefaultSubobject<UWizardPickupComponent>(TEXT("Pickup"));
 	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 	Attributes = CreateDefaultSubobject<UWizardAttributeSet>(TEXT("Attributes"));
@@ -50,6 +52,7 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 	AbilitySystem->InitAbilityActorInfo(this, Avatar);
 	Interaction->BindAvatar(Avatar);
 	Pickup->BindAvatar(Avatar);
+	Equipment->InitializeAvatar(Avatar);
 	Skills->InitializeAvatar();
 	if (HasAuthority() && !BasicAttackHandle.IsValid() && GetCombatConfig()->IsConfigurationValid())
 	{

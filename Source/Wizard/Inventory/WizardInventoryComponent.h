@@ -9,7 +9,8 @@ UENUM(BlueprintType)
 enum class EWizardInventoryResult : uint8
 {
 	Success, InvalidSlot, InvalidQuantity, UnknownDefinition, InvalidDefinition, StaleRequest,
-	NoCapacity, NotConsumable, FullResource, Dead, EffectFailed, Busy, DropUnavailable, InvalidSnapshot
+	NoCapacity, NotConsumable, FullResource, Dead, EffectFailed, Busy, DropUnavailable, InvalidSnapshot,
+	NotEquipment, WrongEquipmentSlot
 };
 
 USTRUCT(BlueprintType)
@@ -30,6 +31,7 @@ struct FWizardInventorySnapshot
 {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadOnly, SaveGame) TArray<FWizardInventoryEntry> Slots;
+	UPROPERTY(BlueprintReadOnly, SaveGame) TArray<FWizardInventoryEntry> Equipment;
 	// 进程内冲突检测令牌；恢复时分配新版本，不信任存档的版本。
 	UPROPERTY(BlueprintReadOnly) int64 Revision = 0;
 };
@@ -41,6 +43,7 @@ struct FWizardInventoryRequest
 	UPROPERTY(BlueprintReadOnly) int32 Slot = INDEX_NONE;
 	UPROPERTY(BlueprintReadOnly) FGuid InstanceId;
 	UPROPERTY(BlueprintReadOnly) int64 Revision = -1;
+	UPROPERTY(BlueprintReadOnly) bool bEquipment = false;
 };
 
 struct FWizardInventoryDropTicket
@@ -58,8 +61,14 @@ class WIZARD_API UWizardInventoryComponent : public UActorComponent
 public:
 	UWizardInventoryComponent();
 	static constexpr int32 Capacity = 20;
+	static constexpr int32 EquipmentCapacity = static_cast<int32>(EWizardEquipmentSlot::Count);
 	UFUNCTION(BlueprintPure) FWizardInventorySnapshot GetSnapshot() const { return State; }
 	UFUNCTION(BlueprintPure) FWizardInventoryRequest MakeRequest(int32 Slot) const;
+	UFUNCTION(BlueprintPure) FWizardInventoryRequest MakeEquipmentRequest(EWizardEquipmentSlot Slot) const;
+	// 装备/替换完整提交；旧装备回到来源背包格，失败时归属保持不变。
+	UFUNCTION(BlueprintCallable) EWizardInventoryResult Equip(FWizardInventoryRequest Request, EWizardEquipmentSlot Slot);
+	// 指定背包格可合法交换；未指定时寻找空格，满包则返回NoCapacity。
+	UFUNCTION(BlueprintCallable) EWizardInventoryResult Unequip(FWizardInventoryRequest Request, int32 TargetSlot = -1);
 	// 接受可容纳的部分；成功仅广播一次，Accepted为准确接收量。
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult AddItems(const UWizardItemDefinition* Definition, int32 Quantity, int32& Accepted);
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult Move(FWizardInventoryRequest Request, int32 TargetSlot);
@@ -75,8 +84,9 @@ public:
 	FWizardInventoryChanged OnChanged;
 private:
 	EWizardInventoryResult ValidateRequest(const FWizardInventoryRequest& Request) const;
-	bool ResolveSnapshot(TArray<FWizardInventoryEntry>& Slots) const;
+	bool ResolveSnapshot(FWizardInventorySnapshot& Snapshot) const;
 	void Commit(TArray<FWizardInventoryEntry>&& Slots);
+	void Commit(TArray<FWizardInventoryEntry>&& Slots, TArray<FWizardInventoryEntry>&& Equipment);
 	UPROPERTY(Transient) FWizardInventorySnapshot State;
 	bool bMutating = false;
 };

@@ -9,5 +9,10 @@
 | potion-ball.png | [Potion ball — Lorc](https://game-icons.net/1x1/lorc/potion-ball.html) | T_ManaPotion，法力药水 |
 | crystal-cluster.png | [Crystal cluster — Lorc](https://game-icons.net/1x1/lorc/crystal-cluster.html) | T_ArcaneOre，奥术矿石 |
 | two-coins.png | [Two coins — Delapouite](https://game-icons.net/1x1/delapouite/two-coins.html) | T_Gold，地面金币与余额图标 |
+| pointy-hat.png | [Pointy hat — Lorc](https://game-icons.net/1x1/lorc/pointy-hat.html) | T_PointyHat，T06 帽子装备 |
+| robe.png | [Robe — Lorc](https://game-icons.net/1x1/lorc/robe.html) | T_Robe，T06 衣服装备 |
+| boots.png | [Boots — Lorc](https://game-icons.net/1x1/lorc/boots.html) | T_Boots，T06 靴子装备 |
 
 项目纹理位于 `/Game/Wizard/UI/Icons/`；背包与地面物品共同读取对应物品定义的 Icon，不按物品类型重新猜测图标。本地原图用于保留来源与重新导入，实际资源操作通过 UE-MCP 完成。运行视觉与独立包验证记录在 T05 票据。
+
+2026-11-01 T06 补入帽子、法袍、靴子三张同风格原始透明 PNG，未修改像素，作者与许可同上。每槽两件装备可共用类型图标，通过详情名称与数值区分；小尺寸辨识度由用户试玩验收。

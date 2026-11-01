@@ -30,11 +30,12 @@ public:
 	bool Open(UWizardInventoryComponent* InModel);
 	void Close();
 	FWizardInventorySnapshot GetSnapshot() const;
-	void Select(int32 Slot);
+	void Select(int32 Slot, bool bEquipment = false);
 	int32 GetSelectedSlot() const { return Selected.Slot; }
+	bool IsEquipmentSelected() const { return Selected.bEquipment; }
 	FWizardInventoryEntry GetSelectedEntry() const;
-	bool MakeDragRequest(int32 Slot, FWizardInventoryDragRequest& Request) const;
-	bool HandleDrop(const FWizardInventoryDragRequest& Request, int32 TargetSlot);
+	bool MakeDragRequest(int32 Slot, FWizardInventoryDragRequest& Request, bool bEquipment = false) const;
+	bool HandleDrop(const FWizardInventoryDragRequest& Request, int32 TargetSlot, bool bEquipment = false);
 	void UseSelected();
 	bool PrepareQuantity(bool bDiscard, FWizardInventoryQuantityRequest& Request);
 	void SubmitQuantity(const FWizardInventoryQuantityRequest& Request, int32 Quantity);

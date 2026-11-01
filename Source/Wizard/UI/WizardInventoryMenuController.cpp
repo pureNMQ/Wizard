@@ -20,37 +20,45 @@ void UWizardInventoryMenuController::Close()
 	OnFeedback.Clear();
 }
 FWizardInventorySnapshot UWizardInventoryMenuController::GetSnapshot() const { return Model.IsValid() ? Model->GetSnapshot() : FWizardInventorySnapshot(); }
-void UWizardInventoryMenuController::Select(int32 Slot)
+void UWizardInventoryMenuController::Select(int32 Slot, bool bEquipment)
 {
 	if (!Model.IsValid()) return;
-	Selected = Model->MakeRequest(Slot);
+	Selected = bEquipment ? Model->MakeEquipmentRequest(static_cast<EWizardEquipmentSlot>(Slot)) : Model->MakeRequest(Slot);
 	OnChanged.Broadcast();
 }
 FWizardInventoryEntry UWizardInventoryMenuController::GetSelectedEntry() const
 {
 	const auto Snapshot = GetSnapshot();
-	if (!Snapshot.Slots.IsValidIndex(Selected.Slot) || Snapshot.Revision != Selected.Revision) return {};
-	const auto& Entry = Snapshot.Slots[Selected.Slot];
+	const auto& Entries = Selected.bEquipment ? Snapshot.Equipment : Snapshot.Slots;
+	if (!Entries.IsValidIndex(Selected.Slot) || Snapshot.Revision != Selected.Revision) return {};
+	const auto& Entry = Entries[Selected.Slot];
 	return Entry.InstanceId == Selected.InstanceId ? Entry : FWizardInventoryEntry();
 }
-bool UWizardInventoryMenuController::MakeDragRequest(int32 Slot, FWizardInventoryDragRequest& Request) const
+bool UWizardInventoryMenuController::MakeDragRequest(int32 Slot, FWizardInventoryDragRequest& Request, bool bEquipment) const
 {
 	const auto Snapshot = GetSnapshot();
-	if (!Model.IsValid() || !Snapshot.Slots.IsValidIndex(Slot) || Snapshot.Slots[Slot].IsEmpty()) return false;
-	Request.Item = Model->MakeRequest(Slot);
+	const auto& Entries = bEquipment ? Snapshot.Equipment : Snapshot.Slots;
+	if (!Model.IsValid() || !Entries.IsValidIndex(Slot) || Entries[Slot].IsEmpty()) return false;
+	Request.Item = bEquipment ? Model->MakeEquipmentRequest(static_cast<EWizardEquipmentSlot>(Slot)) : Model->MakeRequest(Slot);
 	Request.Session = const_cast<UWizardInventoryMenuController*>(this);
 	Request.SessionId = SessionId;
 	return true;
 }
-bool UWizardInventoryMenuController::HandleDrop(const FWizardInventoryDragRequest& Request, int32 TargetSlot)
+bool UWizardInventoryMenuController::HandleDrop(const FWizardInventoryDragRequest& Request, int32 TargetSlot, bool bEquipment)
 {
 	if (!Model.IsValid() || Request.Session.Get() != this || Request.SessionId != SessionId) return false;
-	Report(Model->Move(Request.Item, TargetSlot));
+	if (bEquipment) Report(Model->Equip(Request.Item, static_cast<EWizardEquipmentSlot>(TargetSlot)));
+	else if (Request.Item.bEquipment) Report(Model->Unequip(Request.Item, TargetSlot));
+	else Report(Model->Move(Request.Item, TargetSlot));
 	return true;
 }
 void UWizardInventoryMenuController::UseSelected()
 {
-	if (Model.IsValid()) Report(Model->Use(Selected));
+	if (!Model.IsValid()) return;
+	const auto Entry = GetSelectedEntry();
+	if (Selected.bEquipment) Report(Model->Unequip(Selected));
+	else if (Entry.Definition && Entry.Definition->Type == EWizardItemType::Equipment) Report(Model->Equip(Selected, Entry.Definition->EquipmentSlot));
+	else Report(Model->Use(Selected));
 }
 void UWizardInventoryMenuController::SplitSelected(int32 Quantity)
 {
@@ -68,6 +76,11 @@ bool UWizardInventoryMenuController::PrepareQuantity(bool bDiscard, FWizardInven
 	if (!Model.IsValid() || !SessionId.IsValid() || GetSelectedEntry().IsEmpty())
 	{
 		Report(EWizardInventoryResult::StaleRequest);
+		return false;
+	}
+	if (Selected.bEquipment)
+	{
+		Report(EWizardInventoryResult::InvalidSlot);
 		return false;
 	}
 	if (!bDiscard && GetSelectedEntry().Quantity <= 1)
@@ -88,7 +101,7 @@ void UWizardInventoryMenuController::SubmitQuantity(const FWizardInventoryQuanti
 		return;
 	}
 	const auto Snapshot = Model->GetSnapshot();
-	if (!Snapshot.Slots.IsValidIndex(Request.Item.Slot) || Snapshot.Revision != Request.Item.Revision ||
+	if (Request.Item.bEquipment || !Snapshot.Slots.IsValidIndex(Request.Item.Slot) || Snapshot.Revision != Request.Item.Revision ||
 		!Request.Item.InstanceId.IsValid() || Snapshot.Slots[Request.Item.Slot].InstanceId != Request.Item.InstanceId)
 	{
 		Report(EWizardInventoryResult::StaleRequest);
@@ -114,7 +127,12 @@ void UWizardInventoryMenuController::Report(EWizardInventoryResult Result)
 	{
 		const auto Snapshot = Model->GetSnapshot();
 		const int32 Slot = Snapshot.Slots.IndexOfByPredicate([this](const FWizardInventoryEntry& Entry) { return Entry.InstanceId == Selected.InstanceId; });
-		Selected = Model->MakeRequest(Slot);
+		if (Slot != INDEX_NONE) Selected = Model->MakeRequest(Slot);
+		else
+		{
+			const int32 EquipmentSlot = Snapshot.Equipment.IndexOfByPredicate([this](const FWizardInventoryEntry& Entry) { return Entry.InstanceId == Selected.InstanceId; });
+			Selected = Model->MakeEquipmentRequest(static_cast<EWizardEquipmentSlot>(EquipmentSlot));
+		}
 		OnChanged.Broadcast();
 	}
 	OnFeedback.Broadcast(Result);
@@ -130,6 +148,8 @@ FText WizardInventory::ResultText(EWizardInventoryResult Result)
 	case EWizardInventoryResult::InvalidQuantity: Text = TEXT("数量无效；拆分数量需小于当前数量"); break;
 	case EWizardInventoryResult::StaleRequest: Text = TEXT("物品已变化，请重新选择"); break;
 	case EWizardInventoryResult::NoCapacity: Text = TEXT("背包空间不足"); break;
+	case EWizardInventoryResult::NotEquipment: Text = TEXT("该物品不能装备"); break;
+	case EWizardInventoryResult::WrongEquipmentSlot: Text = TEXT("装备槽位不匹配"); break;
 	case EWizardInventoryResult::NotConsumable: Text = TEXT("该物品不能使用"); break;
 	case EWizardInventoryResult::FullResource: Text = TEXT("对应生命或法力已满"); break;
 	case EWizardInventoryResult::Dead: Text = TEXT("死亡时不能使用物品"); break;

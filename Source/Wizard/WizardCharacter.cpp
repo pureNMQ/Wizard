@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 #include "WizardCharacter.h"
 #include "WizardPlayerState.h"
+#include "Equipment/WizardEquipmentComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -54,6 +56,7 @@ void AWizardCharacter::UnPossessed()
 		State->GetSkills()->CancelCasting();
 		State->GetSkills()->ClearAvatarEffects();
 		State->GetInteraction()->BindAvatar(nullptr);
+		State->GetEquipment()->ClearAvatar(this);
 	}
 	Super::UnPossessed();
 }
@@ -66,6 +69,20 @@ void AWizardCharacter::EndPlay(const EEndPlayReason::Type Reason)
 		State->GetSkills()->CancelCasting();
 		State->GetSkills()->ClearAvatarEffects();
 		State->GetInteraction()->BindAvatar(nullptr);
+		State->GetEquipment()->ClearAvatar(this);
 	}
 	Super::EndPlay(Reason);
+}
+
+void AWizardCharacter::SetEquipmentStaff(UStaticMesh* InMesh)
+{
+	TInlineComponentArray<UStaticMeshComponent*> MeshComponents(this);
+	for (UStaticMeshComponent* Component : MeshComponents)
+	{
+		if (Component->GetFName() != StaffComponentName) continue;
+		Component->SetStaticMesh(InMesh);
+		Component->SetVisibility(InMesh != nullptr, true);
+		Component->SetHiddenInGame(InMesh == nullptr, true);
+		return;
+	}
 }

@@ -11,16 +11,17 @@ UWizardInventoryComponent::UWizardInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	State.Slots.SetNum(Capacity);
+	State.Equipment.SetNum(EquipmentCapacity);
 }
 
-bool UWizardInventoryComponent::ResolveSnapshot(TArray<FWizardInventoryEntry>& Slots) const
+bool UWizardInventoryComponent::ResolveSnapshot(FWizardInventorySnapshot& Snapshot) const
 {
-	if (Slots.Num() != Capacity) return false;
+	if (Snapshot.Slots.Num() != Capacity || Snapshot.Equipment.Num() != EquipmentCapacity) return false;
 	TSet<FGuid> Ids;
 	TMap<FName, const UWizardItemDefinition*> Definitions;
-	for (FWizardInventoryEntry& Entry : Slots)
+	auto ResolveEntry = [&](FWizardInventoryEntry& Entry)
 	{
-		if (Entry.IsEmpty()) continue;
+		if (Entry.IsEmpty()) return true;
 		const UWizardItemDefinition* Definition = Entry.Definition ? Entry.Definition.Get() : UWizardItemDefinition::Resolve(Entry.DefinitionId);
 		if (!Definition || !Definition->IsConfigurationValid() || Definition->ItemId != Entry.DefinitionId
 			|| !Entry.InstanceId.IsValid() || Entry.Quantity <= 0 || Entry.Quantity > Definition->GetStackLimit() || Ids.Contains(Entry.InstanceId)) return false;
@@ -29,6 +30,17 @@ bool UWizardInventoryComponent::ResolveSnapshot(TArray<FWizardInventoryEntry>& S
 		Definitions.Add(Entry.DefinitionId, Definition);
 		Entry.Definition = Definition;
 		Ids.Add(Entry.InstanceId);
+		return true;
+	};
+	for (FWizardInventoryEntry& Entry : Snapshot.Slots)
+	{
+		if (!ResolveEntry(Entry)) return false;
+	}
+	for (int32 Index = 0; Index < EquipmentCapacity; ++Index)
+	{
+		FWizardInventoryEntry& Entry = Snapshot.Equipment[Index];
+		if (!ResolveEntry(Entry)) return false;
+		if (!Entry.IsEmpty() && (Entry.Definition->Type != EWizardItemType::Equipment || static_cast<int32>(Entry.Definition->EquipmentSlot) != Index)) return false;
 	}
 	return true;
 }
@@ -42,18 +54,38 @@ FWizardInventoryRequest UWizardInventoryComponent::MakeRequest(int32 Slot) const
 	return Request;
 }
 
+FWizardInventoryRequest UWizardInventoryComponent::MakeEquipmentRequest(EWizardEquipmentSlot Slot) const
+{
+	FWizardInventoryRequest Request;
+	Request.bEquipment = true;
+	Request.Slot = static_cast<int32>(Slot);
+	Request.Revision = State.Revision;
+	if (State.Equipment.IsValidIndex(Request.Slot)) Request.InstanceId = State.Equipment[Request.Slot].InstanceId;
+	return Request;
+}
+
 EWizardInventoryResult UWizardInventoryComponent::ValidateRequest(const FWizardInventoryRequest& Request) const
 {
 	if (bMutating) return EWizardInventoryResult::Busy;
-	if (!State.Slots.IsValidIndex(Request.Slot)) return EWizardInventoryResult::InvalidSlot;
-	if (Request.Revision != State.Revision || !Request.InstanceId.IsValid() || State.Slots[Request.Slot].InstanceId != Request.InstanceId) return EWizardInventoryResult::StaleRequest;
+	const TArray<FWizardInventoryEntry>& Entries = Request.bEquipment ? State.Equipment : State.Slots;
+	if (!Entries.IsValidIndex(Request.Slot)) return EWizardInventoryResult::InvalidSlot;
+	if (Request.Revision != State.Revision || !Request.InstanceId.IsValid() || Entries[Request.Slot].InstanceId != Request.InstanceId) return EWizardInventoryResult::StaleRequest;
 	return EWizardInventoryResult::Success;
 }
 
 void UWizardInventoryComponent::Commit(TArray<FWizardInventoryEntry>&& Slots)
 {
-	if (State.Slots == Slots) return;
+	TArray<FWizardInventoryEntry> Equipment = State.Equipment;
+	Commit(MoveTemp(Slots), MoveTemp(Equipment));
+}
+
+void UWizardInventoryComponent::Commit(TArray<FWizardInventoryEntry>&& Slots, TArray<FWizardInventoryEntry>&& Equipment)
+{
+	if (State.Slots == Slots && State.Equipment == Equipment) return;
+	// 广播期间GAS会同步通知属性；拒绝观察者重入，保持一次换装的完整视图。
+	TGuardValue<bool> Guard(bMutating, true);
 	State.Slots = MoveTemp(Slots);
+	State.Equipment = MoveTemp(Equipment);
 	++State.Revision;
 	OnChanged.Broadcast();
 }
@@ -68,6 +100,10 @@ EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefi
 	const FName Id = Definition->ItemId;
 	// 同一稳定ID不能在一个背包中代表不同定义，避免错误合并；无需预先登记目录。
 	for (const FWizardInventoryEntry& Entry : State.Slots)
+	{
+		if (Entry.DefinitionId == Id && Entry.Definition != Definition) return EWizardInventoryResult::InvalidDefinition;
+	}
+	for (const FWizardInventoryEntry& Entry : State.Equipment)
 	{
 		if (Entry.DefinitionId == Id && Entry.Definition != Definition) return EWizardInventoryResult::InvalidDefinition;
 	}
@@ -98,6 +134,7 @@ EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefi
 
 EWizardInventoryResult UWizardInventoryComponent::Move(FWizardInventoryRequest Request, int32 TargetSlot)
 {
+	if (Request.bEquipment) return EWizardInventoryResult::InvalidSlot;
 	const EWizardInventoryResult Result = ValidateRequest(Request);
 	if (Result != EWizardInventoryResult::Success) return Result;
 	if (!State.Slots.IsValidIndex(TargetSlot)) return EWizardInventoryResult::InvalidSlot;
@@ -120,8 +157,58 @@ EWizardInventoryResult UWizardInventoryComponent::Move(FWizardInventoryRequest R
 	return EWizardInventoryResult::Success;
 }
 
+EWizardInventoryResult UWizardInventoryComponent::Equip(FWizardInventoryRequest Request, EWizardEquipmentSlot Slot)
+{
+	const EWizardInventoryResult Result = ValidateRequest(Request);
+	if (Result != EWizardInventoryResult::Success) return Result;
+	const int32 TargetIndex = static_cast<int32>(Slot);
+	if (!State.Equipment.IsValidIndex(TargetIndex)) return EWizardInventoryResult::InvalidSlot;
+	const FWizardInventoryEntry& Source = Request.bEquipment ? State.Equipment[Request.Slot] : State.Slots[Request.Slot];
+	const UWizardItemDefinition* Definition = Source.Definition.Get();
+	if (!Definition || !Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
+	if (Definition->Type != EWizardItemType::Equipment) return EWizardInventoryResult::NotEquipment;
+	if (Definition->EquipmentSlot != Slot) return EWizardInventoryResult::WrongEquipmentSlot;
+	if (Request.bEquipment)
+	{
+		// 每种装备只有一个合法槽；原地放下不产生物品变更。
+		return Request.Slot == TargetIndex ? EWizardInventoryResult::Success : EWizardInventoryResult::WrongEquipmentSlot;
+	}
+	FWizardInventorySnapshot Next = State;
+	Swap(Next.Slots[Request.Slot], Next.Equipment[TargetIndex]);
+	if (!ResolveSnapshot(Next)) return EWizardInventoryResult::InvalidDefinition;
+	Commit(MoveTemp(Next.Slots), MoveTemp(Next.Equipment));
+	return EWizardInventoryResult::Success;
+}
+
+EWizardInventoryResult UWizardInventoryComponent::Unequip(FWizardInventoryRequest Request, int32 TargetSlot)
+{
+	const EWizardInventoryResult Result = ValidateRequest(Request);
+	if (Result != EWizardInventoryResult::Success) return Result;
+	if (!Request.bEquipment) return EWizardInventoryResult::InvalidSlot;
+	if (TargetSlot == INDEX_NONE)
+	{
+		TargetSlot = State.Slots.IndexOfByPredicate([](const FWizardInventoryEntry& Entry) { return Entry.IsEmpty(); });
+		if (TargetSlot == INDEX_NONE) return EWizardInventoryResult::NoCapacity;
+	}
+	if (!State.Slots.IsValidIndex(TargetSlot)) return EWizardInventoryResult::InvalidSlot;
+	const FWizardInventoryEntry& Target = State.Slots[TargetSlot];
+	if (!Target.IsEmpty())
+	{
+		const UWizardItemDefinition* Definition = Target.Definition.Get();
+		if (!Definition || !Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
+		if (Definition->Type != EWizardItemType::Equipment) return EWizardInventoryResult::NotEquipment;
+		if (static_cast<int32>(Definition->EquipmentSlot) != Request.Slot) return EWizardInventoryResult::WrongEquipmentSlot;
+	}
+	FWizardInventorySnapshot Next = State;
+	Swap(Next.Slots[TargetSlot], Next.Equipment[Request.Slot]);
+	if (!ResolveSnapshot(Next)) return EWizardInventoryResult::InvalidDefinition;
+	Commit(MoveTemp(Next.Slots), MoveTemp(Next.Equipment));
+	return EWizardInventoryResult::Success;
+}
+
 EWizardInventoryResult UWizardInventoryComponent::Split(FWizardInventoryRequest Request, int32 Quantity, int32 TargetSlot)
 {
+	if (Request.bEquipment) return EWizardInventoryResult::InvalidSlot;
 	const EWizardInventoryResult Result = ValidateRequest(Request);
 	if (Result != EWizardInventoryResult::Success) return Result;
 	if (!State.Slots.IsValidIndex(TargetSlot)) return EWizardInventoryResult::InvalidSlot;
@@ -139,14 +226,15 @@ EWizardInventoryResult UWizardInventoryComponent::Split(FWizardInventoryRequest 
 EWizardInventoryResult UWizardInventoryComponent::RestoreSnapshot(const FWizardInventorySnapshot& Snapshot)
 {
 	if (bMutating) return EWizardInventoryResult::Busy;
-	TArray<FWizardInventoryEntry> Slots = Snapshot.Slots;
-	if (!ResolveSnapshot(Slots)) return EWizardInventoryResult::InvalidSnapshot;
-	Commit(MoveTemp(Slots));
+	FWizardInventorySnapshot Resolved = Snapshot;
+	if (!ResolveSnapshot(Resolved)) return EWizardInventoryResult::InvalidSnapshot;
+	Commit(MoveTemp(Resolved.Slots), MoveTemp(Resolved.Equipment));
 	return EWizardInventoryResult::Success;
 }
 
 EWizardInventoryResult UWizardInventoryComponent::Use(FWizardInventoryRequest Request)
 {
+	if (Request.bEquipment) return EWizardInventoryResult::NotConsumable;
 	const EWizardInventoryResult Result = ValidateRequest(Request);
 	if (Result != EWizardInventoryResult::Success) return Result;
 	const UWizardItemDefinition* Definition = State.Slots[Request.Slot].Definition.Get();
@@ -183,6 +271,7 @@ EWizardInventoryResult UWizardInventoryComponent::Use(FWizardInventoryRequest Re
 EWizardInventoryResult UWizardInventoryComponent::PrepareDrop(FWizardInventoryRequest Request, int32 Quantity, FWizardInventoryDropTicket& Ticket) const
 {
 	Ticket = {};
+	if (Request.bEquipment) return EWizardInventoryResult::InvalidSlot;
 	const EWizardInventoryResult Result = ValidateRequest(Request);
 	if (Result != EWizardInventoryResult::Success) return Result;
 	if (Quantity <= 0 || Quantity > State.Slots[Request.Slot].Quantity) return EWizardInventoryResult::InvalidQuantity;

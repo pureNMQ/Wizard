@@ -7,7 +7,11 @@
 #include "Input/UIActionBindingHandle.h"
 #include "UI/WizardInventoryMenuController.h"
 #include "WizardInventoryWidgets.generated.h"
+class UAbilitySystemComponent;
+class AWizardPlayerState;
+struct FOnAttributeChangeData;
 class UImage;
+class UTexture2D;
 class UTextBlock;
 class UBorder;
 class UButton;
@@ -33,7 +37,8 @@ class WIZARD_API UWizardInventoryTile : public UCommonUserWidget
 	GENERATED_BODY()
 public:
 	UWizardInventoryTile(const FObjectInitializer& Initializer);
-	void Configure(const FWizardInventoryEntry& Entry, int32 Index, UWizardInventoryMenuController* Controller);
+	void Configure(const FWizardInventoryEntry& Entry, int32 Index, UWizardInventoryMenuController* Controller, bool bEquipment = false, UTexture2D* EmptySlotIcon = nullptr);
+	bool IsEquipmentSlot() const { return bEquipmentSlot; }
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardIconDragPreview> DragPreviewClass;
 	FWizardInventoryInspect OnInspect;
 	FWizardInventoryViewAction OnBeginDrag;
@@ -52,19 +57,21 @@ private:
 	FWizardInventoryDragRequest PendingDrag;
 	int32 SlotIndex = INDEX_NONE;
 	bool bCanDrag = false;
+	bool bEquipmentSlot = false;
 };
 UCLASS()
 class WIZARD_API UWizardInventoryPopover : public UCommonUserWidget
 {
 	GENERATED_BODY()
 public:
-	void Configure(const UWizardItemDefinition* Definition, int32 Quantity);
+	void Configure(const UWizardItemDefinition* Definition, int32 Quantity, bool bEquipped = false);
 	FWizardInventoryViewAction OnUse, OnSplit, OnDiscard;
 	UWidget* GetFirstAction() const;
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> DetailsText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> UseLabel;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> UseButton;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> SplitButton;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> DiscardButton;
@@ -116,6 +123,8 @@ public:
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardInventoryTile> TileClass;
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardInventoryQuantityModal> QuantityModalClass;
 	UPROPERTY(EditDefaultsOnly) TObjectPtr<UInputAction> InventoryAction;
+	// 按帽子、衣服、靴子、法杖顺序配置空槽图案；已装备时显示物品本身图标。
+	UPROPERTY(EditDefaultsOnly) TArray<TSoftObjectPtr<UTexture2D>> EquipmentSlotIcons;
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeOnActivated() override;
@@ -125,10 +134,16 @@ protected:
 	virtual bool NativeOnHandleBackAction() override;
 	virtual TOptional<FUIInputConfig> GetDesiredInputConfig() const override;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UUniformGridPanel> InventoryGrid;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UUniformGridPanel> EquipmentGrid;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> AttributeText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> GoldText;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> Feedback;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UWizardInventoryPopover> DetailsPopover;
 private:
 	void Refresh();
+	void RefreshAttributes();
+	void HandleAttributeChanged(const FOnAttributeChangeData& Data);
+	void RefreshGold();
 	void HandleFeedback(EWizardInventoryResult Result);
 	void CloseSession();
 	void HandleToggle();
@@ -140,6 +155,11 @@ private:
 	void HandleDiscard();
 	UPROPERTY(Transient) TObjectPtr<UWizardInventoryMenuController> MenuController;
 	UPROPERTY(Transient) TArray<TObjectPtr<UWizardInventoryTile>> Tiles;
+	UPROPERTY(Transient) TArray<TObjectPtr<UWizardInventoryTile>> EquipmentTiles;
+	TWeakObjectPtr<UAbilitySystemComponent> AttributeSource;
+	TWeakObjectPtr<AWizardPlayerState> PlayerStateSource;
+	TArray<FDelegateHandle> AttributeHandles;
+	FDelegateHandle GoldHandle;
 	TWeakObjectPtr<UWizardInventoryTile> HoverSource;
 	float OutsideTime = 0.f;
 	bool bKeyboardDetails = false;

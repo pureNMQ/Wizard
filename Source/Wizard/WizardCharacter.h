@@ -17,6 +17,9 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	// 复用角色蓝图的握持组件，保留其 Socket 与相对变换；空装备隐藏法杖。
+	void SetEquipmentStaff(class UStaticMesh* InMesh);
+	UPROPERTY(EditDefaultsOnly, Category="Equipment") FName StaffComponentName = TEXT("MagicStaff");
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
 	TObjectPtr<class UCameraComponent> TopDownCameraComponent;

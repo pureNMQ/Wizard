@@ -2,8 +2,21 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "AttributeSet.h"
 #include "WizardItemDefinition.generated.h"
 class UTexture2D;
+class UStaticMesh;
+
+UENUM(BlueprintType)
+enum class EWizardEquipmentSlot : uint8 { Hat, Clothes, Boots, Staff, Count UMETA(Hidden) };
+
+USTRUCT(BlueprintType)
+struct FWizardEquipmentBonus
+{
+	GENERATED_BODY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) FGameplayAttribute Attribute;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) float Magnitude = 0.f;
+};
 
 UENUM(BlueprintType)
 enum class EWizardItemType : uint8 { Equipment, Consumable, Material };
@@ -24,6 +37,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) EWizardPotionResource PotionResource = EWizardPotionResource::None;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ClampMin="0")) float PotionMagnitude = 0.f;
 	int32 GetStackLimit() const { return Type == EWizardItemType::Equipment ? 1 : MaxStack; }
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(EditCondition="Type == EWizardItemType::Equipment")) EWizardEquipmentSlot EquipmentSlot = EWizardEquipmentSlot::Hat;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(EditCondition="Type == EWizardItemType::Equipment")) TArray<FWizardEquipmentBonus> EquipmentBonuses;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(EditCondition="Type == EWizardItemType::Equipment")) TSoftObjectPtr<UStaticMesh> StaffMesh;
 	bool IsConfigurationValid() const;
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 	static const UWizardItemDefinition* Resolve(FName Id);

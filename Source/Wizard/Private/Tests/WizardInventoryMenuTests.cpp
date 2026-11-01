@@ -107,4 +107,50 @@ bool FWizardInventoryQuantityRequestTest::RunTest(const FString& Parameters)
 	Menu->Close();
 	return true;
 }
+
+// 跨区域拖拽仍受会话和物品版本约束；避免装备归属错位或旧请求复制物品。
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWizardEquipmentMenuSessionTest, "Wizard.Inventory.EquipmentMenuSession", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter)
+bool FWizardEquipmentMenuSessionTest::RunTest(const FString& Parameters)
+{
+	UWizardInventoryComponent* Model = NewObject<UWizardInventoryComponent>();
+	UWizardItemDefinition* Hat = NewObject<UWizardItemDefinition>(Model);
+	Hat->MaxStack = 1; Hat->ItemId = TEXT("SessionHat"); Hat->Type = EWizardItemType::Equipment; Hat->EquipmentSlot = EWizardEquipmentSlot::Hat;
+	int32 Accepted = 0;
+	Model->AddItems(Hat, 1, Accepted);
+	UWizardInventoryMenuController* Menu = NewObject<UWizardInventoryMenuController>();
+	Menu->Open(Model);
+	EWizardInventoryResult Feedback = EWizardInventoryResult::Success;
+	Menu->OnFeedback.AddLambda([&Feedback](EWizardInventoryResult Result) { Feedback = Result; });
+	Menu->Select(0);
+	const FGuid Identity = Menu->GetSelectedEntry().InstanceId;
+	FWizardInventoryDragRequest BagDrag;
+	TestTrue(TEXT("背包创建装备拖拽"), Menu->MakeDragRequest(0, BagDrag));
+	TestTrue(TEXT("装备槽消费当前拖拽"), Menu->HandleDrop(BagDrag, 0, true));
+	TestEqual(TEXT("跨区域装备成功"), Feedback, EWizardInventoryResult::Success);
+	TestTrue(TEXT("选择跟随实例进入装备区"), Menu->IsEquipmentSelected());
+	TestEqual(TEXT("选中实例保持身份"), Menu->GetSelectedEntry().InstanceId, Identity);
+	const auto Equipped = Model->GetSnapshot();
+	Menu->HandleDrop(BagDrag, 0, true);
+	TestEqual(TEXT("旧背包拖拽不能重放"), Feedback, EWizardInventoryResult::StaleRequest);
+	TestTrue(TEXT("旧拖拽不改变装备或背包"), Equipped.Slots == Model->GetSnapshot().Slots && Equipped.Equipment == Model->GetSnapshot().Equipment);
+	FWizardInventoryQuantityRequest Quantity;
+	TestFalse(TEXT("已装备物品不能直接丢弃"), Menu->PrepareQuantity(true, Quantity));
+	FWizardInventoryDragRequest EquipmentDrag;
+	TestTrue(TEXT("装备区创建拖拽"), Menu->MakeDragRequest(0, EquipmentDrag, true));
+	TestTrue(TEXT("拖回指定背包槽"), Menu->HandleDrop(EquipmentDrag, 3));
+	TestEqual(TEXT("卸下后实例位于指定背包格"), Model->GetSnapshot().Slots[3].InstanceId, Identity);
+	TestFalse(TEXT("选择跟随实例回到背包"), Menu->IsEquipmentSelected());
+	Menu->UseSelected();
+	TestEqual(TEXT("详情装备动作使用同一业务事务"), Model->GetSnapshot().Equipment[0].InstanceId, Identity);
+	Menu->UseSelected();
+	TestTrue(TEXT("详情卸下动作清空装备槽"), Model->GetSnapshot().Equipment[0].IsEmpty());
+	Menu->Select(0);
+	Menu->UseSelected();
+	Menu->MakeDragRequest(0, EquipmentDrag, true);
+	Menu->Close(); Menu->Open(Model);
+	TestFalse(TEXT("重开菜单拒绝旧装备来源会话"), Menu->HandleDrop(EquipmentDrag, 1));
+	Menu->Close();
+	return true;
+}
+
 #endif
