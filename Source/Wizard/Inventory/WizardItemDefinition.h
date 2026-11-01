@@ -31,6 +31,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) FName ItemId;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) FText DisplayName;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) FText Description;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) bool bTradable = true;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ClampMin="1", EditCondition="bTradable")) int32 SellPrice = 1;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) EWizardItemType Type = EWizardItemType::Material;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ClampMin="1")) int32 MaxStack = 20;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly) TSoftObjectPtr<UTexture2D> Icon;

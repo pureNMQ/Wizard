@@ -1,4 +1,5 @@
 #include "UI/WizardInventoryWidgets.h"
+#include "UI/WizardAttributeDisplay.h"
 #include "UI/WizardIconDragPreview.h"
 #include "WizardPlayerState.h"
 #include "AbilitySystemComponent.h"
@@ -26,18 +27,6 @@ namespace
 			UWizardAttributeSet::GetManaAttribute(), UWizardAttributeSet::GetMaxManaAttribute(),
 			UWizardAttributeSet::GetAttackPowerAttribute(), UWizardAttributeSet::GetDefenseAttribute(),
 			UWizardAttributeSet::GetMoveSpeedAttribute(), UWizardAttributeSet::GetShieldAttribute() };
-	}
-	FString AttributeLabel(const FGameplayAttribute& Attribute)
-	{
-		if (Attribute == UWizardAttributeSet::GetHealthAttribute()) return TEXT("生命");
-		if (Attribute == UWizardAttributeSet::GetMaxHealthAttribute()) return TEXT("最大生命");
-		if (Attribute == UWizardAttributeSet::GetManaAttribute()) return TEXT("法力");
-		if (Attribute == UWizardAttributeSet::GetMaxManaAttribute()) return TEXT("最大法力");
-		if (Attribute == UWizardAttributeSet::GetAttackPowerAttribute()) return TEXT("攻击力");
-		if (Attribute == UWizardAttributeSet::GetDefenseAttribute()) return TEXT("防御力");
-		if (Attribute == UWizardAttributeSet::GetMoveSpeedAttribute()) return TEXT("移动速度");
-		if (Attribute == UWizardAttributeSet::GetShieldAttribute()) return TEXT("护盾");
-		return Attribute.GetName();
 	}
 }
 
@@ -67,8 +56,8 @@ void UWizardInventoryTile::NativeOnMouseEnter(const FGeometry& Geometry, const F
 }
 FReply UWizardInventoryTile::NativeOnMouseButtonDown(const FGeometry& Geometry, const FPointerEvent& Event)
 {
-	if (!MenuController.IsValid() || Event.GetEffectingButton() != EKeys::LeftMouseButton) return Super::NativeOnMouseButtonDown(Geometry, Event);
-	bCanDrag = MenuController->MakeDragRequest(SlotIndex, PendingDrag, bEquipmentSlot);
+	if (Event.GetEffectingButton() != EKeys::LeftMouseButton) return Super::NativeOnMouseButtonDown(Geometry, Event);
+	bCanDrag = MenuController.IsValid() && MenuController->MakeDragRequest(SlotIndex, PendingDrag, bEquipmentSlot);
 	OnInspect.Broadcast(SlotIndex, this, false);
 	return bCanDrag ? UWidgetBlueprintLibrary::DetectDragIfPressed(Event, this, EKeys::LeftMouseButton).NativeReply : FReply::Handled();
 }
@@ -102,9 +91,12 @@ void UWizardInventoryPopover::NativeConstruct()
 	if (UseButton) UseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleUse);
 	if (SplitButton) SplitButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleSplit);
 	if (DiscardButton) DiscardButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleDiscard);
+	if (SellButton) SellButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleSell);
 }
 void UWizardInventoryPopover::Configure(const UWizardItemDefinition* Definition, int32 Quantity, bool bEquipped)
 {
+	if (SellButton) SellButton->SetVisibility(ESlateVisibility::Collapsed);
+	if (UseButton) UseButton->SetVisibility(ESlateVisibility::Visible);
 	FString Details;
 	if (Definition)
 	{
@@ -114,7 +106,7 @@ void UWizardInventoryPopover::Configure(const UWizardItemDefinition* Definition,
 		{
 			for (const auto& Bonus : Definition->EquipmentBonuses)
 			{
-				Details += FString::Printf(TEXT("\n%s  %s%s"), *AttributeLabel(Bonus.Attribute), Bonus.Magnitude >= 0.f ? TEXT("+") : TEXT(""), *FText::AsNumber(Bonus.Magnitude).ToString());
+				Details += FString::Printf(TEXT("\n%s  %s%s"), *WizardAttributeDisplay::GetLabel(Bonus.Attribute), Bonus.Magnitude >= 0.f ? TEXT("+") : TEXT(""), *FText::AsNumber(Bonus.Magnitude).ToString());
 			}
 		}
 		else Details += FString::Printf(TEXT("\n数量：%s"), *FText::AsNumber(Quantity).ToString());
@@ -125,15 +117,31 @@ void UWizardInventoryPopover::Configure(const UWizardItemDefinition* Definition,
 	if (SplitButton) SplitButton->SetVisibility(!bEquipped && Definition && Quantity > 1 ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 	if (DiscardButton) DiscardButton->SetVisibility(!bEquipped && Definition ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 }
-UWidget* UWizardInventoryPopover::GetFirstAction() const { return UseButton && UseButton->GetIsEnabled() ? UseButton.Get() : DiscardButton.Get(); }
+void UWizardInventoryPopover::ConfigureTrading(const UWizardItemDefinition* Definition, int32 Quantity)
+{
+	Configure(Definition, Quantity);
+	if (UseButton) UseButton->SetVisibility(ESlateVisibility::Collapsed);
+	if (SplitButton) SplitButton->SetVisibility(ESlateVisibility::Collapsed);
+	if (DiscardButton) DiscardButton->SetVisibility(ESlateVisibility::Collapsed);
+	if (DetailsText && Definition) DetailsText->SetText(FText::FromString(DetailsText->GetText().ToString() + FString::Printf(TEXT("\n售价  %s"), *FText::AsNumber(Definition->SellPrice).ToString())));
+	if (SellButton) { SellButton->SetVisibility(ESlateVisibility::Visible); SellButton->SetIsEnabled(Definition && Definition->bTradable && Definition->SellPrice > 0); }
+}
+UWidget* UWizardInventoryPopover::GetFirstAction() const
+{
+	if (SellButton && SellButton->IsVisible()) return SellButton;
+	return UseButton && UseButton->GetIsEnabled() ? UseButton.Get() : DiscardButton.Get();
+}
 void UWizardInventoryPopover::HandleUse() { OnUse.Broadcast(); }
 void UWizardInventoryPopover::HandleSplit() { OnSplit.Broadcast(); }
 void UWizardInventoryPopover::HandleDiscard() { OnDiscard.Broadcast(); }
+void UWizardInventoryPopover::HandleSell() { OnSell.Broadcast(); }
 void UWizardInventoryPopover::NativeDestruct()
 {
 	if (UseButton) UseButton->OnClicked.RemoveDynamic(this, &ThisClass::HandleUse);
 	if (SplitButton) SplitButton->OnClicked.RemoveDynamic(this, &ThisClass::HandleSplit);
 	if (DiscardButton) DiscardButton->OnClicked.RemoveDynamic(this, &ThisClass::HandleDiscard);
+	if (SellButton) SellButton->OnClicked.RemoveDynamic(this, &ThisClass::HandleSell);
+	OnSell.Clear();
 	OnUse.Clear(); OnSplit.Clear(); OnDiscard.Clear();
 	Super::NativeDestruct();
 }
@@ -154,12 +162,19 @@ void UWizardInventoryQuantityModal::NativeConstruct()
 }
 void UWizardInventoryQuantityModal::Configure(UWizardInventoryMenuController* Controller, const FWizardInventoryQuantityRequest& Request, int32 Maximum)
 {
+	TransactionSubmit = {};
 	MenuController = Controller; Pending = Request; MaximumQuantity = Maximum;
 	if (Heading) Heading->SetText(FText::FromString(Request.bDiscard ? TEXT("丢弃") : TEXT("拆分")));
 	if (QuantitySlider) { QuantitySlider->SetMinValue(0.f); QuantitySlider->SetMaxValue(1.f); QuantitySlider->SetStepSize(Maximum > 1 ? static_cast<float>(1. / (static_cast<double>(Maximum) - 1.)) : 1.f); QuantitySlider->SetIsEnabled(Maximum > 1); }
 	SetQuantity(Request.bDiscard ? Maximum : 1);
 	if (QuantityInput) QuantityInput->SetKeyboardFocus();
 	if (Feedback) Feedback->SetText(FText::GetEmpty());
+}
+void UWizardInventoryQuantityModal::ConfigureTransaction(FText Title, int32 Maximum, TFunction<void(int32)> Submit)
+{
+	Configure(nullptr, {}, Maximum);
+	TransactionSubmit = MoveTemp(Submit);
+	if (Heading) Heading->SetText(Title);
 }
 void UWizardInventoryQuantityModal::SetQuantity(int32 Value)
 {
@@ -203,15 +218,17 @@ void UWizardInventoryQuantityModal::Confirm()
 {
 	HandleQuantityTextCommitted(QuantityInput ? QuantityInput->GetText() : FText::GetEmpty(), ETextCommit::OnEnter);
 	if (MaximumQuantity < 1) return;
-	if (MenuController.IsValid()) MenuController->SubmitQuantity(Pending, CurrentQuantity);
+	if (TransactionSubmit) { auto Submit = MoveTemp(TransactionSubmit); Submit(CurrentQuantity); }
+	else if (MenuController.IsValid()) MenuController->SubmitQuantity(Pending, CurrentQuantity);
 	DeactivateWidget();
 }
 void UWizardInventoryQuantityModal::Cancel() { DeactivateWidget(); }
 bool UWizardInventoryQuantityModal::NativeOnHandleBackAction() { Cancel(); return true; }
-void UWizardInventoryQuantityModal::NativeOnDeactivated() { MenuController.Reset(); Pending = {}; Super::NativeOnDeactivated(); }
+void UWizardInventoryQuantityModal::NativeOnDeactivated() { TransactionSubmit = {}; MenuController.Reset(); Pending = {}; Super::NativeOnDeactivated(); }
 void UWizardInventoryQuantityModal::NativeDestruct()
 {
 	MenuController.Reset(); Pending = {};
+	TransactionSubmit = {};
 	if (ConfirmButton) ConfirmButton->OnClicked.RemoveDynamic(this, &ThisClass::Confirm);
 	if (CancelButton) CancelButton->OnClicked.RemoveDynamic(this, &ThisClass::Cancel);
 	if (QuantityInput)

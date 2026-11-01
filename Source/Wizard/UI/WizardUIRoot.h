@@ -7,6 +7,7 @@ class UCommonActivatableWidget;
 class UCommonActivatableWidgetStack;
 class UUserWidget;
 class UWizardChallengeBanner;
+class AWizardShopActor;
 
 // 固定三层；布局由 WBP_UIRoot 提供，不开放层注册。
 UCLASS()
@@ -23,6 +24,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="UI") UCommonActivatableWidget* PushModal(TSubclassOf<UCommonActivatableWidget> WidgetClass);
 	UFUNCTION(BlueprintCallable, Category="UI") bool CloseTop();
 	UFUNCTION(BlueprintPure, Category="UI") bool HasOpenScreens() const;
+	// 只接收场景商店，打开前校验权限，菜单自己维护交易会话。
+	bool OpenShop(AWizardShopActor* Shop);
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;

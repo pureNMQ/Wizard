@@ -41,7 +41,7 @@ bool UWizardItemDefinition::IsConfigurationValid() const
 	}
 	const bool bKnownType = Type == EWizardItemType::Equipment || Type == EWizardItemType::Consumable || Type == EWizardItemType::Material;
 	const bool bKnownResource = PotionResource == EWizardPotionResource::None || PotionResource == EWizardPotionResource::Health || PotionResource == EWizardPotionResource::Mana;
-	return bKnownType && bKnownResource && !ItemId.IsNone() && GetStackLimit() > 0 && (Type != EWizardItemType::Equipment || MaxStack == 1) &&
+	return bKnownType && bKnownResource && (!bTradable || SellPrice > 0) && !ItemId.IsNone() && GetStackLimit() > 0 && (Type != EWizardItemType::Equipment || MaxStack == 1) &&
 		(PotionResource == EWizardPotionResource::None ||
 		(Type == EWizardItemType::Consumable && FMath::IsFinite(PotionMagnitude) && PotionMagnitude > 0.f));
 }

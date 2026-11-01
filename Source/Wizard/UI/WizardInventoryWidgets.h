@@ -66,6 +66,8 @@ class WIZARD_API UWizardInventoryPopover : public UCommonUserWidget
 public:
 	void Configure(const UWizardItemDefinition* Definition, int32 Quantity, bool bEquipped = false);
 	FWizardInventoryViewAction OnUse, OnSplit, OnDiscard;
+	FWizardInventoryViewAction OnSell;
+	void ConfigureTrading(const UWizardItemDefinition* Definition, int32 Quantity);
 	UWidget* GetFirstAction() const;
 protected:
 	virtual void NativeConstruct() override;
@@ -75,10 +77,12 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> UseButton;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> SplitButton;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> DiscardButton;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UButton> SellButton;
 private:
 	UFUNCTION() void HandleUse();
 	UFUNCTION() void HandleSplit();
 	UFUNCTION() void HandleDiscard();
+	UFUNCTION() void HandleSell();
 };
 UCLASS()
 class WIZARD_API UWizardInventoryQuantityModal : public UCommonActivatableWidget
@@ -87,6 +91,8 @@ class WIZARD_API UWizardInventoryQuantityModal : public UCommonActivatableWidget
 public:
 	UWizardInventoryQuantityModal();
 	void Configure(UWizardInventoryMenuController* Controller, const FWizardInventoryQuantityRequest& Request, int32 Maximum);
+	// 复用同一个整数数量控件；事务请求由调用方冻结，关闭或取消时丢弃回调。
+	void ConfigureTransaction(FText Title, int32 Maximum, TFunction<void(int32)> Submit);
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
@@ -113,6 +119,7 @@ private:
 	int32 MaximumQuantity = 0;
 	int32 CurrentQuantity = 1;
 	bool bSynchronizingQuantity = false;
+	TFunction<void(int32)> TransactionSubmit;
 };
 UCLASS()
 class WIZARD_API UWizardInventoryMenu : public UCommonActivatableWidget

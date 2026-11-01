@@ -55,6 +55,8 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
+	// 物品域交易同时提交余额与背包后才通知，避免旁观者读到半笔交易。
+	friend class UWizardInventoryComponent;
 	void TryBasicAttack();
 	void QueueBasicAttack();
 	void OnBasicAttackEnded(const FAbilityEndedData& Data);

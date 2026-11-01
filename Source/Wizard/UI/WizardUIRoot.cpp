@@ -6,6 +6,9 @@
 #include "Components/OverlaySlot.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "UI/WizardChallengeBanner.h"
+#include "UI/WizardShopWidgets.h"
+#include "Trading/WizardShopActor.h"
+#include "WizardPlayerState.h"
 
 void UWizardUIRoot::NativeConstruct()
 {
@@ -69,6 +72,17 @@ void UWizardUIRoot::ShowChallengeAnnouncementDetail(FText Message, FText Detail,
 bool UWizardUIRoot::HasOpenScreens() const
 {
 	return (MenuLayer && MenuLayer->GetActiveWidget()) || (ModalLayer && ModalLayer->GetActiveWidget());
+}
+
+bool UWizardUIRoot::OpenShop(AWizardShopActor* Shop)
+{
+	const AWizardPlayerController* Controller = Cast<AWizardPlayerController>(GetOwningPlayer());
+	AWizardPlayerState* State = Controller ? Controller->GetPlayerState<AWizardPlayerState>() : nullptr;
+	if (!IsValid(Shop) || HasOpenScreens() || !Shop->CanTrade(State)) return false;
+	UWizardShopMenu* Menu = Cast<UWizardShopMenu>(PushMenu(Shop->ShopMenuClass));
+	if (!Menu) return false;
+	Menu->Configure(Shop);
+	return Menu->IsActivated();
 }
 
 UCommonActivatableWidget* UWizardUIRoot::PushMenu(TSubclassOf<UCommonActivatableWidget> WidgetClass)

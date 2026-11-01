@@ -145,11 +145,16 @@ FText WizardInventory::ResultText(EWizardInventoryResult Result)
 	{
 	case EWizardInventoryResult::Success: Text = TEXT(""); break;
 	case EWizardInventoryResult::InvalidSlot: Text = TEXT("没有可用的目标格"); break;
-	case EWizardInventoryResult::InvalidQuantity: Text = TEXT("数量无效；拆分数量需小于当前数量"); break;
+	case EWizardInventoryResult::InvalidQuantity: Text = TEXT("数量无效，请重新选择"); break;
 	case EWizardInventoryResult::StaleRequest: Text = TEXT("物品已变化，请重新选择"); break;
 	case EWizardInventoryResult::NoCapacity: Text = TEXT("背包空间不足"); break;
 	case EWizardInventoryResult::NotEquipment: Text = TEXT("该物品不能装备"); break;
 	case EWizardInventoryResult::WrongEquipmentSlot: Text = TEXT("装备槽位不匹配"); break;
+	case EWizardInventoryResult::NotTradable: Text = TEXT("该物品不能出售"); break;
+	case EWizardInventoryResult::InvalidPrice: Text = TEXT("交易价格无效"); break;
+	case EWizardInventoryResult::InsufficientGold: Text = TEXT("金币不足"); break;
+	case EWizardInventoryResult::GoldOverflow: Text = TEXT("交易金额超出上限"); break;
+	case EWizardInventoryResult::ShopUnavailable: Text = TEXT("当前无法使用商店"); break;
 	case EWizardInventoryResult::NotConsumable: Text = TEXT("该物品不能使用"); break;
 	case EWizardInventoryResult::FullResource: Text = TEXT("对应生命或法力已满"); break;
 	case EWizardInventoryResult::Dead: Text = TEXT("死亡时不能使用物品"); break;

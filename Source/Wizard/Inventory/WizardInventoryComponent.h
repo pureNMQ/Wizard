@@ -4,13 +4,14 @@
 #include "Components/ActorComponent.h"
 #include "Inventory/WizardItemDefinition.h"
 #include "WizardInventoryComponent.generated.h"
+class UWizardShopCatalog;
 
 UENUM(BlueprintType)
 enum class EWizardInventoryResult : uint8
 {
 	Success, InvalidSlot, InvalidQuantity, UnknownDefinition, InvalidDefinition, StaleRequest,
 	NoCapacity, NotConsumable, FullResource, Dead, EffectFailed, Busy, DropUnavailable, InvalidSnapshot,
-	NotEquipment, WrongEquipmentSlot
+	NotEquipment, WrongEquipmentSlot, NotTradable, InvalidPrice, InsufficientGold, GoldOverflow, ShopUnavailable
 };
 
 USTRUCT(BlueprintType)
@@ -71,6 +72,12 @@ public:
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult Unequip(FWizardInventoryRequest Request, int32 TargetSlot = -1);
 	// 接受可容纳的部分；成功仅广播一次，Accepted为准确接收量。
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult AddItems(const UWizardItemDefinition* Definition, int32 Quantity, int32& Accepted);
+	// 买卖必须全量提交；过期版本、金币/容量不足及非法配置均不改变物品和余额。
+	UFUNCTION(BlueprintCallable) EWizardInventoryResult Buy(const UWizardShopCatalog* Catalog, int32 ProductIndex, int32 Quantity, int64 ExpectedRevision);
+	UFUNCTION(BlueprintCallable) EWizardInventoryResult Sell(FWizardInventoryRequest Request, int32 Quantity);
+	// 当前可购买上限同时受金币、完整接收容量和整数范围限制；不可交易时为0。
+	UFUNCTION(BlueprintPure) int32 GetPurchaseLimit(const UWizardShopCatalog* Catalog, int32 ProductIndex) const;
+	EWizardInventoryResult CheckPurchase(const UWizardShopCatalog* Catalog, int32 ProductIndex, int32 Quantity, int64 ExpectedRevision) const;
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult Move(FWizardInventoryRequest Request, int32 TargetSlot);
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult Split(FWizardInventoryRequest Request, int32 Quantity, int32 TargetSlot);
 	UFUNCTION(BlueprintCallable) EWizardInventoryResult Use(FWizardInventoryRequest Request);
@@ -83,6 +90,8 @@ public:
 	EWizardInventoryResult CommitDrop(const FWizardInventoryDropTicket& Ticket, TFunctionRef<bool(const FWizardInventoryEntry&)> Receiver);
 	FWizardInventoryChanged OnChanged;
 private:
+	bool IsMutationBlocked() const;
+	EWizardInventoryResult PrepareAddItems(const UWizardItemDefinition* Definition, int32 Quantity, TArray<FWizardInventoryEntry>& Slots, int32& Accepted) const;
 	EWizardInventoryResult ValidateRequest(const FWizardInventoryRequest& Request) const;
 	bool ResolveSnapshot(FWizardInventorySnapshot& Snapshot) const;
 	void Commit(TArray<FWizardInventoryEntry>&& Slots);

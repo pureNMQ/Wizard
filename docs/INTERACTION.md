@@ -29,7 +29,9 @@ flowchart LR
 
 ## 商店接入约定
 
-在商店Actor中创建同一个目标组件，在BeginPlay绑定原生Condition/Action，再调用InitializeTarget传入商店模型、距离和提示。Action打开商店CommonUI；购买/出售事务仍属于T07业务。无需改E输入、HUD或添加交互轮询。
+在商人NPC Actor中创建同一个目标组件，在BeginPlay绑定原生Condition/Action，再调用InitializeTarget传入NPC自身、距离和提示。Action打开商店CommonUI，购买/出售通过T07物品事务；无需改E输入、HUD或添加交互轮询。
+
+2026-11-01 用户明确：商店Actor本身为商人NPC，InitializeTarget的目标为this，NPC蓝图配置BattleWizardPBR模型、PBRMaskTintMat3Inst材质及待机动画；不引用房屋作为交互目标。商店提示、250cm范围与有效性检查随NPC自身更新，交易前仍重验权限。
 
 商店关闭、营业条件变化等通过`SetInteractionEnabled`或`NotifyAvailabilityChanged`主动刷新。未来动态门/障碍改变遮挡时也应显式发出可用性变化通知；静态场景遮挡由移动事件重验，E按下时始终再次校验，因此陈旧提示不会授权无效动作。模块不扫描任意Actor来侦测未声明的外部变化，也不使用定时器补偿。
 

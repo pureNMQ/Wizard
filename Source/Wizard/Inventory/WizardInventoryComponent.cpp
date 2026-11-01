@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "GAS/WizardAttributeSet.h"
 #include "Skills/WizardSkillEffects.h"
+#include "Trading/WizardShopCatalog.h"
 UWizardInventoryComponent::UWizardInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -66,7 +67,7 @@ FWizardInventoryRequest UWizardInventoryComponent::MakeEquipmentRequest(EWizardE
 
 EWizardInventoryResult UWizardInventoryComponent::ValidateRequest(const FWizardInventoryRequest& Request) const
 {
-	if (bMutating) return EWizardInventoryResult::Busy;
+	if (IsMutationBlocked()) return EWizardInventoryResult::Busy;
 	const TArray<FWizardInventoryEntry>& Entries = Request.bEquipment ? State.Equipment : State.Slots;
 	if (!Entries.IsValidIndex(Request.Slot)) return EWizardInventoryResult::InvalidSlot;
 	if (Request.Revision != State.Revision || !Request.InstanceId.IsValid() || Entries[Request.Slot].InstanceId != Request.InstanceId) return EWizardInventoryResult::StaleRequest;
@@ -93,7 +94,22 @@ void UWizardInventoryComponent::Commit(TArray<FWizardInventoryEntry>&& Slots, TA
 EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefinition* Definition, int32 Quantity, int32& Accepted)
 {
 	Accepted = 0;
-	if (bMutating) return EWizardInventoryResult::Busy;
+	if (IsMutationBlocked()) return EWizardInventoryResult::Busy;
+	TArray<FWizardInventoryEntry> Slots;
+	const EWizardInventoryResult Result = PrepareAddItems(Definition, Quantity, Slots, Accepted);
+	if (Result == EWizardInventoryResult::Success) Commit(MoveTemp(Slots));
+	return Result;
+}
+
+bool UWizardInventoryComponent::IsMutationBlocked() const
+{
+	const AWizardPlayerState* Player = Cast<AWizardPlayerState>(GetOwner());
+	return bMutating || (Player && Player->bChangingGold);
+}
+
+EWizardInventoryResult UWizardInventoryComponent::PrepareAddItems(const UWizardItemDefinition* Definition, int32 Quantity, TArray<FWizardInventoryEntry>& Slots, int32& Accepted) const
+{
+	Accepted = 0;
 	if (Quantity <= 0) return EWizardInventoryResult::InvalidQuantity;
 	if (!Definition) return EWizardInventoryResult::UnknownDefinition;
 	if (!Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
@@ -107,7 +123,7 @@ EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefi
 	{
 		if (Entry.DefinitionId == Id && Entry.Definition != Definition) return EWizardInventoryResult::InvalidDefinition;
 	}
-	TArray<FWizardInventoryEntry> Slots = State.Slots;
+	Slots = State.Slots;
 	int32 Remaining = Quantity;
 	for (FWizardInventoryEntry& Entry : Slots)
 	{
@@ -128,7 +144,6 @@ EWizardInventoryResult UWizardInventoryComponent::AddItems(const UWizardItemDefi
 	}
 	Accepted = Quantity - Remaining;
 	if (Accepted == 0) return EWizardInventoryResult::NoCapacity;
-	Commit(MoveTemp(Slots));
 	return EWizardInventoryResult::Success;
 }
 
@@ -225,7 +240,7 @@ EWizardInventoryResult UWizardInventoryComponent::Split(FWizardInventoryRequest 
 
 EWizardInventoryResult UWizardInventoryComponent::RestoreSnapshot(const FWizardInventorySnapshot& Snapshot)
 {
-	if (bMutating) return EWizardInventoryResult::Busy;
+	if (IsMutationBlocked()) return EWizardInventoryResult::Busy;
 	FWizardInventorySnapshot Resolved = Snapshot;
 	if (!ResolveSnapshot(Resolved)) return EWizardInventoryResult::InvalidSnapshot;
 	Commit(MoveTemp(Resolved.Slots), MoveTemp(Resolved.Equipment));
@@ -329,4 +344,88 @@ EWizardInventoryResult UWizardInventoryComponent::Discard(FWizardInventoryReques
 	}
 	else if (IsValid(Pickup)) Pickup->Destroy();
 	return Result;
+}
+
+EWizardInventoryResult UWizardInventoryComponent::CheckPurchase(const UWizardShopCatalog* Catalog, int32 ProductIndex, int32 Quantity, int64 ExpectedRevision) const
+{
+	if (IsMutationBlocked()) return EWizardInventoryResult::Busy;
+	const AWizardPlayerState* Player = Cast<AWizardPlayerState>(GetOwner());
+	if (!Player || !Player->HasAuthority()) return EWizardInventoryResult::ShopUnavailable;
+	if (ExpectedRevision != State.Revision) return EWizardInventoryResult::StaleRequest;
+	if (Quantity <= 0) return EWizardInventoryResult::InvalidQuantity;
+	if (!IsValid(Catalog) || !Catalog->Products.IsValidIndex(ProductIndex)) return EWizardInventoryResult::UnknownDefinition;
+	const FWizardShopProduct& Product = Catalog->Products[ProductIndex];
+	if (Product.BuyPrice <= 0) return EWizardInventoryResult::InvalidPrice;
+	if (!Catalog->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
+	const int64 Cost = static_cast<int64>(Product.BuyPrice) * Quantity;
+	if (Cost > MAX_int32) return EWizardInventoryResult::GoldOverflow;
+	if (Player->Gold < Cost) return EWizardInventoryResult::InsufficientGold;
+	TArray<FWizardInventoryEntry> Slots;
+	int32 Accepted = 0;
+	const EWizardInventoryResult Result = PrepareAddItems(Product.Definition.Get(), Quantity, Slots, Accepted);
+	if (Result != EWizardInventoryResult::Success) return Result;
+	return Accepted == Quantity ? EWizardInventoryResult::Success : EWizardInventoryResult::NoCapacity;
+}
+
+int32 UWizardInventoryComponent::GetPurchaseLimit(const UWizardShopCatalog* Catalog, int32 ProductIndex) const
+{
+	const AWizardPlayerState* Player = Cast<AWizardPlayerState>(GetOwner());
+	if (!Player || !Player->HasAuthority() || !IsValid(Catalog)
+		|| !Catalog->Products.IsValidIndex(ProductIndex) || !Catalog->IsConfigurationValid()) return 0;
+	const FWizardShopProduct& Product = Catalog->Products[ProductIndex];
+	TArray<FWizardInventoryEntry> Slots;
+	int32 Accepted = 0;
+	if (PrepareAddItems(Product.Definition.Get(), MAX_int32, Slots, Accepted) != EWizardInventoryResult::Success) return 0;
+	return FMath::Min(Accepted, Player->Gold / Product.BuyPrice);
+}
+
+EWizardInventoryResult UWizardInventoryComponent::Buy(const UWizardShopCatalog* Catalog, int32 ProductIndex, int32 Quantity, int64 ExpectedRevision)
+{
+	const EWizardInventoryResult Validated = CheckPurchase(Catalog, ProductIndex, Quantity, ExpectedRevision);
+	if (Validated != EWizardInventoryResult::Success) return Validated;
+	const FWizardShopProduct& Product = Catalog->Products[ProductIndex];
+	TArray<FWizardInventoryEntry> Slots;
+	int32 Accepted = 0;
+	const EWizardInventoryResult Prepared = PrepareAddItems(Product.Definition.Get(), Quantity, Slots, Accepted);
+	if (Prepared != EWizardInventoryResult::Success) return Prepared;
+	if (Accepted != Quantity) return EWizardInventoryResult::NoCapacity;
+	AWizardPlayerState* Player = CastChecked<AWizardPlayerState>(GetOwner());
+	// 两份权威状态先同时落定，之后才广播；任何同步观察者看到完整交易且不能重入修改。
+	TGuardValue<bool> InventoryGuard(bMutating, true);
+	TGuardValue<bool> GoldGuard(Player->bChangingGold, true);
+	State.Slots = MoveTemp(Slots);
+	++State.Revision;
+	Player->Gold -= static_cast<int32>(static_cast<int64>(Product.BuyPrice) * Quantity);
+	OnChanged.Broadcast();
+	Player->OnGoldChanged.Broadcast();
+	return EWizardInventoryResult::Success;
+}
+
+EWizardInventoryResult UWizardInventoryComponent::Sell(FWizardInventoryRequest Request, int32 Quantity)
+{
+	const EWizardInventoryResult Validated = ValidateRequest(Request);
+	if (Validated != EWizardInventoryResult::Success) return Validated;
+	if (Request.bEquipment) return EWizardInventoryResult::NotTradable;
+	AWizardPlayerState* Player = Cast<AWizardPlayerState>(GetOwner());
+	if (!Player || !Player->HasAuthority()) return EWizardInventoryResult::ShopUnavailable;
+	const FWizardInventoryEntry& Entry = State.Slots[Request.Slot];
+	if (Quantity <= 0 || Quantity > Entry.Quantity) return EWizardInventoryResult::InvalidQuantity;
+	const UWizardItemDefinition* Definition = Entry.Definition.Get();
+	if (!IsValid(Definition)) return EWizardInventoryResult::UnknownDefinition;
+	if (!Definition->bTradable) return EWizardInventoryResult::NotTradable;
+	if (Definition->SellPrice <= 0) return EWizardInventoryResult::InvalidPrice;
+	if (!Definition->IsConfigurationValid()) return EWizardInventoryResult::InvalidDefinition;
+	const int64 Revenue = static_cast<int64>(Definition->SellPrice) * Quantity;
+	if (Revenue > MAX_int32 || Revenue > MAX_int32 - Player->Gold) return EWizardInventoryResult::GoldOverflow;
+	TArray<FWizardInventoryEntry> Slots = State.Slots;
+	Slots[Request.Slot].Quantity -= Quantity;
+	if (Slots[Request.Slot].Quantity == 0) Slots[Request.Slot] = {};
+	TGuardValue<bool> InventoryGuard(bMutating, true);
+	TGuardValue<bool> GoldGuard(Player->bChangingGold, true);
+	State.Slots = MoveTemp(Slots);
+	++State.Revision;
+	Player->Gold += static_cast<int32>(Revenue);
+	OnChanged.Broadcast();
+	Player->OnGoldChanged.Broadcast();
+	return EWizardInventoryResult::Success;
 }
