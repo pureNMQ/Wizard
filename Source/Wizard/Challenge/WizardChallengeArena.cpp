@@ -1,4 +1,6 @@
 #include "Challenge/WizardChallengeArena.h"
+#include "Combat/WizardCombatPresentation.h"
+#include "Combat/WizardCombatFeedbackComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardEnemy.h"
 #include "Combat/WizardEnemyProjectile.h"
@@ -95,6 +97,7 @@ void AWizardChallengeArena::BuildBarrier()
 
 void AWizardChallengeArena::SetBarrierEnabled(bool bEnabled)
 {
+	WizardCombat::Burst(this, Presentation, bEnabled ? EWizardCombatStage::BarrierClose : EWizardCombatStage::BarrierOpen, GetActorLocation());
 	for (UBoxComponent* Box : BarrierSegments) Box->SetCollisionEnabled(bEnabled ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
 	BarrierVisual->SetVisibility(bEnabled);
 }
@@ -139,6 +142,7 @@ bool AWizardChallengeArena::TryStartChallenge(AWizardPlayerState* Player)
 
 void AWizardChallengeArena::SpawnNextWave()
 {
+	WizardCombat::Burst(this, Presentation, EWizardCombatStage::Wave, GetActorLocation());
 	if (State != EWizardChallengeState::BetweenWaves || !ActivePlayer.IsValid()) return;
 	++CurrentWave;
 	if (!Waves.IsValidIndex(CurrentWave)) { FinishChallenge(); return; }
@@ -242,6 +246,7 @@ void AWizardChallengeArena::FinishChallenge()
 {
 	if (State == EWizardChallengeState::Returning || State == EWizardChallengeState::Ready) return;
 	State = EWizardChallengeState::Returning;
+	WizardCombat::Burst(this, Presentation, bRoundWon ? EWizardCombatStage::Victory : EWizardCombatStage::Defeat, GetActorLocation());
 	GetWorldTimerManager().ClearTimer(WaveTimer);
 	GetWorldTimerManager().ClearTimer(ReturnTimer);
 	ClearRound();
@@ -269,6 +274,7 @@ void AWizardChallengeArena::ShowAnnouncement(const FText& Text, const FText& Det
 
 void AWizardChallengeArena::ReturnToCamp()
 {
+	if (auto* PC = Cast<AWizardPlayerController>(GetWorld()->GetFirstPlayerController())) if (PC->CombatFeedback) PC->CombatFeedback->ResetFeedback();
 	if (State != EWizardChallengeState::Returning) return;
 	GetWorldTimerManager().ClearTimer(ReturnTimer);
 	SetBarrierEnabled(false);
@@ -301,6 +307,7 @@ void AWizardChallengeArena::EndPlay(const EEndPlayReason::Type Reason)
 		ActivePlayer->SetInChallenge(false);
 	}
 	State = EWizardChallengeState::Returning;
+	WizardCombat::Burst(this, Presentation, bRoundWon ? EWizardCombatStage::Victory : EWizardCombatStage::Defeat, GetActorLocation());
 	ClearRound();
 	Super::EndPlay(Reason);
 }

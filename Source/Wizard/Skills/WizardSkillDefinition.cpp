@@ -1,5 +1,6 @@
 #include "Skills/WizardSkillDefinition.h"
 #include "Skills/WizardSkillAbility.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "Animation/AnimMontage.h"
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
@@ -15,7 +16,7 @@ bool UWizardSkillDefinition::IsConfigurationValid() const
 		&& Cooldown >= .05f && Power >= 0.f && Range > 0.f && Radius > 0.f && Duration >= .05f
 		&& SpeedMultiplier >= .1f && SpeedMultiplier <= 1.f && ProjectileSpeed > 0.f && EffectLifetime >= .05f
 		&& !EffectScale.ContainsNaN() && EffectScale.GetMin() > 0.f
-		&& (Behavior != EWizardSkillBehavior::Projectile || ProjectileFX);
+		&& (Behavior != EWizardSkillBehavior::Projectile || (Presentation ? Presentation->Projectile != nullptr : ProjectileFX != nullptr));
 }
 
 #if WITH_EDITOR

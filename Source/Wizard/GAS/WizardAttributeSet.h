@@ -4,7 +4,9 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "WizardAttributeSet.generated.h"
+DECLARE_MULTICAST_DELEGATE_OneParam(FWizardCombatResolved, const FWizardCombatResult&);
 
 #define WIZARD_ATTRIBUTE_ACCESSORS(Property) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UWizardAttributeSet, Property) \
@@ -16,7 +18,10 @@ UCLASS()
 class WIZARD_API UWizardAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
+	float HealthBeforeEffect = 0;
 public:
+	FWizardCombatResolved OnCombatResolved;
+	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
 	UWizardAttributeSet();
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;

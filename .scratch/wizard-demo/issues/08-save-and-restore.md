@@ -1,9 +1,9 @@
 # T08 存档往返
 
-- Status: ready
+- Status: in-progress
 - Blocked by: [T03](./03-skills-and-loadout.md)、[T04](./04-inventory-and-items.md)、[T06](./06-equipment-and-bonuses.md)、[T07](./07-shop-and-trading.md)
 - Spec: R26、R27、R28，正文见 [规格](../spec.md)
-- Updated: 2026-10-28
+- Updated: 2026-11-01
 
 ## 目标与范围
 
@@ -29,9 +29,53 @@
 
 ## 验证记录
 
-未执行本票据功能验收。
-Standards：未执行。Spec：未执行。
+2026-11-01已完成本票据工程实现、实际构建及自动化验证；用户运行效果与成品重启验收尚未执行，保持in-progress。双轴结论与证据见下文。
 
 ## 未决实现与学习
 
 槽位、版本字段、保存队列与错误恢复方案在此完成实际验证后落定。讲解数据快照、运行对象重建和真实落盘时机。
+
+## 2026-11-01 开工
+
+- 用户明确授权“开始实施T08”。T04/T06/T07已done；T03仍有独立包/完整输入与音画验收尾项，按本次用户开工指令先接入已有快照接口，不改写T03验收状态。
+- 采用单槽WizardProgress、USaveGame版本化快照；首版同步保存小型持久数据，不使用异步队列，因此无旧异步写覆盖和退出待写窗口。同步耗时与实际重启恢复待用户验收。
+- 存储采用CRC/长度封套包裹UE SaveGame二进制，先写.tmp再替换.sav，保留上一成功主档为.bak。主档异常优先恢复合法备份并隔离异常主档；无合法备份时保留原件、禁止自动覆盖并反馈加载失败。未提供游戏内删档按钮。
+- 运行时效果、PIE与成品退出重启由用户执行；Agent仅运行必要工程构建、业务自动化和静态检查，不修改现有地图/蓝图资产、不提交或推送。
+
+## 2026-11-01 工程实现与验证
+
+### 交付行为与实现
+
+- PlayerState持有UWizardSaveComponent；GameMode首次RestartPlayer成功占有后使用现有挑战Actor营地返回点并启动会话。不在角色重复初始化时重新读档，避免旧磁盘状态覆盖当前进度；世界状态使用新世界初始化，不纳入存档。
+- 监听库存、金币、搭配提交事件；交易在通知前已同时提交余额和物品，快照去重避免同笔交易两条通知重复写入。无效操作、无变化的搭配及重复初始化不挤掉上一有效备份。
+- RestorePersistentState先全量解析物品定义并校验金币、20格/4装备格、数量、实例身份、槽位和四槽技能，再整体提交并通知；通知期间拒绝重入修改。装备沿用T06的GE Handle重建入口，之后补满生命和法力。
+- 版本1使用稳定ID和实例/数量/位置数据，运行定义引用Transient，库存进程内Revision归零序列化、恢复时更新。支持保留空槽与全空搭配。不保存当前生命/法力、位置、敌人、掉落、轮次或临时效果。
+- UWizardSaveGame为数据容器，WizardSaveStorage通过UE SaveGameToMemory/LoadGameFromMemory序列化，并使用长度/CRC封套、1MiB上限、.tmp/.bak恢复边界。不能直接用LoadGameFromSlot读取本项目封套文件。无合法恢复数据时阻塞保存，保留原件；状态与实际操作失败反馈使用既有HUD公告和诊断日志，没有新增布局资产或常驻文案。
+- 操作、架构、格式、异常恢复、测试删档与用户验收步骤见`docs/SAVE.md`；本地学习材料`.local-learning/lessons/T08-save-and-restore.md`已补充并确认受Git忽略，掌握程度未评估。
+
+### 工程证据
+
+- 本机UE5.4.4源码核对：GameplayStatics.cpp的SaveGameToMemory/LoadGameFromMemory负责反射对象与字节转换；FFileManagerGeneric::Move的替换过程可能先移除目标，因此明确保留.bak恢复边界，不宣称全流程原子替换或强制断电时最新变更必保留。
+- `pwsh -NoProfile -File ./Tools/Build/Invoke-Wizard.ps1 -Action BuildEditor`：首次`Saved/T01/20261101-214345-BuildEditor-077481`完成UHT但因Controller新增局部变量Player遮蔽引擎成员触发C4458，已改为State；`214448-BuildEditor-f5f5b8`实际编译/链接退出0。后续修改后的`214718-BuildEditor-201817`与最终`215146-BuildEditor-d8909a`实际增量编译/链接均退出0。
+- `-Action Test -TestFilter Wizard.Save`：首轮`Saved/T01/20261101-214501-Test-7169ac/AutomationReport/index.json`为5项通过（2普通成功、3带预期诊断警告）/0失败/0未运行，退出0。
+- `-Action Test`：`Saved/T01/20261101-214731-Test-d69a50/AutomationReport/index.json`为39项通过（36普通成功、3带预期诊断警告）/0失败/0未运行，退出0。覆盖既有物品、交易、技能、装备/GAS及相关UI业务回归；不将NullRHI工程测试当作玩家运行效果。
+- 最终增加启动重入保护、无效搭配拒绝生成存档后，`-Action Test -TestFilter Wizard.Save`：`Saved/T01/20261101-215203-Test-7abe07/AutomationReport/index.json`为5项通过（2普通成功、3带预期诊断警告）/0失败/0未运行，退出0。没有再重复未受影响的全量回归。
+- 计数口径：UE报告将succeeded与succeededWithWarnings分列；全量为36+3=39，专项为2+3=5。现有构建脚本result.json的passed只记录succeeded，应结合逐项state=Success和succeededWithWarnings读取，不据此漏算测试。3项警告来自用例主动模拟损坏/不兼容文件、备份恢复及写失败时的真实业务诊断，均errors=0，未掩盖或当作无警告运行。
+- 5项长期测试位于`Source/Wizard/Private/Tests/WizardSaveTests.cpp`：TransactionsAndDiskRoundTrip通过真实买卖、拆分、获取/换装、技能快照变更后立即读取磁盘并用新PlayerState恢复；InvalidSnapshotIsAtomic覆盖负金币、缺失定义、非法数量、重复身份、未知技能与通知重入；WriteFailureAndRetry模拟临时文件路径被同名目录占用并确认旧档保持、解除后保存最新状态；CorruptionAndBackupRecovery覆盖损坏主档、隔离原件、恢复后继续写入、主档缺失回退备份；InvalidFilesArePreserved覆盖不兼容版本、非法数据、截断和CRC错误后拒绝覆盖。
+- 测试保留依据：R26～R28及本票失败路径要求保护金币/物品一致、恢复原子性和真实落盘；回归可能丢进度或复制装备，人工难以稳定复现。测试经公开业务/文件边界断言结果，使用独立随机槽名、不修改正式资产，维护成本合理；不新增一次性装配/调试入口。
+- 全量日志中的一个7142字节快照写入样本为0.70ms、后续含备份写入5.01ms。该样本不证明实际游玩无卡顿，仍需用户体感验证。
+- 静态检查：`git diff --check`退出0，仅既有换行转换提示；新增说明、提案与票据的相对链接有效。测试结束SaveGames目录无残留测试文件，未创建WizardProgress正式进度；没有修改地图或蓝图资产。保留用户既有T01、本机配置和卡顿调查文档改动。
+
+### 双轴结论与剩余验收
+
+- Standards：按引擎契约核对UE5.4序列化、文件替换与反射构建；按框架实践复用ASC装备效果生命周期；按项目约定检查单一权威状态、整体事务、明确失败状态、订阅解除、中文注释、测试保留依据与文档。当前受影响工程检查通过，未发现阻塞交付的确认源码缺陷。未引入或遗留一次性编辑器自动化入口。
+- Spec：R26字段落盘、R27有效变更触发及空槽恢复、R28金币/物品/装备一致性已有工程证据；同步方案无排队/异步尾项，实际文件替换失败及回退有测试。启动营地位置、实际暂停输入后的操作、失败提示可读性、挑战中退出再启动、同步保存体感及Windows成品退出重启仍待用户验收。
+- 未运行PIE、游戏操控、Cook、Package或成品重启，没有声称资源在成品已加载。前置T03尾项仍保留；本票所有验收勾选保持未完成，待用户运行反馈和阶段成品证据后逐项确认，不把工程通过等同整票done。未提交/推送。
+
+## 2026-11-01 独立双轴审查
+
+- 范围：以HEAD `7a3350050d9458d76d460944e9217c24679f5701`（T07完成）为基线，检查T08未提交源码差异，并包含未跟踪的`Source/Wizard/Save/`、`Source/Wizard/Private/Tests/WizardSaveTests.cpp`和`docs/SAVE.md`。T01、本机配置与卡顿调查文档的已有改动不纳入本次功能审查；未修改游戏源码或资产。
+- Standards：0项确认问题。按编码规范第2/3/5/6.1节检查整体事务、稳定定义ID、反射引用、事件解除、GE生命周期、保存失败诊断与测试保留依据；另核对本机UE5.4的SaveGame内存序列化和文件Move替换语义。未发现需要单列的硬规范违反或代码异味。
+- Spec：0项确认问题。逐项检查R26～R28及本票失败路径：四类字段与空槽往返、有效变更触发和去重、首次占有后的初始化/读档顺序、全字段预校验与通知重入保护、装备效果重建、写失败重试和备份/原件保留，未发现可确认的实现错误或范围扩张。
+- 证据核对：读取最终`215146-BuildEditor-d8909a/result.json`及实际编译/链接日志，退出0；读取`215203-Test-7abe07/AutomationReport/index.json`，专项2项普通成功+3项带预期警告成功、0失败/未运行；读取`214731-Test-d69a50`全量报告，36+3=39项成功、0失败/未运行。源码无新增相关修改，按验证流程复用这些已有工程证据，未重跑构建/自动化。本次`git diff --check`退出0，仅换行转换提示。
+- 验收边界：本次为源码和已有工程证据审查；未执行PIE、实际输入、Cook/Package或独立包重启。营地落点、挑战中退出恢复、暂停期间操作与失败提示可读性、同步保存体感及Windows成品往返仍待用户验收；T03前置尾项与本票in-progress及未勾选验收状态保持不变。未提交/推送。

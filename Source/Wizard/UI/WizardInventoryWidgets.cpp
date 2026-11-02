@@ -47,7 +47,7 @@ void UWizardInventoryTile::Configure(const FWizardInventoryEntry& Entry, int32 I
 		Icon->SetVisibility(IconTexture ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Hidden);
 	}
 	if (QuantityText) QuantityText->SetText(Entry.IsEmpty() || (Definition && Definition->Type == EWizardItemType::Equipment) ? FText::GetEmpty() : FText::AsNumber(Entry.Quantity));
-	if (SelectionBorder) SelectionBorder->SetBrushColor(!Entry.IsEmpty() && Controller && Controller->GetSelectedSlot() == Index && Controller->IsEquipmentSelected() == bEquipmentSlot ? FLinearColor(.25f,.55f,.85f,1.f) : FLinearColor(.07f,.09f,.14f,1.f));
+	if (SelectionBorder) SelectionBorder->SetBrushColor(!Entry.IsEmpty() && Controller && Controller->GetSelectedSlot() == Index && Controller->IsEquipmentSelected() == bEquipmentSlot ? SelectedColor : IdleColor);
 }
 void UWizardInventoryTile::NativeOnMouseEnter(const FGeometry& Geometry, const FPointerEvent& Event)
 {
@@ -100,7 +100,7 @@ void UWizardInventoryPopover::Configure(const UWizardItemDefinition* Definition,
 	FString Details;
 	if (Definition)
 	{
-		Details = Definition->DisplayName.ToString();
+		Details = ItemNameText ? FString() : Definition->DisplayName.ToString();
 		if (!Definition->Description.IsEmpty()) Details += TEXT("\n") + Definition->Description.ToString();
 		if (Definition->Type == EWizardItemType::Equipment)
 		{
@@ -111,7 +111,8 @@ void UWizardInventoryPopover::Configure(const UWizardItemDefinition* Definition,
 		}
 		else Details += FString::Printf(TEXT("\n数量：%s"), *FText::AsNumber(Quantity).ToString());
 	}
-	if (DetailsText) DetailsText->SetText(FText::FromString(Details));
+	if (ItemNameText) ItemNameText->SetText(Definition ? Definition->DisplayName : FText::GetEmpty());
+	if (DetailsText) DetailsText->SetText(FText::FromString(Details.TrimStartAndEnd()));
 	if (UseLabel) UseLabel->SetText(FText::FromString(bEquipped ? TEXT("卸下") : Definition && Definition->Type == EWizardItemType::Equipment ? TEXT("装备") : TEXT("使用")));
 	if (UseButton) UseButton->SetIsEnabled(Definition && (bEquipped || Definition->Type == EWizardItemType::Consumable || Definition->Type == EWizardItemType::Equipment));
 	if (SplitButton) SplitButton->SetVisibility(!bEquipped && Definition && Quantity > 1 ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
@@ -244,6 +245,7 @@ TOptional<FUIInputConfig> UWizardInventoryMenu::GetDesiredInputConfig() const { 
 void UWizardInventoryMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
+	if (CloseButton) CloseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::CloseMenu);
 	if (DetailsPopover)
 	{
 		DetailsPopover->OnUse.AddUObject(this, &ThisClass::HandleUse);
@@ -325,7 +327,12 @@ void UWizardInventoryMenu::HandleAttributeChanged(const FOnAttributeChangeData& 
 void UWizardInventoryMenu::RefreshAttributes()
 {
 	if (!AttributeText) return;
-	if (!AttributeSource.IsValid()) { AttributeText->SetText(FText::GetEmpty()); return; }
+	if (!AttributeSource.IsValid())
+	{
+		AttributeText->SetText(FText::GetEmpty());
+		if (AttributeValues) AttributeValues->SetText(FText::GetEmpty());
+		return;
+	}
 	const UAbilitySystemComponent* Source = AttributeSource.Get();
 	const auto Number = [Source](const FGameplayAttribute& Attribute) { return FText::AsNumber(Source->GetNumericAttribute(Attribute)).ToString(); };
 	const FString Text = FString::Printf(TEXT("生命  %s / %s\n\n法力  %s / %s\n\n攻击力  %s\n\n防御力  %s\n\n移动速度  %s\n\n护盾  %s"),
@@ -333,7 +340,21 @@ void UWizardInventoryMenu::RefreshAttributes()
 		*Number(UWizardAttributeSet::GetManaAttribute()), *Number(UWizardAttributeSet::GetMaxManaAttribute()),
 		*Number(UWizardAttributeSet::GetAttackPowerAttribute()), *Number(UWizardAttributeSet::GetDefenseAttribute()),
 		*Number(UWizardAttributeSet::GetMoveSpeedAttribute()), *Number(UWizardAttributeSet::GetShieldAttribute()));
-	AttributeText->SetText(FText::FromString(Text));
+	// 两列采用相同字体和行距，长数值不再挤压属性名称。
+	if (AttributeValues)
+	{
+		AttributeText->SetText(FText::FromString(TEXT("生命\n\n法力\n\n攻击力\n\n防御力\n\n移动速度\n\n护盾")));
+		const FString Values = FString::Printf(TEXT("%s / %s\n\n%s / %s\n\n%s\n\n%s\n\n%s\n\n%s"),
+			*Number(UWizardAttributeSet::GetHealthAttribute()), *Number(UWizardAttributeSet::GetMaxHealthAttribute()),
+			*Number(UWizardAttributeSet::GetManaAttribute()), *Number(UWizardAttributeSet::GetMaxManaAttribute()),
+			*Number(UWizardAttributeSet::GetAttackPowerAttribute()), *Number(UWizardAttributeSet::GetDefenseAttribute()),
+			*Number(UWizardAttributeSet::GetMoveSpeedAttribute()), *Number(UWizardAttributeSet::GetShieldAttribute()));
+		AttributeValues->SetText(FText::FromString(Values));
+	}
+	else
+	{
+		AttributeText->SetText(FText::FromString(Text));
+	}
 }
 void UWizardInventoryMenu::RefreshGold()
 {
@@ -411,9 +432,11 @@ void UWizardInventoryMenu::CloseSession()
 	HideDetails(); if (MenuController) MenuController->Close(); MenuController = nullptr; UWidgetBlueprintLibrary::CancelDragDrop();
 }
 void UWizardInventoryMenu::NativeOnDeactivated() { CloseSession(); Super::NativeOnDeactivated(); }
-bool UWizardInventoryMenu::NativeOnHandleBackAction() { DeactivateWidget(); return true; }
+void UWizardInventoryMenu::CloseMenu() { DeactivateWidget(); }
+bool UWizardInventoryMenu::NativeOnHandleBackAction() { CloseMenu(); return true; }
 void UWizardInventoryMenu::NativeDestruct()
 {
+	if (CloseButton) CloseButton->OnClicked.RemoveDynamic(this, &ThisClass::CloseMenu);
 	CloseSession(); if (ToggleHandle.IsValid()) { RemoveActionBinding(ToggleHandle); ToggleHandle.Unregister(); } ToggleHandle = {};
 	if (DetailsPopover) { DetailsPopover->OnUse.RemoveAll(this); DetailsPopover->OnSplit.RemoveAll(this); DetailsPopover->OnDiscard.RemoveAll(this); }
 	for (UWizardInventoryTile* Tile : EquipmentTiles) if (Tile) { Tile->OnInspect.RemoveAll(this); Tile->OnBeginDrag.RemoveAll(this); }

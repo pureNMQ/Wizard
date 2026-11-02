@@ -1,5 +1,7 @@
 # T09 三波挑战与回营地
 
+2026-11-02：[T12](12-combat-presentation.md)接入玩家全身死亡Montage，死亡展示保持倒地、回营恢复生命后解除。沿用本票2秒展示与先传送后恢复顺序；`Wizard.Challenge`回归3/3通过（`Saved/T01/20261102-025412-Test-b4a5d3`），真实动作与完整循环待用户验收。
+
 - Status: in-progress
 - Blocked by: [T03](./03-skills-and-loadout.md)、[T05](./05-drops-and-pickup.md)、[T07](./07-shop-and-trading.md)、[T08](./08-save-and-restore.md)
 - Spec: 第 2 节游戏循环；R03、R04、R08、R15、R17、R26、R27、R28、R29，正文见 [规格](../spec.md)

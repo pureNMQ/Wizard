@@ -22,3 +22,19 @@
 `Plugins/UE_MCP_Bridge` 为开发工具，保留原包提供者信息；项目引用限制为 Editor 目标，成品包应通过实际启动日志确认不加载桥接模块。若交付完整工程包含该插件，还需核对上游分发许可。
 
 临时转换工程与工程外备份只属于本地处理证据。T01 验证运行所需资源可被 Cook/打包，T10 完成 R30 的最终来源与许可交付；当前表中的待办不记为已核实。
+
+## T12 战斗表现项目副本（2026-11-02）
+
+- Wizard/Effects/Combat：BasicProjectile来自Free_Magic/BasicProjectile1_Base；BasicCast/Death来自Hit3，BasicImpact来自Hit1；EnemyProjectile来自Projectile2_Base，EnemyImpact来自Hit2，Windup来自Buff，IceStatus来自Area1。
+- BlinkDeparture、BlinkArrival、Spawn来自Free_Spells/Shockwave；Shield来自Aura_Mana，Heal来自Buff_Healing；P_Lightning来自FXVarietyPack/P_ky_lightning3。火球与冰箭保留此前用户指定项目副本。
+- M_CombatFlash、M_CombatTargetRing、M_CombatShield为项目自建程序材质，无外部贴图；Plane与Sphere来自引擎BasicShapes。
+- Wizard/Audio是新建SoundCue图，不代表恢复原包SoundCue。使用RPG_Fantasy_SFX中的Spell/8__1_、Elemental/2__1_～2__3_、Magical/3__1_/3__3_、Shields/10__1_/10__3_、Healing/7__1_、Creature/1__1_/1__3_、Dark/1__1_/1__3_、Combat/5__1_、Enchantment/1__1_。原SoundWave与许可归属不变，原素材许可核对待办仍由T10完成。
+- 2026-11-02第二轮：M_CrystalBase复制Free_Magic/Materials/M_Free_Magic_Stone1，保留纹理/溶解结构，接通原有边缘发光分支；MI_IceCrystal/MI_EnemyCrystal为项目新建材质实例。NS_ArcaneImpact复制Free_Magic_Hit3；NS_BlinkVortex/NS_ShieldOrbit复制Free_Magic_Circle1并关闭不需要的Renderer，源资产不变。全部通过UE-MCP创建、配置及编译保存。
+
+## 普攻颜色修订补充（2026-11-02）
+
+玩家死亡Montage `/Game/Wizard/Animations/AM_WizardDeath`经UE-MCP新建，序列引用现有`/Game/BattleWizardPBR/Animations/DieAnim`，使用匹配角色骨架的原动画，无新增外部素材、未修改第三方序列。动画蓝图接入项目专用DeathSlot。
+
+减速霜雾材质`/Game/Wizard/Effects/Combat/M_IceMist`经UE-MCP复制`/Game/Free_Magic/Materials/M_Free_Magic_Smoke`，保留原纹理与DepthFade，增加透明度0.22和发光0.4倍率，仅供NS_IceStatus的Smoke渲染器使用。第三方原件不变。
+
+`/Game/Wizard/Effects/Combat/NS_SlimeDeathParticles`经UE-MCP复制项目`NS_Death`（Free_Magic Hit3衍生），仅关闭Flash渲染器，保留Sparks1用于史莱姆死亡碎粒。沿用该素材已有来源和许可，不修改第三方原件。

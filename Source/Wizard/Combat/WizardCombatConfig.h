@@ -14,6 +14,7 @@ class WIZARD_API UWizardCombatConfig : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Combat")
 	TSubclassOf<UGameplayAbility> BasicAttackAbilityClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Presentation") TObjectPtr<class UWizardCombatPresentation> Presentation;
 	bool IsConfigurationValid() const;
 #if WITH_EDITOR
 	virtual EDataValidationResult IsDataValid(class FDataValidationContext& Context) const override;

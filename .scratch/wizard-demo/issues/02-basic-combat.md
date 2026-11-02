@@ -1,5 +1,15 @@
 # T02 普攻战斗链路
 
+## 移动后地面残影调查（2026-11-02，待运行对照）
+
+- 用户截图与描述：移动后地面留下离散的尖角阴影，停住不消失，继续移动一段距离后消失。
+- 已确认：`Config/DefaultEngine.ini:16` 配置 `r.Shadow.Virtual.Enable=1`；本机 `Saved/Logs/Wizard.log:355` 最近启动记录同样为1。Source/Config检索未见项目显式覆盖 BoundsScale、FixedSkelBounds、UseAttachParentBound 或 ShadowCache；这不代表蓝图/资产默认值已验证。
+- UE-MCP get_status 返回 editor exited / disconnected，未启动编辑器或游戏。依验证流程，运行效果对照留给用户。本轮未改代码、资产或渲染配置。
+- 首要待验证方向是 VSM 缓存失效范围与角色实际投影不一致，尤其是骨骼网格 Bounds / Physics Asset 对帽尖、衣摆或附件覆盖不足；其次为组件阴影缓存失效策略；时序抗锯齿残影为较低优先级。均未确认为根因。
+- 最小运行对照：在可使用控制台的游戏预览中复现残影，执行 `r.Shadow.Virtual.Cache 0` 后沿原路线移动；检查旧残影是否清除、新残影是否停止产生，再用 `r.Shadow.Virtual.Cache 1` 恢复并重复。若仅关闭缓存时消失，可定位缓存路径，仍需检查动态Bounds与失效策略才能确认具体资产原因。关闭缓存只用于诊断，不作为永久修复。
+- 依据：Epic UE5.4 VSM文档 https://dev.epicgames.com/documentation/en-us/unreal-engine/virtual-shadow-maps-in-unreal-engine?application_version=5.4 的Caching与Managing Cache Invalidations章节。
+- Standards：本轮仅静态调查及文档记录，保留既有改动，无构建/Cook需求。Spec：R01移动表现存在用户报告缺陷，本次未完成复现或修复验收；原功能验收记录不代表该渲染缺陷已解决。
+
 - Status: done
 - Blocked by: [T01](./01-environment-and-quality.md)
 - Spec: R01、R02、R03、R04、R07、R08，正文见 [规格](../spec.md)

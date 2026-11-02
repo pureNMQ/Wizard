@@ -1,4 +1,5 @@
 #include "Combat/WizardEnemyAttackAbility.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "Combat/WizardEnemy.h"
 #include "Combat/WizardEnemyProjectile.h"
 #include "GAS/WizardDamageExecution.h"
@@ -54,6 +55,8 @@ void UWizardEnemyAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
+	FGameplayCueParameters Windup; Windup.SourceObject = Enemy; Windup.Location = Enemy->GetActorLocation();
+	ActorInfo->AbilitySystemComponent->AddGameplayCue(WizardCombat::WindupTag(), Windup);
 	WindupTask = UAbilityTask_WaitDelay::WaitDelay(this, FMath::Max(.01f, Enemy->AttackWindup));
 	WindupTask->OnFinish.AddDynamic(this, &ThisClass::OnStrike);
 	WindupTask->ReadyForActivation();
@@ -70,6 +73,7 @@ void UWizardEnemyAttackAbility::OnStrike()
 {
 	if (!IsActive() || bStruck) { return; }
 	bStruck = true;
+	GetAbilitySystemComponentFromActorInfo()->RemoveGameplayCue(WizardCombat::WindupTag());
 	AWizardEnemy* Enemy = Cast<AWizardEnemy>(GetAvatarActorFromActorInfo());
 	if (Enemy && Enemy->CanAttackTarget(Target.Get()))
 	{
@@ -77,6 +81,7 @@ void UWizardEnemyAttackAbility::OnStrike()
 		FGameplayEffectContextHandle Context = ASC->MakeEffectContext();
 		Context.AddSourceObject(Enemy);
 		Context.AddInstigator(Enemy, Enemy);
+		WizardCombat::Burst(Enemy, Enemy->Presentation, EWizardCombatStage::Cast, Enemy->GetActorLocation() + Enemy->GetActorForwardVector() * 70.f);
 		const FGameplayEffectSpecHandle Spec = ASC->MakeOutgoingSpec(UWizardEnemyDamageEffect::StaticClass(), 1.f, Context);
 		if (Enemy->bRanged)
 		{
@@ -93,6 +98,7 @@ void UWizardEnemyAttackAbility::OnStrike()
 		else if (IAbilitySystemInterface* TargetInterface = Cast<IAbilitySystemInterface>(Target.Get()))
 		{
 			ASC->ApplyGameplayEffectSpecToTarget(*Spec.Data.Get(), TargetInterface->GetAbilitySystemComponent());
+			WizardCombat::Burst(Enemy, Enemy->Presentation, EWizardCombatStage::Impact, Target->GetActorLocation());
 		}
 	}
 	if (!MontageTask) { OnFinished(); }
@@ -107,6 +113,7 @@ void UWizardEnemyAttackAbility::EndAbility(const FGameplayAbilitySpecHandle Hand
 		WaitingToExecute.Add(FPostLockDelegate::CreateUObject(this, &ThisClass::EndAbility, Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled));
 		return;
 	}
+	if (ActorInfo && ActorInfo->AbilitySystemComponent.IsValid()) ActorInfo->AbilitySystemComponent->RemoveGameplayCue(WizardCombat::WindupTag());
 	if (WindupTask) { WindupTask->OnFinish.RemoveDynamic(this, &ThisClass::OnStrike); }
 	if (MontageTask)
 	{

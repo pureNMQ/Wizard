@@ -29,4 +29,7 @@ public:
 	virtual bool OnRemove_Implementation(AActor* MyTarget, const FGameplayCueParameters& Parameters) override;
 private:
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Effect;
+	UPROPERTY() TObjectPtr<class UStaticMeshComponent> ShieldBody;
+	UPROPERTY() TObjectPtr<class UStaticMesh> ShieldMesh;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 };

@@ -11,6 +11,7 @@ class AWizardCharacter : public ACharacter, public IAbilitySystemInterface
 	GENERATED_BODY()
 public:
 	AWizardCharacter();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Presentation") TObjectPtr<class UWizardCombatPresentation> Presentation;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void UnPossessed() override;
@@ -19,8 +20,12 @@ public:
 	class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	// 复用角色蓝图的握持组件，保留其 Socket 与相对变换；空装备隐藏法杖。
 	void SetEquipmentStaff(class UStaticMesh* InMesh);
+	// 只同步死亡表现；生命、复活时机仍由PlayerState和挑战流程管理。
+	void SetDeathPresentation(bool bDead);
+	UPROPERTY(EditDefaultsOnly, Category="Presentation") TObjectPtr<class UAnimMontage> DeathMontage;
 	UPROPERTY(EditDefaultsOnly, Category="Equipment") FName StaffComponentName = TEXT("MagicStaff");
 private:
+	bool bDeathPresented = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))
 	TObjectPtr<class UCameraComponent> TopDownCameraComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera, meta=(AllowPrivateAccess="true"))

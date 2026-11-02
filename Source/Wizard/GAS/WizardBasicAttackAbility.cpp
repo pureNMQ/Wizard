@@ -1,4 +1,5 @@
 #include "GAS/WizardBasicAttackAbility.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardCombatConfig.h"
 #include "Combat/WizardProjectile.h"
@@ -130,8 +131,8 @@ bool UWizardBasicAttackAbility::SpawnProjectile()
 	if (Projectile)
 	{
 		FGameplayEffectContextHandle Context = ASC->MakeEffectContext();
-		Context.AddSourceObject(this);
 		Context.AddInstigator(Avatar, Projectile);
+		Context.AddSourceObject(Config);
 		const FGameplayEffectSpecHandle Spec = ASC->MakeOutgoingSpec(DamageEffectClass, 1.0f, Context);
 		if (!Spec.IsValid())
 		{
@@ -140,6 +141,7 @@ bool UWizardBasicAttackAbility::SpawnProjectile()
 		}
 		Projectile->InitializeProjectile(ASC, Spec, Config);
 		Projectile->FinishSpawning(Transform);
+		WizardCombat::Burst(Avatar, Config->Presentation, EWizardCombatStage::Cast, Origin);
 	}
 	return Projectile != nullptr;
 }

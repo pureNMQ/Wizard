@@ -1,4 +1,5 @@
 #include "Skills/WizardSkillAbility.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "Skills/WizardSkillDefinition.h"
 #include "Skills/WizardSkillEffects.h"
 #include "Skills/WizardSkillLoadoutComponent.h"
@@ -74,7 +75,11 @@ void UWizardSkillAbility::ActivateAbility(FGameplayAbilitySpecHandle Handle, con
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
-	FireTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, WizardSkills::FireTag(), nullptr, false, true);
+	FGameplayCueParameters Windup;
+ Windup.SourceObject = Definition; Windup.Location = Definition->Behavior == EWizardSkillBehavior::Area ? TargetPoint : ActorInfo->AvatarActor->GetActorLocation();
+ Windup.RawMagnitude = Definition->Behavior == EWizardSkillBehavior::Area ? Definition->Radius : 0;
+ ActorInfo->AbilitySystemComponent->AddGameplayCue(WizardCombat::WindupTag(), Windup);
+ FireTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, WizardSkills::FireTag(), nullptr, false, true);
 	FireTask->EventReceived.AddDynamic(this, &ThisClass::OnFire);
 	FireTask->ReadyForActivation();
 	MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, Definition->Montage, 1.f, NAME_None, true, 1.f, 0.f, true);
@@ -91,6 +96,7 @@ void UWizardSkillAbility::OnFire(FGameplayEventData Payload)
 	if (!IsActive() || bEnding || bFired || !Definition || !ASC || !Avatar || Payload.Instigator != Avatar
 		|| Payload.OptionalObject != Definition->Montage || ASC->GetAnimatingAbility() != this || ASC->GetCurrentMontage() != Definition->Montage) return;
 	bFired = true;
+	ASC->RemoveGameplayCue(WizardCombat::WindupTag());
 	if (!ExecuteSkill()) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 bool UWizardSkillAbility::ExecuteSkill()
@@ -131,6 +137,7 @@ bool UWizardSkillAbility::ExecuteSkill()
 	{
 		WizardSkills::ApplyAreaDamage(ASC, Definition, TargetPoint, Context);
 		Burst(TargetPoint);
+		WizardCombat::Burst(Avatar, Definition->Presentation, EWizardCombatStage::Arrival, TargetPoint);
 	}
 	else if (Definition->Behavior == EWizardSkillBehavior::Blink)
 	{
@@ -142,8 +149,12 @@ bool UWizardSkillAbility::ExecuteSkill()
 			|| GetWorld()->OverlapBlockingTestByChannel(TargetPoint, FQuat::Identity, ECC_Pawn, Capsule, Query)) return false;
 		const FVector From = Avatar->GetActorLocation();
 		if (!Avatar->TeleportTo(TargetPoint, Avatar->GetActorRotation(), false, true)) return false;
-		Burst(From - FVector(0,0,Avatar->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
-		Burst(TargetPoint - FVector(0,0,Avatar->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+		if (Definition->Presentation)
+  {
+   WizardCombat::Burst(Avatar, Definition->Presentation, EWizardCombatStage::Departure, From);
+   WizardCombat::Burst(Avatar, Definition->Presentation, EWizardCombatStage::Arrival, TargetPoint);
+  }
+  else { Burst(From); Burst(TargetPoint); }
 	}
 	else if (Definition->Behavior == EWizardSkillBehavior::Heal)
 	{
@@ -174,6 +185,7 @@ void UWizardSkillAbility::EndAbility(FGameplayAbilitySpecHandle Handle, const FG
 		return;
 	}
 	bEnding = true;
+	if (ActorInfo && ActorInfo->AbilitySystemComponent.IsValid()) ActorInfo->AbilitySystemComponent->RemoveGameplayCue(WizardCombat::WindupTag());
 	if (FireTask) FireTask->EventReceived.RemoveDynamic(this, &ThisClass::OnFire);
 	if (MontageTask)
 	{

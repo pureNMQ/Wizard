@@ -1,4 +1,5 @@
 #include "Combat/WizardEnemy.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GAS/WizardAttributeSet.h"
@@ -59,6 +60,7 @@ void AWizardEnemy::BeginPlay()
 	}
 	GetCharacterMovement()->MaxWalkSpeed = Attributes->GetMoveSpeed();
 	HealthDelegate = AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).AddUObject(this, &AWizardEnemy::OnHealthChanged);
+	WizardCombat::Burst(this, Presentation, EWizardCombatStage::Spawn, GetActorLocation());
 	EnemyHealthBar->InitWidget();
 	if (UWizardEnemyHealthBar* Widget = Cast<UWizardEnemyHealthBar>(EnemyHealthBar->GetUserWidgetObject())) { Widget->BindEnemy(this); }
 	if (AWizardEnemyAIController* AI = Cast<AWizardEnemyAIController>(GetController())) { AI->StartEnemyBehavior(); }
@@ -71,6 +73,7 @@ void AWizardEnemy::OnHealthChanged(const FOnAttributeChangeData& Data)
 		bDeathHandled = true;
 		if (DropConfig) DropConfig->SpawnDrops(GetWorld(), GetActorLocation(), SourceChallenge.Get());
 		AbilitySystem->CancelAllAbilities();
+		AbilitySystem->RemoveGameplayCue(WizardCombat::SlowTag());
 		if (AAIController* AI = Cast<AAIController>(GetController()))
 		{
 			AI->StopMovement();
@@ -90,6 +93,7 @@ void AWizardEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	AbilitySystem->GetGameplayAttributeValueChangeDelegate(UWizardAttributeSet::GetHealthAttribute()).Remove(HealthDelegate);
 	AbilitySystem->CancelAllAbilities();
+		AbilitySystem->RemoveGameplayCue(WizardCombat::SlowTag());
 	if (UWizardEnemyHealthBar* Widget = Cast<UWizardEnemyHealthBar>(EnemyHealthBar->GetUserWidgetObject())) { Widget->BindEnemy(nullptr); }
 	Super::EndPlay(EndPlayReason);
 }

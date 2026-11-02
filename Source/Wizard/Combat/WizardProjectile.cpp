@@ -1,4 +1,5 @@
 #include "Combat/WizardProjectile.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "AbilitySystemComponent.h"
 #include "Combat/WizardCombatConfig.h"
 #include "Combat/WizardEnemy.h"
@@ -32,6 +33,8 @@ void AWizardProjectile::InitializeProjectile(UAbilitySystemComponent* Source, co
 {
 	SourceASC = Source;
 	DamageSpec = Spec;
+	Presentation = Config->Presentation;
+	if (Presentation) { Trail->SetAsset(Presentation->Projectile); Trail->SetRelativeScale3D(Presentation->ProjectileScale); }
 	Movement->InitialSpeed = FMath::Max(1.0f, Config->ProjectileSpeed);
 	Movement->MaxSpeed = Movement->InitialSpeed;
 	InitialLifeSpan = FMath::Max(0.1f, Config->ProjectileLifetime);
@@ -44,7 +47,8 @@ void AWizardProjectile::BeginPlay()
 	Movement->Velocity = GetActorForwardVector() * Movement->InitialSpeed;
 	if (Trail->GetAsset())
 	{
-		Trail->Activate(true);
+		WizardCombat::ApplyColors(Trail, Presentation);
+	Trail->Activate(true);
 	}
 }
 
@@ -56,8 +60,9 @@ void AWizardProjectile::InitializeSkillProjectile(UAbilitySystemComponent* Sourc
 	Movement->InitialSpeed = Definition->ProjectileSpeed;
 	Movement->MaxSpeed = Movement->InitialSpeed;
 	InitialLifeSpan = Definition->Range / Definition->ProjectileSpeed;
-	Trail->SetAsset(Definition->ProjectileFX);
-	Trail->SetRelativeScale3D(Definition->EffectScale);
+	Presentation = Definition->Presentation;
+	Trail->SetAsset(Presentation ? Presentation->Projectile : Definition->ProjectileFX);
+	Trail->SetRelativeScale3D(Presentation ? Presentation->ProjectileScale : Definition->EffectScale);
 }
 
 void AWizardProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -88,7 +93,11 @@ void AWizardProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* Other, 
 			SourceASC->ApplyGameplayEffectSpecToTarget(*Slow.Data.Get(), Enemy->GetAbilitySystemComponent());
 		}
 	}
-	if (Skill && SourceASC.IsValid())
+	if (Presentation)
+	{
+		WizardCombat::Burst(this, Presentation, Enemy ? EWizardCombatStage::Impact : EWizardCombatStage::WorldImpact, Hit.ImpactPoint, Hit.ImpactNormal);
+	}
+	else if (Skill && SourceASC.IsValid())
 	{
 		FGameplayCueParameters Cue;
 		Cue.SourceObject = Skill;

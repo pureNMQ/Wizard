@@ -30,7 +30,7 @@ void UWizardShopProductRow::Configure(UWizardShopMenu* Menu, int32 ProductIndex,
 void UWizardShopProductRow::Select() { if (OwnerMenu.IsValid()) OwnerMenu->SelectProduct(Index); }
 void UWizardShopProductRow::SetSelected(int32 ProductIndex)
 {
-	if (SelectionBorder) SelectionBorder->SetBrushColor(ProductIndex == Index ? FLinearColor(.20f,.25f,.21f,1.f) : FLinearColor(.07f,.09f,.11f,1.f));
+	if (SelectionBorder) SelectionBorder->SetBrushColor(ProductIndex == Index ? SelectedColor : IdleColor);
 }
 void UWizardShopProductRow::FocusSelection()
 {
@@ -100,7 +100,7 @@ void UWizardShopMenu::SelectProduct(int32 Index)
 	if (bValid)
 	{
 		const auto& Product = Catalog->Products[Index];
-		Text = Product.Definition->DisplayName.ToString();
+		Text = ProductNameText ? FString() : Product.Definition->DisplayName.ToString();
 		if (!Product.Definition->Description.IsEmpty()) Text += TEXT("\n") + Product.Definition->Description.ToString();
 		for (const auto& Bonus : Product.Definition->EquipmentBonuses)
 		{
@@ -109,7 +109,8 @@ void UWizardShopMenu::SelectProduct(int32 Index)
 		}
 		Text += FString::Printf(TEXT("\n单价  %s"), *FText::AsNumber(Product.BuyPrice).ToString());
 	}
-	if (ProductDetails) ProductDetails->SetText(FText::FromString(Text));
+	if (ProductNameText) ProductNameText->SetText(bValid ? Catalog->Products[Index].Definition->DisplayName : FText::GetEmpty());
+	if (ProductDetails) ProductDetails->SetText(FText::FromString(Text.TrimStartAndEnd()));
 }
 void UWizardShopMenu::FocusProducts()
 {

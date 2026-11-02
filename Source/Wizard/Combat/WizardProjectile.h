@@ -33,5 +33,6 @@ private:
 	UPROPERTY() TWeakObjectPtr<UAbilitySystemComponent> SourceASC;
 	UPROPERTY() FGameplayEffectSpecHandle DamageSpec;
 	UPROPERTY() TObjectPtr<const UWizardSkillDefinition> Skill;
+	UPROPERTY() TObjectPtr<const class UWizardCombatPresentation> Presentation;
 	bool bResolved = false;
 };

@@ -1,4 +1,6 @@
 #include "WizardPlayerState.h"
+#include "WizardCharacter.h"
+#include "Save/WizardSaveComponent.h"
 #include "Inventory/WizardInventoryComponent.h"
 #include "Equipment/WizardEquipmentComponent.h"
 #include "Loot/WizardPickupComponent.h"
@@ -17,6 +19,7 @@
 
 AWizardPlayerState::AWizardPlayerState()
 {
+	SaveService = CreateDefaultSubobject<UWizardSaveComponent>(TEXT("SaveService"));
 	Inventory = CreateDefaultSubobject<UWizardInventoryComponent>(TEXT("Inventory"));
 	Equipment = CreateDefaultSubobject<UWizardEquipmentComponent>(TEXT("Equipment"));
 	Pickup = CreateDefaultSubobject<UWizardPickupComponent>(TEXT("Pickup"));
@@ -69,6 +72,10 @@ void AWizardPlayerState::InitializeAvatar(APawn* Avatar)
 	if (!AbilityEndedDelegate.IsValid())
 	{
 		AbilityEndedDelegate = AbilitySystem->OnAbilityEnded.AddUObject(this, &ThisClass::OnBasicAttackEnded);
+	}
+	if (auto* Character = Cast<AWizardCharacter>(Avatar))
+	{
+		Character->SetDeathPresentation(Attributes->GetHealth() <= 0.f);
 	}
 }
 
@@ -162,6 +169,10 @@ void AWizardPlayerState::OnHealthChanged(const FOnAttributeChangeData& Data)
 		AbilitySystem->CancelAllAbilities();
 		Skills->ClearAvatarEffects();
 	}
+	if (auto* Character = Cast<AWizardCharacter>(AbilitySystem->GetAvatarActor()))
+	{
+		Character->SetDeathPresentation(Data.NewValue <= 0.f);
+	}
 }
 
 void AWizardPlayerState::RestoreAtCamp()
@@ -192,5 +203,29 @@ bool AWizardPlayerState::TryAddGold(int32 Amount)
 	TGuardValue<bool> Guard(bChangingGold, true);
 	Gold += Amount;
 	OnGoldChanged.Broadcast();
+	return true;
+}
+
+bool AWizardPlayerState::RestorePersistentState(int32 SavedGold, const FWizardInventorySnapshot& Items, const FWizardLoadoutSnapshot& Loadout)
+{
+	if (!HasAuthority() || bChangingGold || Inventory->bMutating || Skills->bMutating || SavedGold < 0) return false;
+	FWizardInventorySnapshot Resolved = Items;
+	if (!Inventory->ResolveSnapshot(Resolved) || Skills->ValidateSnapshot(Loadout) != EWizardSkillResult::Success) return false;
+	const bool bItemsChanged = Inventory->State.Slots != Resolved.Slots || Inventory->State.Equipment != Resolved.Equipment;
+	const bool bSkillsChanged = Skills->Loadout.Slots != Loadout.Slots;
+	const bool bGoldChanged = Gold != SavedGold;
+	TGuardValue<bool> GoldGuard(bChangingGold, true);
+	TGuardValue<bool> InventoryGuard(Inventory->bMutating, true);
+	TGuardValue<bool> SkillGuard(Skills->bMutating, true);
+	Gold = SavedGold;
+	Skills->Loadout = Loadout;
+	Inventory->State.Slots = MoveTemp(Resolved.Slots);
+	Inventory->State.Equipment = MoveTemp(Resolved.Equipment);
+	// 任何成功恢复都使旧拖拽/交易请求失效，不沿用存档里的进程内版本。
+	++Inventory->State.Revision;
+	if (bItemsChanged) Inventory->OnChanged.Broadcast();
+	if (bSkillsChanged) Skills->OnLoadoutChanged.Broadcast();
+	if (bGoldChanged) OnGoldChanged.Broadcast();
+	RestoreAtCamp();
 	return true;
 }

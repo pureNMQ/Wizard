@@ -90,6 +90,7 @@ public:
 	EWizardInventoryResult CommitDrop(const FWizardInventoryDropTicket& Ticket, TFunctionRef<bool(const FWizardInventoryEntry&)> Receiver);
 	FWizardInventoryChanged OnChanged;
 private:
+	friend class AWizardPlayerState;
 	bool IsMutationBlocked() const;
 	EWizardInventoryResult PrepareAddItems(const UWizardItemDefinition* Definition, int32 Quantity, TArray<FWizardInventoryEntry>& Slots, int32& Accepted) const;
 	EWizardInventoryResult ValidateRequest(const FWizardInventoryRequest& Request) const;

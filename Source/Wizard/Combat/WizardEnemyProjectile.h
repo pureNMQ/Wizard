@@ -20,6 +20,8 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class USphereComponent> Collision;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UProjectileMovementComponent> Movement;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Visual;
+	UPROPERTY() TObjectPtr<class UNiagaraComponent> Trail;
+	UPROPERTY() TObjectPtr<const class UWizardCombatPresentation> Presentation;
 	FGameplayEffectSpecHandle DamageSpec;
 	TWeakObjectPtr<class UAbilitySystemComponent> SourceASC;
 	TWeakObjectPtr<class AWizardChallengeArena> SourceChallenge;

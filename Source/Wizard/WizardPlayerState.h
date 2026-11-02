@@ -15,6 +15,9 @@ class UWizardSkillLoadoutComponent;
 class UWizardInteractionComponent;
 class UWizardPickupComponent;
 class UWizardEquipmentComponent;
+class UWizardSaveComponent;
+struct FWizardInventorySnapshot;
+struct FWizardLoadoutSnapshot;
 struct FOnAttributeChangeData;
 struct FAbilityEndedData;
 
@@ -52,9 +55,13 @@ public:
 	// 仅接收正数且必须全量入账；溢出、无权限或通知回调重入时保持余额。
 	UFUNCTION(BlueprintCallable, Category="Inventory") bool TryAddGold(int32 Amount);
 	FWizardGoldChanged OnGoldChanged;
+	UWizardSaveComponent* GetSaveService() const { return SaveService; }
+	// 读档专用聚合事务：所有字段先校验，再一起发布；失败不修改任何持久状态。
+	bool RestorePersistentState(int32 SavedGold, const FWizardInventorySnapshot& Items, const FWizardLoadoutSnapshot& Loadout);
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
+	UPROPERTY(VisibleAnywhere, Category="Save") TObjectPtr<UWizardSaveComponent> SaveService;
 	// 物品域交易同时提交余额与背包后才通知，避免旁观者读到半笔交易。
 	friend class UWizardInventoryComponent;
 	void TryBasicAttack();

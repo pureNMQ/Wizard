@@ -18,6 +18,7 @@ class WIZARD_API AWizardEnemy : public ACharacter, public IAbilitySystemInterfac
 	GENERATED_BODY()
 public:
 	AWizardEnemy();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Presentation") TObjectPtr<class UWizardCombatPresentation> Presentation;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UFUNCTION(BlueprintPure, Category="Combat") UWizardAttributeSet* GetAttributes() const { return Attributes; }
 	UFUNCTION(BlueprintPure, Category="Combat") bool IsDead() const;

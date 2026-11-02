@@ -13,6 +13,7 @@ class AWizardGameMode : public AGameModeBase
 
 public:
 	AWizardGameMode();
+	virtual void RestartPlayer(AController* NewPlayer) override;
 };
 
 

@@ -25,6 +25,8 @@ public:
 	void Configure(UWizardShopMenu* Menu, int32 ProductIndex, const UWizardItemDefinition* Definition, int32 Price);
 	void SetSelected(int32 ProductIndex);
 	void FocusSelection();
+	UPROPERTY(EditDefaultsOnly, Category="Appearance") FLinearColor SelectedColor = FLinearColor::FromSRGBColor(FColor(121, 184, 209));
+	UPROPERTY(EditDefaultsOnly, Category="Appearance") FLinearColor IdleColor = FLinearColor::FromSRGBColor(FColor(36, 47, 64));
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
@@ -60,6 +62,7 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UVerticalBox> ProductsBox;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UUniformGridPanel> InventoryGrid;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> ProductDetails;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> ProductNameText;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> GoldText;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> Feedback;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UWizardInventoryPopover> DetailsPopover;

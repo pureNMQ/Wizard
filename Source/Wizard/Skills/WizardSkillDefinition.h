@@ -37,6 +37,7 @@ class WIZARD_API UWizardSkillDefinition : public UDataAsset
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FName SkillId;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Presentation") TObjectPtr<class UWizardCombatPresentation> Presentation;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FText DisplayName;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(MultiLine=true)) FText Description;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) EWizardSkillBehavior Behavior = EWizardSkillBehavior::Projectile;

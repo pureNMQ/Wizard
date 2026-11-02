@@ -34,3 +34,7 @@ pwsh -NoProfile -File Tools/Build/Invoke-Wizard.ps1 -Action Smoke -SkillSmoke -P
 ```
 
 开发控制台 `Wizard.SkillsSmokeTest` 使用真实地图、蒙太奇和碰撞验证六技能并清理临时对象；独立包完成后退出，PIE保留编辑器。该命令不模拟物理按键，不替代1234、E、Esc与拖拽的实际操作验证。测试会暂时调整运行时搭配/资源数值，不写配置资产或存档。
+
+## T12 表现配置迁移
+
+六技能优先引用独立Presentation，阶段粒子、声音与冲击等级由其配置；旧资源字段只兼容未迁移定义，不与新配置叠加播放。生命周期与试玩清单见[战斗表现](COMBAT_PRESENTATION.md)。

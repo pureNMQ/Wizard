@@ -4,6 +4,8 @@
 #include "WizardPlayerController.h"
 #include "GAS/WizardAttributeSet.h"
 #include "Components/Image.h"
+#include "Components/ProgressBar.h"
+#include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/PanelWidget.h"
 #include "Components/UniformGridPanel.h"
@@ -67,8 +69,15 @@ void UWizardSkillTile::SetStatus(const FString& Status, bool bAvailable)
 }
 void UWizardSkillTile::SetHUDState(float Remaining, bool bEnoughMana)
 {
-	if (!CooldownText) return;
 	const bool bCoolingDown = FMath::IsFinite(Remaining) && Remaining > 0.f;
+	// 进度只展示已有冷却状态，不影响技能提交或冷却时长。
+	if (CooldownProgress)
+	{
+		const float Duration = Definition ? Definition->Cooldown : 0.f;
+		CooldownProgress->SetPercent(bCoolingDown && Duration > 0.f ? FMath::Clamp(Remaining / Duration, 0.f, 1.f) : 0.f);
+		CooldownProgress->SetVisibility(bCoolingDown ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+	}
+	if (!CooldownText) return;
 	const FText Text = bCoolingDown ? FText::FromString(FString::Printf(TEXT("%.1f"), Remaining))
 		: (bEnoughMana ? FText::GetEmpty() : FText::FromString(TEXT("法力\n不足")));
 	CooldownText->SetText(Text);
@@ -100,6 +109,11 @@ UWizardSkillMenu::UWizardSkillMenu()
 TOptional<FUIInputConfig> UWizardSkillMenu::GetDesiredInputConfig() const
 {
 	return FUIInputConfig(ECommonInputMode::Menu, EMouseCaptureMode::NoCapture, EMouseLockMode::DoNotLock, false);
+}
+void UWizardSkillMenu::NativeConstruct()
+{
+	Super::NativeConstruct();
+	if (CloseButton) CloseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::CloseMenu);
 }
 void UWizardSkillMenu::NativeOnActivated()
 {
@@ -158,8 +172,14 @@ void UWizardSkillMenu::Unbind()
 	UWidgetBlueprintLibrary::CancelDragDrop();
 }
 void UWizardSkillMenu::NativeOnDeactivated() { Unbind(); Super::NativeOnDeactivated(); }
-void UWizardSkillMenu::NativeDestruct() { Unbind(); Super::NativeDestruct(); }
-bool UWizardSkillMenu::NativeOnHandleBackAction() { DeactivateWidget(); return true; }
+void UWizardSkillMenu::NativeDestruct()
+{
+	if (CloseButton) CloseButton->OnClicked.RemoveDynamic(this, &ThisClass::CloseMenu);
+	Unbind();
+	Super::NativeDestruct();
+}
+void UWizardSkillMenu::CloseMenu() { DeactivateWidget(); }
+bool UWizardSkillMenu::NativeOnHandleBackAction() { CloseMenu(); return true; }
 
 void UWizardSkillBar::NativeConstruct()
 {

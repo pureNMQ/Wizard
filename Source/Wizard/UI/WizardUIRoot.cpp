@@ -1,9 +1,9 @@
 #include "UI/WizardUIRoot.h"
+#include "Components/OverlaySlot.h"
 #include "Blueprint/UserWidget.h"
 #include "WizardPlayerController.h"
 #include "CommonActivatableWidget.h"
 #include "Components/PanelWidget.h"
-#include "Components/OverlaySlot.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "UI/WizardChallengeBanner.h"
 #include "UI/WizardShopWidgets.h"
@@ -137,4 +137,13 @@ void UWizardUIRoot::NativeDestruct()
 	if (MenuLayer) MenuLayer->ClearWidgets();
 	if (AWizardPlayerController* Controller = Cast<AWizardPlayerController>(GetOwningPlayer())) Controller->SetRootScreensOpen(false);
 	Super::NativeDestruct();
+}
+
+void UWizardUIRoot::AddCombatFeedback(UUserWidget* Widget)
+{
+	if (HUDLayer && Widget)
+	{
+		UPanelSlot* Added = HUDLayer->AddChild(Widget);
+		if (UOverlaySlot* Overlay = Cast<UOverlaySlot>(Added)) { Overlay->SetHorizontalAlignment(HAlign_Fill); Overlay->SetVerticalAlignment(VAlign_Fill); }
+	}
 }

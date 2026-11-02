@@ -40,6 +40,8 @@ public:
 	void Configure(const FWizardInventoryEntry& Entry, int32 Index, UWizardInventoryMenuController* Controller, bool bEquipment = false, UTexture2D* EmptySlotIcon = nullptr);
 	bool IsEquipmentSlot() const { return bEquipmentSlot; }
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardIconDragPreview> DragPreviewClass;
+	UPROPERTY(EditDefaultsOnly, Category="Appearance") FLinearColor SelectedColor = FLinearColor::FromSRGBColor(FColor(121, 184, 209));
+	UPROPERTY(EditDefaultsOnly, Category="Appearance") FLinearColor IdleColor = FLinearColor::FromSRGBColor(FColor(36, 47, 64));
 	FWizardInventoryInspect OnInspect;
 	FWizardInventoryViewAction OnBeginDrag;
 protected:
@@ -73,6 +75,7 @@ protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> DetailsText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> ItemNameText;
 	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> UseLabel;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> UseButton;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> SplitButton;
@@ -143,10 +146,13 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UUniformGridPanel> InventoryGrid;
 	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UUniformGridPanel> EquipmentGrid;
 	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> AttributeText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> AttributeValues;
 	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> GoldText;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> Feedback;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UWizardInventoryPopover> DetailsPopover;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UButton> CloseButton;
 private:
+	UFUNCTION() void CloseMenu();
 	void Refresh();
 	void RefreshAttributes();
 	void HandleAttributeChanged(const FOnAttributeChangeData& Data);

@@ -18,6 +18,7 @@ class AWizardPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	AWizardPlayerController();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TObjectPtr<class UWizardCombatFeedbackComponent> CombatFeedback;
 	virtual void PlayerTick(float DeltaSeconds) override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
@@ -46,6 +47,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UUserWidget> HealthWidgetClass;
 	UPROPERTY(EditDefaultsOnly, Category=UI) TSubclassOf<UWizardPauseMenu> PauseMenuClass;
 private:
+	void ShowSaveNotice();
+	FDelegateHandle SaveStatusHandle;
 	void Move(const FInputActionValue& Value);
 	void StartAttack();
 	void ReleaseAttack();

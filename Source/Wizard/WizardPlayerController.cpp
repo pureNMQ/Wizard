@@ -1,5 +1,7 @@
 #include "WizardPlayerController.h"
+#include "Combat/WizardCombatFeedbackComponent.h"
 #include "WizardPlayerState.h"
+#include "Save/WizardSaveComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "UI/WizardPauseMenu.h"
 #include "UI/WizardUIRoot.h"
@@ -22,6 +24,7 @@
 
 AWizardPlayerController::AWizardPlayerController()
 {
+	CombatFeedback = CreateDefaultSubobject<UWizardCombatFeedbackComponent>(TEXT("CombatFeedback"));
 	bShowMouseCursor = true;
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> Context(TEXT("/Game/Wizard/Input/IMC_Combat"));
 	static ConstructorHelpers::FObjectFinder<UInputAction> MoveInput(TEXT("/Game/Wizard/Input/IA_Move"));
@@ -73,6 +76,19 @@ void AWizardPlayerController::BeginPlay()
 		HealthWidget = CreateWidget<UUserWidget>(this, HealthWidgetClass);
 		UIRoot->SetHUD(HealthWidget);
 	}
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>())
+	{
+		SaveStatusHandle = State->GetSaveService()->OnStatusChanged.AddUObject(this, &ThisClass::ShowSaveNotice);
+		ShowSaveNotice();
+	}
+}
+
+void AWizardPlayerController::ShowSaveNotice()
+{
+	const AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>();
+	if (!UIRoot || !State) return;
+	const FText Message = State->GetSaveService()->GetNotice();
+	if (!Message.IsEmpty()) UIRoot->ShowChallengeAnnouncement(Message, FLinearColor(1.f, .3f, .15f), 10.f);
 }
 
 void AWizardPlayerController::SetupInputComponent()
@@ -209,6 +225,7 @@ void AWizardPlayerController::RefreshMenuState()
 	if (bOpen)
 	{
 		bWasPaused = IsPaused();
+		CombatFeedback->ResetFeedback();
 		SetPause(true);
 	}
 	else
@@ -234,12 +251,17 @@ void AWizardPlayerController::OnPossess(APawn* InPawn)
 }
 void AWizardPlayerController::OnUnPossess()
 {
+	CombatFeedback->ResetFeedback();
 	StopAttack();
 	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>()) State->GetInteraction()->BindAvatar(nullptr);
 	Super::OnUnPossess();
 }
 void AWizardPlayerController::EndPlay(const EEndPlayReason::Type Reason)
 {
+	if (AWizardPlayerState* State = GetPlayerState<AWizardPlayerState>())
+	{
+		State->GetSaveService()->OnStatusChanged.Remove(SaveStatusHandle);
+	}
 	StopAttack();
 	bLegacyMenuOpen = false;
 	if (UIRoot) UIRoot->RemoveFromParent();

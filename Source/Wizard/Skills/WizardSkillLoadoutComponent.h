@@ -26,6 +26,7 @@ public:
 	UFUNCTION(BlueprintPure) FWizardLoadoutSnapshot GetSnapshot() const { return Loadout; }
 	// 整体校验后原子恢复，不广播未发生的变更；供T08读档使用，不属于UI编辑入口。
 	EWizardSkillResult RestoreSnapshot(const FWizardLoadoutSnapshot& Snapshot);
+	EWizardSkillResult ValidateSnapshot(const FWizardLoadoutSnapshot& Snapshot) const;
 	const UWizardSkillDefinition* GetSlot(int32 Slot) const;
 	const UWizardSkillDefinition* Find(FName Id) const;
 	float GetCooldownRemaining(const UWizardSkillDefinition* Definition) const;
@@ -38,6 +39,8 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 private:
+	friend class AWizardPlayerState;
+	bool bMutating = false;
 	AWizardPlayerState* GetState() const;
 	void OnEffectRemoved(const FActiveGameplayEffect& Effect);
 	void OnShieldChanged(const FOnAttributeChangeData& Data);

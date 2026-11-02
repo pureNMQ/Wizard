@@ -34,6 +34,7 @@ class WIZARD_API AWizardChallengeArena : public AActor
 	GENERATED_BODY()
 public:
 	AWizardChallengeArena();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Presentation") TObjectPtr<class UWizardCombatPresentation> Presentation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Challenge") float ArenaRadius = 1780.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Challenge") float EntryInset = 140.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Challenge") FVector CampReturnLocation = FVector::ZeroVector;

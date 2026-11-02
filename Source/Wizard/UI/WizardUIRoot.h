@@ -16,6 +16,7 @@ class WIZARD_API UWizardUIRoot : public UCommonUserWidget
 	GENERATED_BODY()
 public:
 	bool SetHUD(UUserWidget* Widget);
+	void AddCombatFeedback(UUserWidget* Widget);
 	UPROPERTY(EditDefaultsOnly, Category="UI") TSubclassOf<UWizardChallengeBanner> ChallengeBannerClass;
 	UFUNCTION(BlueprintCallable, Category="UI") void ShowChallengeAnnouncement(FText Message, FLinearColor Color, float Duration);
 	UFUNCTION(BlueprintCallable, Category="UI") void ShowChallengeAnnouncementDetail(FText Message, FText Detail, FLinearColor Color, float Duration);

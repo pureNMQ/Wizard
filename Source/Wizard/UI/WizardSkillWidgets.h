@@ -12,6 +12,8 @@ class UTextBlock;
 class UPanelWidget;
 class UWizardSkillLoadoutComponent;
 class UScrollBox;
+class UProgressBar;
+class UButton;
 
 UCLASS()
 class WIZARD_API UWizardSkillDrag : public UDragDropOperation
@@ -50,6 +52,7 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> Title;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> StatusText;
 	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UTextBlock> CooldownText;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UProgressBar> CooldownProgress;
 private:
 	UPROPERTY() TObjectPtr<const UWizardSkillDefinition> Definition;
 	TWeakObjectPtr<UWizardSkillMenuController> MenuController;
@@ -64,6 +67,7 @@ public:
 	UWizardSkillMenu();
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UWizardSkillTile> TileClass;
 protected:
+	virtual void NativeConstruct() override;
 	virtual void NativeOnActivated() override;
 	virtual void NativeOnDeactivated() override;
 	virtual void NativeDestruct() override;
@@ -74,7 +78,9 @@ protected:
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UScrollBox> LibraryScroll;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UPanelWidget> LoadoutSlots;
 	UPROPERTY(meta=(BindWidget)) TObjectPtr<UTextBlock> Feedback;
+	UPROPERTY(meta=(BindWidgetOptional)) TObjectPtr<UButton> CloseButton;
 private:
+	UFUNCTION() void CloseMenu();
 	void Refresh();
 	void HandleFeedback(EWizardSkillResult Result);
 	void Unbind();

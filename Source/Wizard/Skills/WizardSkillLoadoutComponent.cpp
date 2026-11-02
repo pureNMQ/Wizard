@@ -1,4 +1,5 @@
 #include "Skills/WizardSkillLoadoutComponent.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "Skills/WizardSkillEffects.h"
 #include "Skills/WizardAlchemyStation.h"
 #include "Interaction/WizardInteractionComponent.h"
@@ -47,6 +48,16 @@ bool UWizardSkillLoadoutComponent::CanEditLoadout() const
 
 EWizardSkillResult UWizardSkillLoadoutComponent::RestoreSnapshot(const FWizardLoadoutSnapshot& Snapshot)
 {
+	if (bMutating) return EWizardSkillResult::Busy;
+	const EWizardSkillResult Result = ValidateSnapshot(Snapshot);
+	if (Result != EWizardSkillResult::Success) return Result;
+	TGuardValue<bool> Guard(bMutating, true);
+	if (Snapshot.Slots != Loadout.Slots) { Loadout = Snapshot; OnLoadoutChanged.Broadcast(); }
+	return EWizardSkillResult::Success;
+}
+
+EWizardSkillResult UWizardSkillLoadoutComponent::ValidateSnapshot(const FWizardLoadoutSnapshot& Snapshot) const
+{
 	if (!GetState() || !GetState()->HasAuthority() || !Catalog) return EWizardSkillResult::InvalidConfiguration;
 	if (Snapshot.Slots.Num() != 4) return EWizardSkillResult::InvalidSlot;
 	TSet<FName> Ids;
@@ -57,7 +68,6 @@ EWizardSkillResult UWizardSkillLoadoutComponent::RestoreSnapshot(const FWizardLo
 		if (Ids.Contains(Id)) return EWizardSkillResult::DuplicateSkill;
 		Ids.Add(Id);
 	}
-	if (Snapshot.Slots != Loadout.Slots) { Loadout = Snapshot; OnLoadoutChanged.Broadcast(); }
 	return EWizardSkillResult::Success;
 }
 
@@ -198,7 +208,13 @@ void UWizardSkillLoadoutComponent::ClearAvatarEffects()
 }
 void UWizardSkillLoadoutComponent::OnEffectRemoved(const FActiveGameplayEffect& Effect)
 {
-	if (Effect.Handle == ShieldHandle) ClearAvatarEffects();
+	if (Effect.Handle == ShieldHandle)
+ {
+  UAbilitySystemComponent* ASC = GetState()->GetAbilitySystemComponent();
+  if (ASC->GetNumericAttribute(UWizardAttributeSet::GetShieldAttribute()) > 0 && ASC->GetNumericAttribute(UWizardAttributeSet::GetHealthAttribute()) > 0)
+   WizardCombat::Burst(ASC->GetAvatarActor(), WizardCombat::ResolvePresentation(Effect.Spec.GetContext().GetSourceObject()), EWizardCombatStage::Expire, ASC->GetAvatarActor()->GetActorLocation());
+  ClearAvatarEffects();
+ }
 }
 void UWizardSkillLoadoutComponent::OnShieldChanged(const FOnAttributeChangeData& Data)
 {

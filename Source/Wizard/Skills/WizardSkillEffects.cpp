@@ -1,4 +1,5 @@
 #include "Skills/WizardSkillEffects.h"
+#include "Combat/WizardCombatPresentation.h"
 #include "GAS/WizardAttributeSet.h"
 #include "GAS/WizardDamageExecution.h"
 #include "NativeGameplayTags.h"
@@ -52,6 +53,8 @@ UWizardSkillHealEffect::UWizardSkillHealEffect() { AddValueModifier(this, UWizar
 UWizardSkillShieldEffect::UWizardSkillShieldEffect() { AddValueModifier(this, UWizardAttributeSet::GetShieldAttribute(), EGameplayModOp::Override); }
 UWizardSkillSlowEffect::UWizardSkillSlowEffect()
 {
+	FGameplayEffectCue& Cue = GameplayCues.AddDefaulted_GetRef();
+	Cue.GameplayCueTags.AddTag(WizardCombat::SlowTag());
 	DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	DurationMagnitude = FScalableFloat(1.f);
 	AddValueModifier(this, UWizardAttributeSet::GetMoveSpeedAttribute(), EGameplayModOp::Multiplicitive);

@@ -9,6 +9,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Skills/WizardSkillLoadoutComponent.h"
 #include "Interaction/WizardInteractionComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Components/SkeletalMeshComponent.h"
 
 AWizardCharacter::AWizardCharacter()
 {
@@ -84,5 +86,26 @@ void AWizardCharacter::SetEquipmentStaff(UStaticMesh* InMesh)
 		Component->SetVisibility(InMesh != nullptr, true);
 		Component->SetHiddenInGame(InMesh == nullptr, true);
 		return;
+	}
+}
+
+void AWizardCharacter::SetDeathPresentation(bool bDead)
+{
+	if (bDeathPresented == bDead) return;
+	bDeathPresented = bDead;
+	UAnimInstance* Anim = GetMesh()->GetAnimInstance();
+	if (bDead)
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+		if (Anim && DeathMontage)
+		{
+			// 死亡使用独立全身Slot，关闭自动淡出使倒地姿势保持至回营。
+			Anim->Montage_Play(DeathMontage);
+		}
+	}
+	else if (Anim && DeathMontage)
+	{
+		// 回营已经完成传送，立即解除倒地姿势，不额外延长结算或限制输入。
+		Anim->Montage_Stop(0.f, DeathMontage);
 	}
 }
